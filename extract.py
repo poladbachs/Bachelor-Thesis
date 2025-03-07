@@ -1,64 +1,39 @@
-import openai
+import json
 import pandas as pd
-import os
-import time
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+JSON_INPUT_PATH = "CoderEval4Java.json"
+CSV_OUTPUT_PATH = "CoderEval4Java_Raw_Filtered.csv"
 
-CSV_INPUT_PATH = "CoderEval4Java_Raw_Filtered.csv"
-CSV_OUTPUT_PATH = "CoderEval4Java_Enriched.csv"
+# List of unwanted method IDs
+EXCLUDED_IDS = {
+    "6367667f1a6d9265ec017458", "6367667d1a6d9265ec0173ff", "636766821a6d9265ec0174d2",
+    "636767431a6d9265ec017c8d", "6367667c1a6d9265ec0173f7", "6367667c1a6d9265ec0173fb",
+    "6367667f1a6d9265ec01745c", "636766801a6d9265ec017477", "636766801a6d9265ec017482",
+    "636766811a6d9265ec017496", "636766811a6d9265ec017499", "636766821a6d9265ec0174b3",
+    "636766851a6d9265ec017515", "636766a81a6d9265ec01757b", "636766a81a6d9265ec017596",
+    "636766ef1a6d9265ec01761a", "636766f81a6d9265ec017748", "636766f81a6d9265ec01774b",
+    "636766fe1a6d9265ec017823", "636766fe1a6d9265ec017833", "636767001a6d9265ec01787e",
+    "636767001a6d9265ec01787f", "636767071a6d9265ec017962", "636767461a6d9265ec017d17",
+    "6367674b1a6d9265ec017dc0", "636767531a6d9265ec017ef1", "636767531a6d9265ec017efb",
+    "6367675a1a6d9265ec018010", "636767601a6d9265ec0180fd", "636767611a6d9265ec018106",
+    "636767641a6d9265ec01817d", "636767641a6d9265ec018190", "636767691a6d9265ec0181ae",
+    "636767781a6d9265ec018238", "636767781a6d9265ec01823d", "636767781a6d9265ec01823e",
+    "636767781a6d9265ec018242", "636767791a6d9265ec018257", "636767791a6d9265ec018263",
+    "6367677e1a6d9265ec018314", "636767841a6d9265ec0183f2", "636767841a6d9265ec0183ff",
+    "636767aa1a6d9265ec01865a", "636767ab1a6d9265ec01867b", "636767dc1a6d9265ec0186c6",
+    "636767de1a6d9265ec018706", "636767de1a6d9265ec01871e", "636767de1a6d9265ec018726",
+    "636767e11a6d9265ec018790"
+}
 
-df = pd.read_csv(CSV_INPUT_PATH)
+with open(JSON_INPUT_PATH, "r", encoding="utf-8") as f:
+    data = json.load(f)
 
-def generate_enriched_description(name, code):
-    """
-    Queries OpenAI GPT model to generate enriched multi-level descriptions for a given function.
-    Ensures NO filler phrases, unnecessary intros, or excessive verbosity.
-    """
-    prompt = f"""
-    Function Name: {name}
-    Code:
-    {code}
+records = data.get("RECORDS", data)
 
-    Answer STRICTLY in this format WITHOUT extra text, introductions, or explanations.
+df = pd.DataFrame(records)[["_id", "name", "code", "docstring", "human_label"]]
 
-    ---
-    **1. One-line summary:** (MUST be ultra-short, NO details, NO corner cases.)
-    **2. Function behavior:** (Describe how the function works in detail.)
-    **3. Function signature:** (Describe the parameters and return type.)
-    **4. Examples:** (Show input-output examples.)
-    **5. Preconditions & Postconditions:** (Explain constraints, expected outputs, and failure cases.)
-    ---
+df_filtered = df[~df["_id"].isin(EXCLUDED_IDS)]
 
-    IMPORTANT RULES:
-    - DO NOT include any greeting or opening like “Certainly!” or “Here's your response”.
-    - DO NOT add explanations about what you are doing.
-    - JUST OUTPUT the descriptions, formatted exactly as specified above.
-    """
+df_filtered.to_csv(CSV_OUTPUT_PATH, index=False, encoding="utf-8")
 
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=800
-        )
-        return response["choices"][0]["message"]["content"]
-    except Exception as e:
-        print(f"Error processing function '{name}': {e}")
-        return "ERROR"
-
-enriched_descriptions = []
-for index, row in df.iterrows():
-    print(f"Processing function {index + 1}/{len(df)}: {row['name']}")
-    
-    enriched_desc = generate_enriched_description(row["name"], row["code"])
-    
-    enriched_descriptions.append(enriched_desc)
-
-    time.sleep(1)
-
-df["enriched_description"] = enriched_descriptions
-
-df.to_csv(CSV_OUTPUT_PATH, index=False, encoding="utf-8")
-
-print(f"Enriched CSV file created: {CSV_OUTPUT_PATH}")
+print(f"✅ Filtered CSV file created: {CSV_OUTPUT_PATH}")
