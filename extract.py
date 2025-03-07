@@ -4,7 +4,6 @@ import pandas as pd
 JSON_INPUT_PATH = "CoderEval4Java.json"
 CSV_OUTPUT_PATH = "CoderEval4Java_Raw_Filtered.csv"
 
-# List of unwanted method IDs
 EXCLUDED_IDS = {
     "6367667f1a6d9265ec017458", "6367667d1a6d9265ec0173ff", "636766821a6d9265ec0174d2",
     "636767431a6d9265ec017c8d", "6367667c1a6d9265ec0173f7", "6367667c1a6d9265ec0173fb",
@@ -36,4 +35,4 @@ df_filtered = df[~df["_id"].isin(EXCLUDED_IDS)]
 
 df_filtered.to_csv(CSV_OUTPUT_PATH, index=False, encoding="utf-8")
 
-print(f"✅ Filtered CSV file created: {CSV_OUTPUT_PATH}")
+print(f"Filtered CSV file created: {CSV_OUTPUT_PATH}")
