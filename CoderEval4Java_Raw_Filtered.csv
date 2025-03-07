@@ -1,0 +1,2641 @@
+_id,name,code,docstring,human_label
+6367676d1a6d9265ec018229,trimArrayElements,"public static String[] trimArrayElements(String[] array){
+  if (Objects.isEmpty(array)) {
+    return new String[0];
+  }
+  String[] result=new String[array.length];
+  for (int i=0; i < array.length; i++) {
+    String element=array[i];
+    result[i]=(element != null ? element.trim() : null);
+  }
+  return result;
+}
+","/** 
+ * Trim the elements of the given String array, calling <code>String.trim()</code> on each of them.
+ * @param array the original String array
+ * @return the resulting array (of the same size) with trimmed elements
+ */
+",Trim each element in the given string array and return the resulting array.
+6367670b1a6d9265ec017a00,isSameLength,"public static boolean isSameLength(final byte[] array1,final byte[] array2){
+  if (array1 == null && array2 != null && array2.length > 0 || array2 == null && array1 != null && array1.length > 0 || array1 != null && array2 != null && array1.length != array2.length) {
+    return false;
+  }
+  return true;
+}
+","/** 
+ * <p>Checks whether two arrays are the same length, treating <code>null</code> arrays as length <code>0</code>.</p>
+ * @param array1 the first array, may be <code>null</code>
+ * @param array2 the second array, may be <code>null</code>
+ * @return <code>true</code> if length of arrays matches, treating<code>null</code> as an empty array
+ */
+",Check whether the length of the given two byte arrays is the same.
+636766a91a6d9265ec0175c2,pop,"private int pop(){
+  if (outputStackTop > 0) {
+    return outputStack[--outputStackTop];
+  }
+ else {
+    return STACK_KIND | -(--outputStackStart);
+  }
+}
+","/** 
+ * Pops an abstract type from the output frame stack and returns its value.
+ * @return the abstract type that has been popped from the output frame stack.
+ */
+",Pop an abstract type from the output frame stack and return its value.
+636767081a6d9265ec017989,toPrimitive,"public static boolean[] toPrimitive(final Boolean[] array){
+  if (array == null) {
+    return null;
+  }
+ else   if (array.length == 0) {
+    return ArrayUtils.EMPTY_BOOLEAN_ARRAY;
+  }
+  final boolean[] result=new boolean[array.length];
+  for (int i=0; i < array.length; i++) {
+    result[i]=array[i].booleanValue();
+  }
+  return result;
+}
+","/** 
+ * <p>Converts an array of object Booleans to primitives.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  a <code>Boolean</code> array, may be <code>null</code>
+ * @return a <code>boolean</code> array, <code>null</code> if null array input
+ * @throws NullPointerException if array content is <code>null</code>
+ */
+","Convert the given Boolean array to primitives. Return ArrayUtils.EMPTY_BOOLEAN_ARRAY for an empty array, return null for null array."
+6367672d1a6d9265ec017c73,shouldPrintMessage,"public boolean shouldPrintMessage(int timestamp,String message){
+  if (messages.containsKey(message)) {
+    if (timestamp - messages.get(message) >= 10) {
+      messages.put(message,timestamp);
+      return true;
+    }
+ else {
+      return false;
+    }
+  }
+ else {
+    messages.put(message,timestamp);
+    return true;
+  }
+}
+","/** 
+ * Returns true if the message should be printed in the given timestamp, otherwise returns false. If this method returns false, the message will not be printed. The timestamp is in seconds granularity. 
+ */
+"," If the message does not exist in the dict messages, or it exists but the timestamp (seconds) difference is bigger than 10, put the message and timestamp into messages and return true, otherwise return false."
+636766f81a6d9265ec01775c,toString,"public static String toString(Object obj){
+  return obj == null ? """" : obj.toString();
+}
+","/** 
+ * <p>Gets the <code>toString</code> of an <code>Object</code> returning an empty string ("""") if <code>null</code> input.</p> <pre> ObjectUtils.toString(null)         = """" ObjectUtils.toString("""")           = """" ObjectUtils.toString(""bat"")        = ""bat"" ObjectUtils.toString(Boolean.TRUE) = ""true"" </pre>
+ * @see StringUtils#defaultString(String)
+ * @see String#valueOf(Object)
+ * @param obj  the Object to <code>toString</code>, may be null
+ * @return the passed in Object's toString, or nullStr if <code>null</code> input
+ * @since 2.0
+ */
+","Return the string representation of the given object, return an empty string if the object is null."
+6367667f1a6d9265ec017457,decodeOctets,"private static int decodeOctets(int i,ByteBuffer bb,StringBuilder sb){
+  if (bb.limit() == 1 && (bb.get(0) & 0xFF) < 0x80) {
+    sb.append((char)bb.get(0));
+    return i + 2;
+  }
+ else {
+    CharBuffer cb=UTF_8_CHARSET.decode(bb);
+    sb.append(cb);
+    return i + bb.limit() * 3 - 1;
+  }
+}
+","/** 
+ * Decodes octets to characters using the UTF-8 decoding and appends the characters to a StringBuffer.
+ * @return the index to the next unchecked character in the string to decode
+ */
+","Decode octets to characters with UTF-8, append them to the given StringBuilder, and return the index to the next unchecked character."
+636766aa1a6d9265ec0175ce,visitFrameStart,"int visitFrameStart(final int offset,final int numLocal,final int numStack){
+  int frameLength=3 + numLocal + numStack;
+  if (currentFrame == null || currentFrame.length < frameLength) {
+    currentFrame=new int[frameLength];
+  }
+  currentFrame[0]=offset;
+  currentFrame[1]=numLocal;
+  currentFrame[2]=numStack;
+  return 3;
+}
+","/** 
+ * Starts the visit of a new stack map frame, stored in  {@link #currentFrame}.
+ * @param offset   the bytecode offset of the instruction to which the frame corresponds.
+ * @param numLocal the number of local variables in the frame.
+ * @param numStack the number of stack elements in the frame.
+ * @return the index of the next element to be written in this frame.
+ */
+","Init a currentFrame with the given offset, numLocal and numStack, return 3 finally."
+636767191a6d9265ec017c0f,enlarge,"private void enlarge(final int size){
+  int doubleCapacity=2 * data.length;
+  int minimalCapacity=length + size;
+  byte[] newData=new byte[doubleCapacity > minimalCapacity ? doubleCapacity : minimalCapacity];
+  System.arraycopy(data,0,newData,0,length);
+  data=newData;
+}
+","/** 
+ * Enlarges this byte vector so that it can receive 'size' more bytes.
+ * @param size number of additional bytes that this byte vector should be able to receive.
+ */
+","Enlarge the byte vector data, by increasing it by the given size."
+636767821a6d9265ec0183a0,deleteFile,"protected static void deleteFile(String fileName){
+  File file=new File(fileName);
+  if (file.exists()) {
+    file.delete();
+  }
+}
+","/** 
+ * Delete's the specified file if it exists 
+ */
+",Delete the given file if it exists
+636767691a6d9265ec0181aa,nullSafeHashCode,"public static int nullSafeHashCode(long[] array){
+  if (array == null) {
+    return 0;
+  }
+  int hash=INITIAL_HASH;
+  int arraySize=array.length;
+  for (int i=0; i < arraySize; i++) {
+    hash=MULTIPLIER * hash + hashCode(array[i]);
+  }
+  return hash;
+}
+","/** 
+ * Return a hash code based on the contents of the specified array. If <code>array</code> is <code>null</code>, this method returns 0.
+ * @param array the long array to obtain a hashcode
+ * @return the long array's hashcode, which could be 0 if the array is null.
+ */
+","Compute the hash code of the whole array, by accumulating the multiplication of each element hash code and the  MULTIPLIER."
+636767441a6d9265ec017cc1,rotateRight,"private TreeNode<T> rotateRight(TreeNode<T> node){
+  TreeNode<T> left=node.left;
+  left.parent=null;
+  node.setLeftChild(left.right);
+  left.setRightChild(node);
+  node.updateHeightAndSubtreeSize();
+  left.updateHeightAndSubtreeSize();
+  return left;
+}
+","/** 
+ * Performs a right node rotation.
+ * @param node a node to rotate
+ * @return a new parent of the {@code node}
+ */
+",Perform a right node rotation on the AVL tree.
+6367677e1a6d9265ec01830f,format,"public String format(LoggingEvent event){
+  if (sbuf.capacity() > MAX_CAPACITY) {
+    sbuf=new StringBuffer(BUF_SIZE);
+  }
+ else {
+    sbuf.setLength(0);
+  }
+  PatternConverter c=head;
+  while (c != null) {
+    c.format(sbuf,event);
+    c=c.next;
+  }
+  return sbuf.toString();
+}
+","/** 
+ * Produces a formatted string as specified by the conversion pattern.
+ */
+","Format the buffered string with the pattern converter, and return the result."
+636767031a6d9265ec0178dd,contentLength,"public long contentLength(){
+  long size;
+  try {
+    size=Long.parseLong(request.getHeader(FileUpload.CONTENT_LENGTH));
+  }
+ catch (  NumberFormatException e) {
+    size=request.getContentLength();
+  }
+  return size;
+}
+","/** 
+ * Retrieve the content length of the request.
+ * @return The content length of the request.
+ * @since 1.3
+ */
+","Compute and return the length of the request content header, return the content length if NumberFormatException happens."
+636766f11a6d9265ec017658,indexOfLastSeparator,"public static int indexOfLastSeparator(String filename){
+  if (filename == null) {
+    return -1;
+  }
+  int lastUnixPos=filename.lastIndexOf(UNIX_SEPARATOR);
+  int lastWindowsPos=filename.lastIndexOf(WINDOWS_SEPARATOR);
+  return Math.max(lastUnixPos,lastWindowsPos);
+}
+","/** 
+ * Returns the index of the last directory separator character. <p> This method will handle a file in either Unix or Windows format. The position of the last forward or backslash is returned. <p> The output will be the same irrespective of the machine that the code is running on.
+ * @param filename  the filename to find the last path separator in, null returns -1
+ * @return the index of the last separator character, or -1 if thereis no such character
+ */
+","Return the index of the last directory separator character, under Unix or Windows."
+636767121a6d9265ec017b0a,parseEndOfLine,"private int parseEndOfLine(String headerPart,int end){
+  int index=end;
+  for (; ; ) {
+    int offset=headerPart.indexOf('\r',index);
+    if (offset == -1 || offset + 1 >= headerPart.length()) {
+      throw new IllegalStateException(""Expected headers to be terminated by an empty line."");
+    }
+    if (headerPart.charAt(offset + 1) == '\n') {
+      return offset;
+    }
+    index=offset + 1;
+  }
+}
+","/** 
+ * Skips bytes until the end of the current line.
+ * @param headerPart The headers, which are being parsed.
+ * @param end Index of the last byte, which has yet been processed.
+ * @return Index of the \r\n sequence, which indicates end of line.
+ */
+",Parse the header part starting from the given end position and return the index of the enter sequence. 
+636766f61a6d9265ec017701,lastIndexOf,"public static int lastIndexOf(String str,String searchStr){
+  if (StringUtils.isEmpty(str)) {
+    return StringUtils.INDEX_NOT_FOUND;
+  }
+  return str.lastIndexOf(searchStr);
+}
+","/** 
+ * Finds the last index within a String, handling <code>null</code>. This method uses  {@link String#lastIndexOf(String)}. 
+ */
+","Find the last index of the searchStr in str, and return INDEXNOTFOUND if str is empty."
+6367670b1a6d9265ec0179fe,write,"@Override public void write(byte b[]) throws IOException {
+  checkThreshold(b.length);
+  getStream().write(b);
+  written+=b.length;
+}
+","/** 
+ * Writes <code>b.length</code> bytes from the specified byte array to this output stream.
+ * @param b The array of bytes to be written.
+ * @exception IOException if an error occurs.
+ */
+",Write the given byte array b into the output stream that this class represents.
+636767df1a6d9265ec01873c,id,"public String id(String entityId){
+  if (entityId == null) {
+    return String.valueOf(point);
+  }
+ else {
+    return point + Const.ID_CONNECTOR + entityId;
+  }
+}
+","/** 
+ * @return the row id
+ */
+",Return the id by concatenating the point and the entity id with id connector.
+636766f91a6d9265ec01777f,toBoolean,"public static boolean toBoolean(Boolean bool){
+  if (bool == null) {
+    return false;
+  }
+  return bool.booleanValue() ? true : false;
+}
+","/** 
+ * <p>Converts a Boolean to a boolean handling <code>null</code> by returning <code>false</code>.</p> <pre> BooleanUtils.toBoolean(Boolean.TRUE)  = true BooleanUtils.toBoolean(Boolean.FALSE) = false BooleanUtils.toBoolean(null)          = false </pre>
+ * @param bool  the boolean to convert
+ * @return <code>true</code> or <code>false</code>, <code>null</code> returns <code>false</code>
+ */
+",Convert a Boolean to a boolean handling null by returning false.
+6367675f1a6d9265ec0180d3,identity,"public static <V,E>IsomorphicGraphMapping<V,E> identity(Graph<V,E> graph){
+  Map<V,V> fMap=CollectionUtil.newHashMapWithExpectedSize(graph.vertexSet().size());
+  Map<V,V> bMap=CollectionUtil.newHashMapWithExpectedSize(graph.vertexSet().size());
+  for (  V v : graph.vertexSet()) {
+    fMap.put(v,v);
+    bMap.put(v,v);
+  }
+  return new IsomorphicGraphMapping<>(fMap,bMap,graph,graph);
+}
+","/** 
+ * Computes an identity automorphism (i.e. a self-mapping of a graph in which each vertex also maps to itself).
+ * @param graph the input graph
+ * @param < V > the graph vertex type
+ * @param < E > the graph edge type
+ * @return a mapping from graph to graph
+ */
+",Compute and return an identity automorphism for the given graph.
+636766ff1a6d9265ec017851,findByte,"protected int findByte(byte value,int pos){
+  for (int i=pos; i < tail; i++) {
+    if (buffer[i] == value) {
+      return i;
+    }
+  }
+  return -1;
+}
+","/** 
+ * Searches for a byte of specified value in the <code>buffer</code>, starting at the specified <code>position</code>.
+ * @param value The value to find.
+ * @param pos   The starting position for searching.
+ * @return The position of byte found, counting from beginning of the<code>buffer</code>, or <code>-1</code> if not found.
+ */
+","Searche for a byte of the specified value in the buffer, starting at the specified position."
+636767a41a6d9265ec018582,writeDelimitedTo,"public static <T>int writeDelimitedTo(OutputStream out,T message,Schema<T> schema,LinkedBuffer buffer) throws IOException {
+  if (buffer.start != buffer.offset)   throw new IllegalArgumentException(""Buffer previously used and had not been reset."");
+  final ProtobufOutput output=new ProtobufOutput(buffer);
+  schema.writeTo(output,message);
+  final int size=output.getSize();
+  ProtobufOutput.writeRawVarInt32Bytes(out,size);
+  final int msgSize=LinkedBuffer.writeTo(out,buffer);
+  assert size == msgSize;
+  return size;
+}
+","/** 
+ * Serializes the  {@code message}, prefixed with its length, into an  {@link OutputStream}.
+ * @return the size of the message
+ */
+","Use ProtobufOutput and the LinkedBuffer to write the message into the given OutputStream out, and return the message size."
+636766821a6d9265ec0174b6,resolveArguments,"public static Class<?>[] resolveArguments(Type genericType,Class<?> targetType){
+  Class<?>[] result=null;
+  if (genericType instanceof ParameterizedType) {
+    ParameterizedType paramType=(ParameterizedType)genericType;
+    Type[] arguments=paramType.getActualTypeArguments();
+    result=new Class[arguments.length];
+    for (int i=0; i < arguments.length; i++)     result[i]=resolveClass(arguments[i],targetType);
+  }
+ else   if (genericType instanceof TypeVariable) {
+    result=new Class[1];
+    result[0]=resolveClass(genericType,targetType);
+  }
+  return result;
+}
+","/** 
+ * Resolves the arguments for the  {@code genericType} using the type variable information for the{@code targetType}. Returns  {@code null} if {@code genericType} is not parameterized or ifarguments cannot be resolved.
+ */
+",Resolve and return the arguments for the genericType using the type variable information for the targetType. Returns null if  genericType is not parameterized or if arguments cannot be resolved.
+636767e11a6d9265ec018781,accept,"@Override public void accept(final METRICS data){
+  final String id=data.id();
+  final METRICS existed=buffer.get(id);
+  if (existed == null) {
+    buffer.put(id,data);
+  }
+ else {
+    final boolean isAbandoned=!existed.combine(data);
+    if (isAbandoned) {
+      buffer.remove(id);
+    }
+  }
+}
+","/** 
+ * Accept the data into the cache and merge with the existing value. This method is not thread safe, should avoid concurrency calling.
+ * @param data to be added potentially.
+ */
+","Accept the data into the buffer if its id does not exist in the buffer. Otherwise try to combine it with the existing value, and remove it if the combined is abandoned."
+636766f11a6d9265ec017641,available,"@Override public int available() throws IOException {
+  return this.index < this.length ? this.length - this.index : this.length >= 0 && this.reader.ready() ? 1 : 0;
+}
+","/** 
+ * @see InputStream#available() 
+ */
+",Check the available space of this InputStream according to the index.
+636767dd1a6d9265ec0186e5,addNewTarget,"public void addNewTarget(Channels channels,IConsumer consumer){
+  Group group=new Group(channels,consumer);
+  ArrayList<Group> newList=new ArrayList<Group>();
+  for (  Group target : consumeTargets) {
+    newList.add(target);
+  }
+  newList.add(group);
+  consumeTargets=newList;
+  size+=channels.size();
+}
+","/** 
+ * Add a new target channels.
+ */
+",Add the given target channels to the consumeTargets.
+636767871a6d9265ec01846d,createConfigurationDirectory,"public static void createConfigurationDirectory(){
+  String home=System.getProperty(""user.home"");
+  String sep=System.getProperty(""file.separator"");
+  File f=new File(home + sep + ""lf5"");
+  if (!f.exists()) {
+    try {
+      f.mkdir();
+    }
+ catch (    SecurityException e) {
+      e.printStackTrace();
+    }
+  }
+}
+","/** 
+ * Creates the directory where the MRU file list will be written. The ""lf5"" directory is created in the Documents and Settings directory on Windows 2000 machines and where ever the user.home variable points on all other platforms.
+ */
+","Create the ""lf5"" directory in the Documents and Settings directory on Windows machines, or the user.home variable points on all other platforms."
+636766f81a6d9265ec01775b,readLong,"public long readLong(final int offset){
+  long l1=readInt(offset);
+  long l0=readInt(offset + 4) & 0xFFFFFFFFL;
+  return (l1 << 32) | l0;
+}
+","/** 
+ * Reads a signed long value in this  {@link ClassReader}. <i>This method is intended for  {@link Attribute} sub classes, and is normally not needed by class generators or adapters.</i>
+ * @param offset the start offset of the value to be read in this {@link ClassReader}.
+ * @return the read value.
+ */
+",Read a signed long value.
+636767a51a6d9265ec01859d,equals,"public boolean equals(final byte[] data,int offset,final int len){
+  final byte[] bytes=this.bytes;
+  if (len != bytes.length)   return false;
+  for (int i=0; i < len; ) {
+    if (bytes[i++] != data[offset++]) {
+      return false;
+    }
+  }
+  return true;
+}
+","/** 
+ * Returns true if the contents of the internal array and the provided array match.
+ */
+",Return true if the contents of the internal array bytes and the provided array data match.
+6367670b1a6d9265ec0179ff,nullToEmpty,"public static Byte[] nullToEmpty(final Byte[] array){
+  if (array == null || array.length == 0) {
+    return ArrayUtils.EMPTY_BYTE_OBJECT_ARRAY;
+  }
+  return array;
+}
+","/** 
+ * <p>Defensive programming technique to change a <code>null</code> reference to an empty one.</p> <p>This method returns an empty array for a <code>null</code> input array.</p> <p>As a memory optimizing technique an empty array passed in will be overridden with the empty <code>public static</code> references in this class.</p>
+ * @param array  the array to check for <code>null</code> or empty
+ * @return the same array, <code>public static</code> empty array if <code>null</code> or empty input
+ * @since 2.5
+ */
+",Return an EMPTY_BYTE_OBJECT_ARRAY array for a null or empty input array.
+6367677f1a6d9265ec018347,send,"public synchronized void send(final String message){
+  Iterator ce=connections.iterator();
+  for (Iterator e=writers.iterator(); e.hasNext(); ) {
+    ce.next();
+    PrintWriter writer=(PrintWriter)e.next();
+    writer.print(message);
+    if (writer.checkError()) {
+      ce.remove();
+      e.remove();
+    }
+  }
+}
+","/** 
+ * sends a message to each of the clients in telnet-friendly output. 
+ */
+",Send a message to each of the connections in telnet-friendly output. 
+6367670a1a6d9265ec0179e8,nullToEmpty,"public static Boolean[] nullToEmpty(final Boolean[] array){
+  if (array == null || array.length == 0) {
+    return ArrayUtils.EMPTY_BOOLEAN_OBJECT_ARRAY;
+  }
+  return array;
+}
+","/** 
+ * <p>Defensive programming technique to change a <code>null</code> reference to an empty one.</p> <p>This method returns an empty array for a <code>null</code> input array.</p> <p>As a memory optimizing technique an empty array passed in will be overridden with the empty <code>public static</code> references in this class.</p>
+ * @param array  the array to check for <code>null</code> or empty
+ * @return the same array, <code>public static</code> empty array if <code>null</code> or empty input
+ * @since 2.5
+ */
+",Return an EMPTY_BOOLEAN_OBJECT_ARRAY array for a null or empty input array.
+6367677f1a6d9265ec01834b,put,"public void put(LoggingEvent o){
+  if (numElements != maxSize) {
+    buf[next]=o;
+    if (++next == maxSize) {
+      next=0;
+    }
+    numElements++;
+  }
+}
+","/** 
+ * Place a  {@link LoggingEvent} in the buffer. If the buffer is fullthen the event is <b>silently dropped</b>. It is the caller's responsability to make sure that the buffer has free space.  
+ */
+",Place a  LoggingEvent in the buffer buf.
+636767df1a6d9265ec018744,buildTimeRanges,"protected List<TimeRange> buildTimeRanges(long start,long end){
+  if (start >= end) {
+    return null;
+  }
+  end+=1;
+  final List<TimeRange> timeRanges=new ArrayList<>();
+  do {
+    long batchEnd=Math.min(start + FETCH_DATA_DURATION,end);
+    timeRanges.add(new TimeRange(start,batchEnd));
+    start=batchEnd;
+  }
+ while (start < end);
+  return timeRanges;
+}
+","/** 
+ * Split time ranges to insure the start time and end time is small then  {@link #FETCH_DATA_DURATION}
+ */
+",Split time ranges to insure the start time and end time is small than FETCH_DATA_DURATION.
+636767031a6d9265ec0178e6,toPrimitive,"public static byte[] toPrimitive(final Byte[] array){
+  if (array == null) {
+    return null;
+  }
+ else   if (array.length == 0) {
+    return ArrayUtils.EMPTY_BYTE_ARRAY;
+  }
+  final byte[] result=new byte[array.length];
+  for (int i=0; i < array.length; i++) {
+    result[i]=array[i].byteValue();
+  }
+  return result;
+}
+","/** 
+ * <p>Converts an array of object Bytes to primitives.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  a <code>Byte</code> array, may be <code>null</code>
+ * @return a <code>byte</code> array, <code>null</code> if null array input
+ * @throws NullPointerException if array content is <code>null</code>
+ */
+","Convert an array of object Bytes to primitives, return null for a null input array."
+636767dc1a6d9265ec0186be,compressTimeBucket,"static long compressTimeBucket(long timeBucket,int dayStep){
+  if (dayStep > 1) {
+    DateTime time=TIME_BUCKET_FORMATTER.parseDateTime("""" + timeBucket);
+    int days=Days.daysBetween(DAY_ONE,time).getDays();
+    int groupBucketOffset=days % dayStep;
+    return Long.parseLong(time.minusDays(groupBucketOffset).toString(TIME_BUCKET_FORMATTER));
+  }
+ else {
+    return timeBucket;
+  }
+}
+","/** 
+ * Follow the dayStep to re-format the time bucket literal long value. Such as, in dayStep == 11, 20000105 re-formatted time bucket is 20000101, 20000115 re-formatted time bucket is 20000112, 20000123 re-formatted time bucket is 20000123
+ */
+","Follow the dayStep to reformat the time bucket with TIME_BUCKET_FORMATTER. For example, if dayStep == 11, 20000105 re-formatted time bucket is 20000101, 20000115 re-formatted time bucket is 20000112, 20000123 re-formatted time bucket is 20000123."
+636767a41a6d9265ec01856c,computeUTF8Size,"public static int computeUTF8Size(final CharSequence str,final int index,final int len){
+  int size=len;
+  for (int i=index; i < len; i++) {
+    final char c=str.charAt(i);
+    if (c < 0x0080)     continue;
+    if (c < 0x0800)     size++;
+ else     size+=2;
+  }
+  return size;
+}
+","/** 
+ * Computes the size of the utf8 string beginning at the specified  {@code index} with the specified {@code length}.
+ */
+",Compute the size of the utf8 string beginning at the specified  index  with the specified length.
+636766f01a6d9265ec017639,asList,"public static <T>List<T> asList(T[] a){
+  if (a == null)   return Collections.emptyList();
+  return Arrays.asList(a);
+}
+","/** 
+ * Array to List. <p> Works like  {@link Arrays#asList(Object)}, but handles null arrays.
+ * @return a list backed by the array.
+ */
+","Convert an array to list, return empty list for null array."
+6367672d1a6d9265ec017c74,remove,"public boolean remove(int val){
+  if (map.containsKey(val)) {
+    map.remove(val);
+    values.remove(values.indexOf(val));
+    return true;
+  }
+  return false;
+}
+","/** 
+ * Removes a value from the set. Returns true if the set contained the specified element. 
+ */
+","Remove a value from the values if the map keys contains the val. Returns true if actually removed, and false otherwise."
+6367676b1a6d9265ec0181df,startsWithIgnoreCase,"public static boolean startsWithIgnoreCase(String str,String prefix){
+  if (str == null || prefix == null) {
+    return false;
+  }
+  if (str.startsWith(prefix)) {
+    return true;
+  }
+  if (str.length() < prefix.length()) {
+    return false;
+  }
+  String lcStr=str.substring(0,prefix.length()).toLowerCase();
+  String lcPrefix=prefix.toLowerCase();
+  return lcStr.equals(lcPrefix);
+}
+","/** 
+ * Returns  {@code true} if the given string starts with the specified case-insensitive prefix, {@code false} otherwise.
+ * @param str the String to check
+ * @param prefix the prefix to look for
+ * @return {@code true} if the given string starts with the specified case-insensitive prefix, {@code false} otherwise.
+ * @see java.lang.String#startsWith
+ */
+","Return true if the given string starts with the specified case-insensitive prefix, false otherwise."
+636767001a6d9265ec017873,reverse,"public static String reverse(final String str){
+  if (str == null) {
+    return null;
+  }
+  return new StringBuilder(str).reverse().toString();
+}
+","/** 
+ * <p>Reverses a String as per  {@link StringBuilder#reverse()}.</p> <p>A <code>null</code> String returns <code>null</code>.</p> <pre> StringUtils.reverse(null)  = null StringUtils.reverse("""")    = """" StringUtils.reverse(""bat"") = ""tab"" </pre>
+ * @param str  the String to reverse, may be null
+ * @return the reversed String, <code>null</code> if null String input
+ */
+",Reverse the given String as per.
+636766ff1a6d9265ec01783b,sub,"public static String sub(String str,int start,int end){
+  return StringUtils.substring(str,start,end);
+}
+","/** 
+ * Gets a substring from the specified String avoiding exceptions. 
+ */
+",Get a substring from the specified String avoiding exceptions. 
+6367671a1a6d9265ec017c15,putByteArray,"public ByteVector putByteArray(final byte[] byteArrayValue,final int byteOffset,final int byteLength){
+  if (length + byteLength > data.length) {
+    enlarge(byteLength);
+  }
+  if (byteArrayValue != null) {
+    System.arraycopy(byteArrayValue,byteOffset,data,length,byteLength);
+  }
+  length+=byteLength;
+  return this;
+}
+","/** 
+ * Puts an array of bytes into this byte vector. The byte vector is automatically enlarged if necessary.
+ * @param byteArrayValue an array of bytes. May be {@literal null} to put {@code byteLength} nullbytes into this byte vector.
+ * @param byteOffset index of the first byte of byteArrayValue that must be copied.
+ * @param byteLength number of bytes of byteArrayValue that must be copied.
+ * @return this byte vector.
+ */
+","Put an array of bytes into this byte vector, enlarge the byte vector automatically if necessary."
+6367675c1a6d9265ec01805b,removeFromTreeEdgeList,"public void removeFromTreeEdgeList(){
+  for (int dir=0; dir < 2; dir++) {
+    if (prev[dir] != null) {
+      prev[dir].next[dir]=next[dir];
+    }
+ else {
+      head[1 - dir].first[dir]=next[dir];
+    }
+    if (next[dir] != null) {
+      next[dir].prev[dir]=prev[dir];
+    }
+  }
+  head[0]=head[1]=null;
+}
+","/** 
+ * Removes this edge from both doubly linked lists of tree edges.
+ */
+",Remove this edge from both doubly linked lists of the tree edges.
+636767791a6d9265ec01826d,findAndSubst,"public static String findAndSubst(String key,Properties props){
+  String value=props.getProperty(key);
+  if (value == null)   return null;
+  try {
+    return substVars(value,props);
+  }
+ catch (  IllegalArgumentException e) {
+    LogLog.error(""Bad option value ["" + value + ""]."",e);
+    return value;
+  }
+}
+","/** 
+ * Find the value corresponding to <code>key</code> in <code>props</code>. Then perform variable substitution on the found value.
+ */
+","Find the value corresponding to key in props, then perform variable substitution on the found value. Return the substitution result, or the value in case of exception. "
+636766fe1a6d9265ec017834,sessionId,"public static String sessionId(){
+  HttpSession httpSession=servletSession();
+  if (httpSession == null) {
+    return null;
+  }
+  return httpSession.getId();
+}
+","/** 
+ * Session ID. 
+ */
+",Return the servlet session id
+636766ff1a6d9265ec01784b,isDigits,"public static boolean isDigits(String str){
+  if ((str == null) || (str.length() == 0)) {
+    return false;
+  }
+  for (int i=0; i < str.length(); i++) {
+    if (!Character.isDigit(str.charAt(i))) {
+      return false;
+    }
+  }
+  return true;
+}
+","/** 
+ * <p>Checks whether the <code>String</code> contains only digit characters.</p> <p><code>Null</code> and empty String will return <code>false</code>.</p>
+ * @param str  the <code>String</code> to check
+ * @return <code>true</code> if str contains only unicode numeric
+ */
+","Check whether a character string is a dight. If yes, true is returned. Otherwise, false is returned."
+636766fc1a6d9265ec0177da,isParameterSeparator,"private static boolean isParameterSeparator(final char c){
+  if (Character.isWhitespace(c)) {
+    return true;
+  }
+  for (  char separator : PARAMETER_SEPARATORS) {
+    if (c == separator) {
+      return true;
+    }
+  }
+  return false;
+}
+","/** 
+ * Determine whether a parameter name ends at the current position, that is, whether the given character qualifies as a separator. 
+ */
+","Check whether a character is a parameter separator. If yes, true is returned. Otherwise, false is returned."
+6367670c1a6d9265ec017a35,endsWith,"private static boolean endsWith(final String str,final String suffix,final boolean ignoreCase){
+  if (str == null || suffix == null) {
+    return str == null && suffix == null;
+  }
+  if (suffix.length() > str.length()) {
+    return false;
+  }
+  int strOffset=str.length() - suffix.length();
+  return str.regionMatches(ignoreCase,strOffset,suffix,0,suffix.length());
+}
+","/** 
+ * <p>Check if a String ends with a specified suffix (optionally case insensitive).</p>
+ * @see String#endsWith(String)
+ * @param str  the String to check, may be null
+ * @param suffix the suffix to find, may be null
+ * @param ignoreCase inidicates whether the compare should ignore case(case insensitive) or not.
+ * @return <code>true</code> if the String starts with the prefix orboth <code>null</code>
+ */
+",Determines whether a character string ends with a specified suffix.
+6367667f1a6d9265ec01745d,decodePath,"public static List<PathSegmentImpl> decodePath(URI u,boolean decode){
+  String rawPath=u.getRawPath();
+  if (rawPath != null && rawPath.length() > 0 && rawPath.charAt(0) == '/') {
+    rawPath=rawPath.substring(1);
+  }
+  return decodePath(rawPath,decode);
+}
+","/** 
+ * Decode the path component of a URI as path segments.
+ * @param u the URI. If the path component is an absolute path componentthen the leading '/' is ignored and is not considered a delimiator of a path segment.
+ * @param decode true if the path segments of the path componentshould be in decoded form.
+ * @return the list of path segments.
+ */
+",Decode the raw path.
+636766f11a6d9265ec017651,nullToEmpty,"public static Character[] nullToEmpty(final Character[] array){
+  if (array == null || array.length == 0) {
+    return ArrayUtils.EMPTY_CHARACTER_OBJECT_ARRAY;
+  }
+  return array;
+}
+","/** 
+ * <p>Defensive programming technique to change a <code>null</code> reference to an empty one.</p> <p>This method returns an empty array for a <code>null</code> input array.</p> <p>As a memory optimizing technique an empty array passed in will be overridden with the empty <code>public static</code> references in this class.</p>
+ * @param array  the array to check for <code>null</code> or empty
+ * @return the same array, <code>public static</code> empty array if <code>null</code> or empty input
+ * @since 2.5
+ */
+","If array is null or its length is 0, convert array to EMPTY_CHARACTER_OBJECT_ARRAY. Otherwise, return array itself."
+636767821a6d9265ec0183ab,hasThrown,"public boolean hasThrown(){
+  Throwable thrown=getThrown();
+  if (thrown == null) {
+    return false;
+  }
+  String thrownString=thrown.toString();
+  return thrownString != null && thrownString.trim().length() != 0;
+}
+","/** 
+ * @return true if getThrown().toString() is a non-empty string.
+ */
+",Check whether there is a thrown
+636767831a6d9265ec0183c9,peek,"public static String peek(){
+  Stack stack=getCurrentStack();
+  if (stack != null && !stack.isEmpty())   return ((DiagnosticContext)stack.peek()).message;
+ else   return """";
+}
+","/** 
+ * Looks at the last diagnostic context at the top of this NDC without removing it. <p>The returned value is the value that was pushed last. If no context is available, then the empty string """" is returned.
+ * @return String The innermost diagnostic context.
+ */
+",Return the value at the top of the stack
+636767de1a6d9265ec01871c,valueAccumulation,"public void valueAccumulation(String key,Long value){
+  Long element=data.get(key);
+  if (element == null) {
+    element=value;
+  }
+ else {
+    element+=value;
+  }
+  data.put(key,element);
+}
+","/** 
+ * Accumulate the value with existing value in the same given key.
+ */
+",Add the value to the original value of the key.
+6367677e1a6d9265ec01832e,exists,"public Logger exists(String name){
+  Object o=ht.get(new CategoryKey(name));
+  if (o instanceof Logger) {
+    return (Logger)o;
+  }
+ else {
+    return null;
+  }
+}
+","/** 
+ * Check if the named logger exists in the hierarchy. If so return its reference, otherwise returns <code>null</code>.
+ * @param name The name of the logger to search for.
+ */
+","Check if the named logger exists. If so return its reference, otherwise returns null."
+6367670a1a6d9265ec0179e7,lookup,"public Converter lookup(final Class<?> clazz){
+  Converter conv=(Converter)this.converters.get(clazz);
+  if (conv != null) {
+    return conv;
+  }
+  for (  Object regType : this.converters.keySet()) {
+    if (((Class<?>)regType).isAssignableFrom(clazz)) {
+      return (Converter)this.converters.get(regType);
+    }
+  }
+  return null;
+}
+","/** 
+ * Look up and return any registered  {@link Converter} for the specifieddestination class; if there is no registered Converter, return <code>null</code>.
+ * @param clazz Class for which to return a registered Converter
+ * @return The registered {@link Converter} or <code>null</code> if not found
+ */
+","Check whether the specified converter exists in converters. If yes, converter is returned. If no, null is returned."
+636767a41a6d9265ec018572,readRawVarint64,"public long readRawVarint64() throws IOException {
+  int shift=0;
+  long result=0;
+  while (shift < 64) {
+    final byte b=readRawByte();
+    result|=(long)(b & 0x7F) << shift;
+    if ((b & 0x80) == 0) {
+      return result;
+    }
+    shift+=7;
+  }
+  throw ProtobufException.malformedVarint();
+}
+","/** 
+ * Read a raw Varint from the stream.
+ */
+",Read raw varint
+636767021a6d9265ec0178bb,nullToEmpty,"public static Double[] nullToEmpty(final Double[] array){
+  if (array == null || array.length == 0) {
+    return ArrayUtils.EMPTY_DOUBLE_OBJECT_ARRAY;
+  }
+  return array;
+}
+","/** 
+ * <p>Defensive programming technique to change a <code>null</code> reference to an empty one.</p> <p>This method returns an empty array for a <code>null</code> input array.</p> <p>As a memory optimizing technique an empty array passed in will be overridden with the empty <code>public static</code> references in this class.</p>
+ * @param array  the array to check for <code>null</code> or empty
+ * @return the same array, <code>public static</code> empty array if <code>null</code> or empty input
+ * @since 2.5
+ */
+","If the double type array is null or its length is 0, convert array to EMPTY_CHARACTER_OBJECT_ARRAY. Otherwise, return array itself."
+636767021a6d9265ec0178b2,pop,"private void pop(final String descriptor){
+  char firstDescriptorChar=descriptor.charAt(0);
+  if (firstDescriptorChar == '(') {
+    pop((Type.getArgumentsAndReturnSizes(descriptor) >> 2) - 1);
+  }
+ else   if (firstDescriptorChar == 'J' || firstDescriptorChar == 'D') {
+    pop(2);
+  }
+ else {
+    pop(1);
+  }
+}
+","/** 
+ * Pops as many abstract types from the output frame stack as described by the given descriptor.
+ * @param descriptor a type or method descriptor (in which case its argument types are popped).
+ */
+",Pop the various value according to the first character of the descriptor.
+636766f91a6d9265ec01776e,write,"@Override public void write(final byte b[],final int off,final int len) throws IOException {
+  if (off < 0 || off > b.length || len < 0 || off + len > b.length || off + len < 0) {
+    throw new IndexOutOfBoundsException();
+  }
+ else   if (len == 0) {
+    return;
+  }
+  if (this.count + len > this.buf.length) {
+    this.encodePendingBytes(false);
+  }
+  System.arraycopy(b,off,this.buf,this.count,len);
+  this.count+=len;
+}
+","/** 
+ * Writes <code>len</code> bytes from the specified byte array starting at offset <code>off</code> to this byte array output stream.
+ * @param b   the data.
+ * @param off the start offset in the data.
+ * @param len the number of bytes to write.
+ */
+",Write bytes of length len from a byte array
+636767551a6d9265ec017f3f,swap,"public static final <V>void swap(V[] arr,int i,int j){
+  V tmp=arr[j];
+  arr[j]=arr[i];
+  arr[i]=tmp;
+}
+","/** 
+ * Swaps the two elements at the specified indices in the given array.
+ * @param < V > the type of elements in the array
+ * @param arr the array
+ * @param i the index of the first element
+ * @param j the index of the second element
+ */
+",Swap values at indexes i and j in arr
+636766ae1a6d9265ec0175dc,isPartialContentResponse,"public Boolean isPartialContentResponse(){
+  Integer limit=drc.getLimit() == null ? 0 : drc.getLimit();
+  Long count=drc.getCount() == null ? 0 : drc.getCount();
+  return !((limit + 1) >= count);
+}
+","/** 
+ * Check if the actual response is a Partial Content (HTTP 206 code)
+ * @return is partial content or not
+ */
+",Determine whether the actual response is a Partial Content
+636766f01a6d9265ec01762e,isEmpty,"public static boolean isEmpty(final double[] array){
+  return array == null || array.length == 0;
+}
+","/** 
+ * <p>Checks if an array of primitive doubles is empty or <code>null</code>.</p>
+ * @param array  the array to test
+ * @return <code>true</code> if the array is empty or <code>null</code>
+ * @since 2.1
+ */
+",Check whether the array of the double type is empty.
+6367667e1a6d9265ec01743a,lastWriteTimeStampInMilliseconds,"public long lastWriteTimeStampInMilliseconds(){
+  return lastWrite == -1 ? System.currentTimeMillis() : lastWrite;
+}
+","/** 
+ * The last time, in milliseconds, a write operation occurred.
+ * @return this
+ */
+","Check whether lastwrite is - 1. If yes, return - 1. Otherwise, return System.currentTimeMillis()."
+636766821a6d9265ec0174c9,classPath,"private static File[] classPath(){
+  final String[] fileNames=System.getProperty(""java.class.path"").split(File.pathSeparator);
+  final File[] files=new File[fileNames.length];
+  for (int i=0; i < files.length; ++i) {
+    files[i]=new File(fileNames[i]);
+  }
+  return files;
+}
+","/** 
+ * Returns the class path of the current JVM instance as an array of  {@link File} objects.
+ */
+",Creates an array of the file type based on all file names in java.class.path and returns the array.
+636767041a6d9265ec0178f8,copyStrings,"private static String[] copyStrings(final String[] src){
+  String[] dst=new String[src.length];
+  for (int i=0; i < src.length; ++i) {
+    dst[i]=src[i].toLowerCase();
+  }
+  return dst;
+}
+","/** 
+ * This method creates a copy of the provided array, and ensures that all the strings in the newly created array contain only lower-case letters. <p> Using this method to copy string arrays means that changes to the src array do not modify the dst array.
+ */
+",Copy the source string and transfer each character to lowecase.
+636767521a6d9265ec017ecc,splitAlongXAxis,"public static Pair<Box2D,Box2D> splitAlongXAxis(Box2D box){
+  double newWidth=box.getWidth() / 2d;
+  double height=box.getHeight();
+  return Pair.of(Box2D.of(box.getMinX(),box.getMinY(),newWidth,height),Box2D.of(box.getMinX() + newWidth,box.getMinY(),newWidth,height));
+}
+","/** 
+ * Split a box along the x axis into two equal boxes.
+ * @param box the box to split
+ * @return a pair with the two resulting boxes
+ */
+",Divide a box into two equal boxes on the x axis.
+636766a91a6d9265ec0175c1,enlarge,"private void enlarge(final int size){
+  int doubleCapacity=2 * data.length;
+  int minimalCapacity=length + size;
+  byte[] newData=new byte[doubleCapacity > minimalCapacity ? doubleCapacity : minimalCapacity];
+  System.arraycopy(data,0,newData,0,length);
+  data=newData;
+}
+","/** 
+ * Enlarges this byte vector so that it can receive 'size' more bytes.
+ * @param size number of additional bytes that this byte vector should be able to receive.
+ */
+",Convert the original data array to a longer array.
+6367674a1a6d9265ec017dab,compare,"@Override public int compare(Double o1,Double o2){
+  if (Math.abs(o1 - o2) < epsilon) {
+    return 0;
+  }
+ else {
+    return Double.compare(o1,o2);
+  }
+}
+","/** 
+ * Compares two floating point values. Returns 0 if they are equal, -1 if  {@literal o1 < o2}, 1 otherwise
+ * @param o1 the first value
+ * @param o2 the second value
+ * @return 0 if they are equal, -1 if {@literal o1 < o2}, 1 otherwise
+ */
+","Compares two values. If the difference between the two values is less than epsilon, 0 is returned. Otherwise, Double.compare is invoked."
+6367672d1a6d9265ec017c78,insert,"public boolean insert(int val){
+  if (!map.containsKey(val)) {
+    map.put(val,val);
+    values.add(val);
+    return true;
+  }
+ else {
+    return false;
+  }
+}
+","/** 
+ * Inserts a value to the set. Returns true if the set did not already contain the specified element. 
+ */
+","If the key whose value is val does not exist in the map, add (val, val) to the map and return true. Otherwise, return false."
+636766821a6d9265ec0174bf,capitalize,"public static String capitalize(String name){
+  if (name == null || name.length() == 0) {
+    return name;
+  }
+  char chars[]=name.toCharArray();
+  chars[0]=Character.toUpperCase(chars[0]);
+  return new String(chars);
+}
+","/** 
+ * Reverse of Introspector.decapitalize
+ */
+",Converts a name of the string type to a character array and converts the first letter to an uppercase letter.
+636766f21a6d9265ec017677,isNotTrue,"public static boolean isNotTrue(Boolean bool){
+  return !isTrue(bool);
+}
+","/** 
+ * <p>Checks if a <code>Boolean</code> value is <i>not</i> <code>true</code>, handling <code>null</code> by returning <code>true</code>.</p> <pre> BooleanUtils.isNotTrue(Boolean.TRUE)  = false BooleanUtils.isNotTrue(Boolean.FALSE) = true BooleanUtils.isNotTrue(null)          = true </pre>
+ * @param bool  the boolean to check, null returns <code>true</code>
+ * @return <code>true</code> if the input is null or false
+ * @since 2.3
+ */
+",Check whether the parameter bool is not true.
+6367674f1a6d9265ec017e74,toString,"public String toString(){
+  StringBuilder s=new StringBuilder();
+  for (int j=i; j < n; j++)   s.append(vs[j]).append("" "");
+  return s.toString();
+}
+","/** 
+ * Returns a textual representation of the queue.
+ * @return a textual representation of the queue.
+ */
+",Convert a value in a vs array to a string
+6367675c1a6d9265ec018058,createStringSupplier,"@SuppressWarnings(""unchecked"") public static Supplier<String> createStringSupplier(int start){
+  int[] container=new int[]{start};
+  return (Supplier<String> & Serializable)() -> String.valueOf(container[0]++);
+}
+","/** 
+ * Create a string supplier which returns unique strings. The returns strings are simply integers starting from start.
+ * @param start where to start the sequence
+ * @return a string supplier
+ */
+",Create a string supplier which returns unique integer strings starting from the given start.
+6367677b1a6d9265ec0182bd,format,"public String format(final LoggingEvent event){
+  StringBuffer buf=new StringBuffer();
+  for (PatternConverter c=head; c != null; c=c.next) {
+    c.format(buf,event);
+  }
+  return buf.toString();
+}
+","/** 
+ * Formats a logging event to a writer.
+ * @param event logging event to be formatted.
+ */
+",Formats LoggingEvent as a fixed-format string
+636766ff1a6d9265ec017842,toPrimitive,"public static double[] toPrimitive(final Double[] array){
+  if (array == null) {
+    return null;
+  }
+ else   if (array.length == 0) {
+    return ArrayUtils.EMPTY_DOUBLE_ARRAY;
+  }
+  final double[] result=new double[array.length];
+  for (int i=0; i < array.length; i++) {
+    result[i]=array[i].doubleValue();
+  }
+  return result;
+}
+","/** 
+ * <p>Converts an array of object Doubles to primitives.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  a <code>Double</code> array, may be <code>null</code>
+ * @return a <code>double</code> array, <code>null</code> if null array input
+ * @throws NullPointerException if array content is <code>null</code>
+ */
+","If the length of the array is 0, return EMPTY_DOUBLE_ARAY. Otherwise, convert the array to an array of the double type."
+636766fa1a6d9265ec0177a9,addInitializedType,"private void addInitializedType(final int abstractType){
+  if (initializations == null) {
+    initializations=new int[2];
+  }
+  int initializationsLength=initializations.length;
+  if (initializationCount >= initializationsLength) {
+    int[] newInitializations=new int[Math.max(initializationCount + 1,2 * initializationsLength)];
+    System.arraycopy(initializations,0,newInitializations,0,initializationsLength);
+    initializations=newInitializations;
+  }
+  initializations[initializationCount++]=abstractType;
+}
+","/** 
+ * Adds an abstract type to the list of types on which a constructor is invoked in the basic block.
+ * @param abstractType an abstract type on a which a constructor is invoked.
+ */
+",Add abstractType to the initializations variable.
+6367670a1a6d9265ec0179dc,putAbstractTypes,"private void putAbstractTypes(final int start,final int end){
+  for (int i=start; i < end; ++i) {
+    Frame.putAbstractType(symbolTable,currentFrame[i],stackMapTableEntries);
+  }
+}
+","/** 
+ * Puts some abstract types of  {@link #currentFrame} in {@link #stackMapTableEntries} , using theJVMS verification_type_info format used in StackMapTable attributes.
+ * @param start index of the first type in {@link #currentFrame} to write.
+ * @param end index of last type in {@link #currentFrame} to write (exclusive).
+ */
+",Add the elements indexed from start to end in currentFrame to Frame.
+6367670a1a6d9265ec0179d8,write,"@Override public void write(final byte[] b) throws IOException {
+  if (this.encoding == null) {
+    this.writer.write(new String(b));
+  }
+ else {
+    this.writer.write(new String(b,this.encoding));
+  }
+}
+","/** 
+ * @see OutputStream#write(byte[]) 
+ */
+",Write the byte array b to the buffer based on the encoding.
+636767021a6d9265ec0178bf,convertToType,"@Override protected Object convertToType(final Class<?> type,final Object value) throws Exception {
+  String string=value.toString();
+  if (string.length() == 0) {
+    return BeanUtils.getDefaultValue(type);
+  }
+ else {
+    return string.charAt(0);
+  }
+}
+","/** 
+ * <p>Convert the input object into a java.lang.Character.</p>
+ * @param type Data type to which this value should be converted.
+ * @param value The input value to be converted.
+ * @return The converted value.
+ * @throws Exception if conversion cannot be performed successfully
+ * @since 1.8.0
+ */
+","If the length of the value string is 0, the default type is returned. Otherwise, the element at the first position of the string is returned."
+6367670b1a6d9265ec017a0f,containsAnyIgnoreCase,"public static boolean containsAnyIgnoreCase(String str,List<String> searchStrArray){
+  if (StringUtils.isEmpty(str) || searchStrArray == null || searchStrArray.isEmpty()) {
+    return false;
+  }
+  for (  String item : searchStrArray) {
+    if (containsIgnoreCase(str,item)) {
+      return true;
+    }
+  }
+  return false;
+}
+","/** 
+ * Case in-sensitive Checks if the String contains any character in the given set of string. 
+ */
+","Check whether str contains elements in searchStrArray. If yes, true is returned. If no, false is returned."
+636766a81a6d9265ec01758e,nextPrime,"public static int nextPrime(int desiredCapacity){
+  if (desiredCapacity >= largestPrime) {
+    return largestPrime;
+  }
+  int i=Arrays.binarySearch(primeCapacities,desiredCapacity);
+  if (i < 0) {
+    i=-i - 1;
+  }
+  return primeCapacities[i];
+}
+","/** 
+ * Returns a prime number which is <code>&gt;= desiredCapacity</code> and very close to <code>desiredCapacity</code> (within 11% if <code>desiredCapacity &gt;= 1000</code>).
+ * @param desiredCapacity the capacity desired by the user.
+ * @return the capacity which should be used for a hashtable.
+ */
+",Returns the element at the location specified by desiredCapacity in primeCapacities.
+6367670a1a6d9265ec0179cf,toChar,"public static char toChar(final Character ch,final char defaultValue){
+  if (ch == null) {
+    return defaultValue;
+  }
+  return ch.charValue();
+}
+","/** 
+ * <p>Converts the Character to a char handling <code>null</code>.</p> <pre> CharUtils.toChar(null, 'X') = 'X' CharUtils.toChar(' ', 'X')  = ' ' CharUtils.toChar('A', 'X')  = 'A' </pre>
+ * @param ch  the character to convert
+ * @param defaultValue  the value to use if the  Character is null
+ * @return the char value of the Character or the default if null
+ */
+","Obtains the character value of ch. If ch is null, defaultValue is returned."
+6367676b1a6d9265ec0181e2,findFirstMatch,"public static Object findFirstMatch(Collection source,Collection candidates){
+  if (isEmpty(source) || isEmpty(candidates)) {
+    return null;
+  }
+  for (  Object candidate : candidates) {
+    if (source.contains(candidate)) {
+      return candidate;
+    }
+  }
+  return null;
+}
+","/** 
+ * Return the first element in '<code>candidates</code>' that is contained in '<code>source</code>'. If no element in '<code>candidates</code>' is present in '<code>source</code>' returns <code>null</code>. Iteration order is {@link Collection} implementation specific.
+ * @param source the source Collection
+ * @param candidates the candidates to search for
+ * @return the first present object, or <code>null</code> if not found
+ */
+",Returns the first element in candidates that matches the source.
+6367676b1a6d9265ec0181ee,trimTrailingWhitespace,"public static String trimTrailingWhitespace(String str){
+  if (!hasLength(str)) {
+    return str;
+  }
+  StringBuilder sb=new StringBuilder(str);
+  while (sb.length() > 0 && Character.isWhitespace(sb.charAt(sb.length() - 1))) {
+    sb.deleteCharAt(sb.length() - 1);
+  }
+  return sb.toString();
+}
+","/** 
+ * Trim trailing whitespace from the given String.
+ * @param str the String to check
+ * @return the trimmed String
+ * @see java.lang.Character#isWhitespace
+ */
+",Trim the end space of the str.
+636767dc1a6d9265ec0186cb,init,"public void init(){
+  File dist=new File(analyzeResultDist);
+  if (!dist.exists()) {
+    dist.mkdirs();
+    return;
+  }
+  if (dist.isFile()) {
+    throw new IllegalArgumentException(analyzeResultDist + "" must be a directory"");
+  }
+}
+","/** 
+ * initialize config, such as check dist path
+ */
+",Initializes a directory.
+636767a31a6d9265ec018552,readString,"@Override public String readString() throws IOException {
+  final int size=readRawVarint32();
+  if (size <= (bufferSize - bufferPos) && size > 0) {
+    final String result=STRING.deser(buffer,bufferPos,size);
+    bufferPos+=size;
+    return result;
+  }
+ else {
+    return STRING.deser(readRawBytes(size));
+  }
+}
+","/** 
+ * Read a  {@code string} field value from the stream.
+ */
+",Read string from a buffer.
+636767a61a6d9265ec0185b7,digitValue,"private static int digitValue(final char c){
+  if ('0' <= c && c <= '9') {
+    return c - '0';
+  }
+ else   if ('a' <= c && c <= 'z') {
+    return c - 'a' + 10;
+  }
+ else {
+    return c - 'A' + 10;
+  }
+}
+","/** 
+ * Interpret a character as a digit (in any base up to 36) and return the numeric value. This is like {@code Character.digit()} but we don't accept non-ASCII digits.
+ */
+",Obtains the number corresponding to the character c.
+636767e01a6d9265ec018755,buildContent,"private Map<String,Object> buildContent(JsonObject jsonObject){
+  Map<String,Object> content=new HashMap<>();
+  content.put(""msg_type"",jsonObject.get(""msg_type"").getAsString());
+  if (jsonObject.get(""ats"") != null) {
+    String ats=jsonObject.get(""ats"").getAsString();
+    String text=jsonObject.get(""content"").getAsJsonObject().get(""text"").getAsString();
+    List<String> collect=Arrays.stream(ats.split("","")).map(String::trim).collect(Collectors.toList());
+    for (    String userId : collect) {
+      text+=""<at user_id=\"""" + userId + ""\""></at>"";
+    }
+    jsonObject.get(""content"").getAsJsonObject().addProperty(""text"",text);
+  }
+  content.put(""content"",jsonObject.get(""content"").getAsJsonObject());
+  return content;
+}
+","/** 
+ * build content,if it has ats someone set the ats
+ */
+","Put the ""content"" from the  jsonObject to the content."
+636767a21a6d9265ec018517,toByteArray,"public final byte[] toByteArray(){
+  LinkedBuffer node=head;
+  int offset=0, len;
+  final byte[] buf=new byte[size];
+  do {
+    if ((len=node.offset - node.start) > 0) {
+      System.arraycopy(node.buffer,node.start,buf,offset,len);
+      offset+=len;
+    }
+  }
+ while ((node=node.next) != null);
+  return buf;
+}
+","/** 
+ * Returns a single byte array containg all the contents written to the buffer(s).
+ */
+",Copy bytes from LinkedBuffer and return.
+6367667d1a6d9265ec017401,unescapeJava,"public static String unescapeJava(String str) throws Exception {
+  if (str == null) {
+    return null;
+  }
+  StringWriter writer=new StringWriter(str.length());
+  unescapeJava(writer,str);
+  return writer.toString();
+}
+","/** 
+ * <p>Unescapes any Java literals found in the <code>String</code>. For example, it will turn a sequence of <code>'\'</code> and <code>'n'</code> into a newline character, unless the <code>'\'</code> is preceded by another <code>'\'</code>.</p>
+ * @param str the <code>String</code> to unescape, may be null
+ * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+ */
+",Unescapes Java that found in the String.
+636766f01a6d9265ec01763e,javaCharset,"private static String javaCharset(String charset){
+  if (charset == null) {
+    return null;
+  }
+  String mappedCharset=MIME2JAVA.get(charset.toLowerCase(Locale.ENGLISH));
+  if (mappedCharset == null) {
+    return charset;
+  }
+  return mappedCharset;
+}
+","/** 
+ * Translate a MIME standard character set name into the Java equivalent.
+ * @param charset The MIME standard name.
+ * @return The Java equivalent for this name.
+ */
+",Translate a MIME standard charset name into the Java equivalent.
+6367676a1a6d9265ec0181bf,quoteIfString,"public static Object quoteIfString(Object obj){
+  return (obj instanceof String ? quote((String)obj) : obj);
+}
+","/** 
+ * Turn the given Object into a String with single quotes if it is a String; keeping the Object as-is else.
+ * @param obj the input Object (e.g. ""myString"")
+ * @return the quoted String (e.g. ""'myString'""),or the input object as-is if not a String
+ */
+",Check whether an obj variable is of the String type.
+636767501a6d9265ec017e86,previousNode,"@Override public ListNode<E> previousNode(){
+  checkForComodification();
+  if (!hasPrevious()) {
+    throw new NoSuchElementException();
+  }
+  last=next=next.prev;
+  nextIndex--;
+  return last;
+}
+","/** 
+ * {@inheritDoc}
+ */
+",Returns the previous ListNode.
+636766f21a6d9265ec017667,readShort,"public short readShort(final int offset){
+  byte[] classBuffer=classFileBuffer;
+  return (short)(((classBuffer[offset] & 0xFF) << 8) | (classBuffer[offset + 1] & 0xFF));
+}
+","/** 
+ * Reads a signed short value in this  {@link ClassReader}. <i>This method is intended for  {@link Attribute} sub classes, and is normally not needed by class generators or adapters.</i>
+ * @param offset the start offset of the value to be read in this {@link ClassReader}.
+ * @return the read value.
+ */
+",Read a short value from classFileBuffer
+636767031a6d9265ec0178ef,copyArrayGrow1,"private static Object copyArrayGrow1(final Object array,final Class<?> newArrayComponentType){
+  if (array != null) {
+    int arrayLength=Array.getLength(array);
+    Object newArray=Array.newInstance(array.getClass().getComponentType(),arrayLength + 1);
+    System.arraycopy(array,0,newArray,0,arrayLength);
+    return newArray;
+  }
+  return Array.newInstance(newArrayComponentType,1);
+}
+","/** 
+ * Returns a copy of the given array of size 1 greater than the argument. The last value of the array is left to the default value.
+ * @param array The array to copy, must not be <code>null</code>.
+ * @param newArrayComponentType If <code>array</code> is <code>null</code>, create asize 1 array of this type.
+ * @return A new copy of the array of size 1 greater than the input.
+ */
+",Copy the given array and add a default value at the end.
+636767611a6d9265ec018116,intersection,"private Set<V> intersection(Set<V> set1,Set<V> set2){
+  Set<V> a;
+  Set<V> b;
+  if (set1.size() <= set2.size()) {
+    a=set1;
+    b=set2;
+  }
+ else {
+    a=set2;
+    b=set1;
+  }
+  return a.stream().filter(b::contains).collect(Collectors.toSet());
+}
+","/** 
+ * Efficient way to compute the intersection between two sets
+ * @param set1 set $1$
+ * @param set2 set $2$
+ * @return intersection of set $1$ and $2$
+ */
+",Return the intersection between two sets.
+636766f71a6d9265ec017730,toNoNullStringArray,"static String[] toNoNullStringArray(Collection<?> collection){
+  if (collection == null) {
+    return ArrayUtils.EMPTY_STRING_ARRAY;
+  }
+  return toNoNullStringArray(collection.toArray());
+}
+","/** 
+ * Converts the given Collection into an array of Strings. The returned array does not contain <code>null</code> entries. Note that  {@link Arrays#sort(Object[])} will throw an {@link NullPointerException} if an array element is <code>null</code>.
+ * @param collection The collection to convert
+ * @return A new array of Strings.
+ */
+","If collection is null, convert collection to EMPTY_STRING_ARRAY. Otherwise, convert collection to an array of strings and return the array. ???"
+636767081a6d9265ec0179a2,isAllZeros,"private static boolean isAllZeros(String s){
+  if (s == null) {
+    return true;
+  }
+  for (int i=s.length() - 1; i >= 0; i--) {
+    if (s.charAt(i) != '0') {
+      return false;
+    }
+  }
+  return s.length() > 0;
+}
+","/** 
+ * <p>Utility method for  {@link #createNumber(String)}.</p> <p>Returns <code>true</code> if s is <code>null</code>.</p>
+ * @param s the String to check
+ * @return if it is all zeros or <code>null</code>
+ */
+",Check whether a character string is all consist of zero. 
+636767e01a6d9265ec018764,convertProperties,"private JsonObject convertProperties(List<KeyStringValuePair> properties){
+  final JsonObject result=new JsonObject();
+  for (  KeyStringValuePair kv : properties) {
+    result.addProperty(kv.getKey(),kv.getValue());
+  }
+  return result;
+}
+","/** 
+ * Convert process properties to source data
+ */
+",Convert process properties to the JsonObject.
+636766ff1a6d9265ec017853,readLabel,"protected Label readLabel(final int bytecodeOffset,final Label[] labels){
+  if (labels[bytecodeOffset] == null) {
+    labels[bytecodeOffset]=new Label();
+  }
+  return labels[bytecodeOffset];
+}
+","/** 
+ * Returns the label corresponding to the given bytecode offset. The default implementation of this method creates a label for the given offset if it has not been already created.
+ * @param bytecodeOffset a bytecode offset in a method.
+ * @param labels the already created labels, indexed by their offset. If a label already existsfor bytecodeOffset this method must not create a new one. Otherwise it must store the new label in this array.
+ * @return a non null Label, which must be equal to labels[bytecodeOffset].
+ */
+","Return the label by the given bytecode offset if it has been created. Otherwise, creat a new label and return it."
+6367677d1a6d9265ec0182fd,toBoolean,"public static boolean toBoolean(String value,boolean dEfault){
+  if (value == null)   return dEfault;
+  String trimmedVal=value.trim();
+  if (""true"".equalsIgnoreCase(trimmedVal))   return true;
+  if (""false"".equalsIgnoreCase(trimmedVal))   return false;
+  return dEfault;
+}
+","/** 
+ * If <code>value</code> is ""true"", then <code>true</code> is returned. If <code>value</code> is ""false"", then <code>true</code> is returned. Otherwise, <code>default</code> is returned. <p>Case of value is unimportant.  
+ */
+","Check whether a string is true or false after ignore cases and trim the whitespaces at both ends. If so, its boolean value is returned. Otherwise, dEfault is returned."
+6367676a1a6d9265ec0181cd,trimLeadingWhitespace,"public static String trimLeadingWhitespace(String str){
+  if (!hasLength(str)) {
+    return str;
+  }
+  StringBuilder sb=new StringBuilder(str);
+  while (sb.length() > 0 && Character.isWhitespace(sb.charAt(0))) {
+    sb.deleteCharAt(0);
+  }
+  return sb.toString();
+}
+","/** 
+ * Trim leading whitespace from the given String.
+ * @param str the String to check
+ * @return the trimmed String
+ * @see java.lang.Character#isWhitespace
+ */
+",Trim the leading whitespaces in a string.
+636766fe1a6d9265ec01782a,readUtf,"final String readUtf(final int constantPoolEntryIndex,final char[] charBuffer){
+  String value=constantUtf8Values[constantPoolEntryIndex];
+  if (value != null) {
+    return value;
+  }
+  int cpInfoOffset=cpInfoOffsets[constantPoolEntryIndex];
+  return constantUtf8Values[constantPoolEntryIndex]=readUtf(cpInfoOffset + 2,readUnsignedShort(cpInfoOffset),charBuffer);
+}
+","/** 
+ * Reads a CONSTANT_Utf8 constant pool entry in  {@link #classFileBuffer}.
+ * @param constantPoolEntryIndex the index of a CONSTANT_Utf8 entry in the class's constant pooltable.
+ * @param charBuffer the buffer to be used to read the string. This buffer must be sufficientlylarge. It is not automatically resized.
+ * @return the String corresponding to the specified CONSTANT_Utf8 entry.
+ */
+",Read a CONSTANT_Utf8 constant pool entry in the classFileBuffer.
+636766851a6d9265ec01751b,decodeHexNibble,"private static char decodeHexNibble(final char c){
+  if ('0' <= c && c <= '9') {
+    return (char)(c - '0');
+  }
+ else   if ('a' <= c && c <= 'f') {
+    return (char)(c - 'a' + 10);
+  }
+ else   if ('A' <= c && c <= 'F') {
+    return (char)(c - 'A' + 10);
+  }
+ else {
+    return Character.MAX_VALUE;
+  }
+}
+","/** 
+ * Helper to decode half of a hexadecimal number from a string.
+ * @param c The ASCII character of the hexadecimal number to decode.Must be in the range  {@code [0-9a-fA-F]}.
+ * @return The hexadecimal value represented in the ASCII charactergiven, or  {@link Character#MAX_VALUE} if the character is invalid.
+ */
+",Convert a hexadecimal number to binary and return its character type.
+636766f21a6d9265ec01767d,toString,"public static String toString(Object object){
+  return (object == null) ? null : object.toString();
+}
+","/** 
+ * Object to String ,when null object then null else return toString(); 
+ */
+","Convert object to string  if the object is not null. Otherwise, null is returned."
+636767581a6d9265ec017fc4,factorial,"public static long factorial(int n){
+  long multi=1;
+  for (int i=1; i <= n; i++) {
+    multi=multi * i;
+  }
+  return multi;
+}
+","/** 
+ * Calculate the factorial of $n$.
+ * @param n the input number
+ * @return the factorial
+ */
+",Calculate the factorial of the given number.
+636767511a6d9265ec017eb6,selectOnOuterFace,"private OuterFaceCirculator selectOnOuterFace(Predicate<Node> predicate,Node start,Node stop,int dir){
+  OuterFaceCirculator circulator=start.iterator(dir);
+  Node current=circulator.next();
+  while (current != stop && !predicate.test(current)) {
+    current=circulator.next();
+  }
+  return circulator;
+}
+","/** 
+ * Either finds and returns a circulator to the node on the boundary of the component, which satisfies the  {@code predicate} or returns a circulator to the {@code stop} node.
+ * @param predicate the condition the desired node should satisfy
+ * @param start the node to start the search from
+ * @param stop the node to end the search with
+ * @param dir the direction to start the traversal in
+ * @return a circulator to the node satisfying the {@code predicate} or to the {@code stop} node
+ */
+",Find a circulator to the node that satisfies the Interface predicate.
+636767841a6d9265ec0183e8,add,"public void add(LoggingEvent event){
+  ea[last]=event;
+  if (++last == maxSize)   last=0;
+  if (numElems < maxSize)   numElems++;
+ else   if (++first == maxSize)   first=0;
+}
+","/** 
+ * Add an <code>event</code> as the last event in the buffer.
+ */
+",Add an event as the last event in the buffer.
+636767a41a6d9265ec01857e,compareSigned,"private static int compareSigned(long a,long b){
+  return (a < b) ? -1 : ((a > b) ? 1 : 0);
+}
+","/** 
+ * Compares the two specified  {@code long} values. The sign of the value returned is the same as that of{@code ((Long) a).compareTo(b)}. <p> <b>Note for Java 7 and later:</b> this method should be treated as deprecated; use the equivalent {@link Long#compare} method instead.
+ * @param a the first  {@code long} to compare
+ * @param b the second  {@code long} to compare
+ * @return a negative value if {@code a} is less than {@code b}; a positive value if  {@code a} is greater than{@code b}; or zero if they are equal
+ */
+",Compare two numbers.
+636766a91a6d9265ec0175ae,putByteArray,"public ByteVector putByteArray(final byte[] byteArrayValue,final int byteOffset,final int byteLength){
+  if (length + byteLength > data.length) {
+    enlarge(byteLength);
+  }
+  if (byteArrayValue != null) {
+    System.arraycopy(byteArrayValue,byteOffset,data,length,byteLength);
+  }
+  length+=byteLength;
+  return this;
+}
+","/** 
+ * Puts an array of bytes into this byte vector. The byte vector is automatically enlarged if necessary.
+ * @param byteArrayValue an array of bytes. May be {@literal null} to put {@code byteLength} nullbytes into this byte vector.
+ * @param byteOffset     index of the first byte of byteArrayValue that must be copied.
+ * @param byteLength     number of bytes of byteArrayValue that must be copied.
+ * @return this byte vector.
+ */
+",Add a byte array into the byte vector.
+636766f11a6d9265ec01764f,values,"public Collection<Object> values(){
+  ArrayList<Object> answer=new ArrayList<>(readMethods.size());
+  for (Iterator<Object> iter=valueIterator(); iter.hasNext(); ) {
+    answer.add(iter.next());
+  }
+  return Collections.unmodifiableList(answer);
+}
+","/** 
+ * Returns the values for the BeanMap.
+ * @return values for the BeanMap. The returned collection is not modifiable.
+ */
+",Return an unmodifiable list that contains all methods in the BeanMap.
+636766f81a6d9265ec017758,hashCode,"@Override public int hashCode(){
+  int hashCode=13 * (sort == INTERNAL ? OBJECT : sort);
+  if (sort >= ARRAY) {
+    for (int i=valueBegin, end=valueEnd; i < end; i++) {
+      hashCode=17 * (hashCode + valueBuffer.charAt(i));
+    }
+  }
+  return hashCode;
+}
+","/** 
+ * Returns a hash code value for this type.
+ * @return a hash code value for this type.
+ */
+",Compute a hash code according to the type.
+6367676c1a6d9265ec01820b,deleteAny,"public static String deleteAny(String inString,String charsToDelete){
+  if (!hasLength(inString) || !hasLength(charsToDelete)) {
+    return inString;
+  }
+  StringBuilder sb=new StringBuilder();
+  for (int i=0; i < inString.length(); i++) {
+    char c=inString.charAt(i);
+    if (charsToDelete.indexOf(c) == -1) {
+      sb.append(c);
+    }
+  }
+  return sb.toString();
+}
+","/** 
+ * Delete any character in a given String.
+ * @param inString the original String
+ * @param charsToDelete a set of characters to delete.E.g. ""az\n"" will delete 'a's, 'z's and new lines.
+ * @return the resulting String
+ */
+",Delete characters that exists in the intersection between two character strings of the first character string and return the first character string that is modified.
+636766861a6d9265ec01755a,match,"public final MatchResult match(CharSequence uri){
+  if (uri == null || uri.length() == 0)   return (regexPattern == null) ? EMPTY_STRING_MATCH_RESULT : null;
+ else   if (regexPattern == null)   return null;
+  Matcher m=regexPattern.matcher(uri);
+  if (!m.matches())   return null;
+  return (groupIndexes.length > 0) ? new GroupIndexMatchResult(m) : m;
+}
+","/** 
+ * Match a URI against the pattern.
+ * @param uri the uri to match against the template.
+ * @return the match result, otherwise null if no match occurs.
+ */
+","If the match between the url and the pattern occurs, return the match result. Otherwise, return null."
+636766f91a6d9265ec01777d,convertHexDigit,"public static byte convertHexDigit(byte b){
+  if ((b >= '0') && (b <= '9'))   return (byte)(b - '0');
+  if ((b >= 'a') && (b <= 'f'))   return (byte)(b - 'a' + 10);
+  if ((b >= 'A') && (b <= 'F'))   return (byte)(b - 'A' + 10);
+  throw new IllegalArgumentException(""!hex:"" + Integer.toHexString(0xff & b));
+}
+","/** 
+ * @param b An ASCII encoded character 0-9 a-f A-F
+ * @return The byte value of the character 0-16.
+ */
+",Convert an ASCII encoded character to hex.
+636767861a6d9265ec01844c,removeAppender,"public void removeAppender(String name){
+  if (name == null || appenderList == null)   return;
+  int size=appenderList.size();
+  for (int i=0; i < size; i++) {
+    if (name.equals(((Appender)appenderList.elementAt(i)).getName())) {
+      appenderList.removeElementAt(i);
+      break;
+    }
+  }
+}
+","/** 
+ * Remove the appender with the name passed as parameter form the list of appenders.  
+ */
+",Remove the appender by the given name from the list of appenders.
+6367670c1a6d9265ec017a2a,toPrimitive,"public static int[] toPrimitive(final Integer[] array){
+  if (array == null) {
+    return null;
+  }
+ else   if (array.length == 0) {
+    return ArrayUtils.EMPTY_INT_ARRAY;
+  }
+  final int[] result=new int[array.length];
+  for (int i=0; i < array.length; i++) {
+    result[i]=array[i].intValue();
+  }
+  return result;
+}
+","/** 
+ * <p>Converts an array of object Integers to primitives.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  a <code>Integer</code> array, may be <code>null</code>
+ * @return an <code>int</code> array, <code>null</code> if null array input
+ * @throws NullPointerException if array content is <code>null</code>
+ */
+","Convert the given Integer array to primitives. Return ArrayUtils.EMPTY_INT_ARRAY for an empty array, return null for null array."
+636767041a6d9265ec017911,register,"static void register(Object value){
+  if (value != null) {
+    Map m=getRegistry();
+    if (m == null) {
+      m=new WeakHashMap();
+      REGISTRY.set(m);
+    }
+    m.put(value,null);
+  }
+}
+","/** 
+ * <p> Registers the given object. Used by the reflection methods to avoid infinite loops. </p>
+ * @param value The object to register.
+ */
+",Register the value in REGISTRY if the value is not null.
+636767511a6d9265ec017eb0,nonZeros,"public int nonZeros(int row){
+  assert row >= 0 && row < rowOffsets.length;
+  return rowOffsets[row + 1] - rowOffsets[row];
+}
+","/** 
+ * Get the number of non-zero entries of a row.
+ * @param row the row
+ * @return the number of non-zero entries of a row
+ */
+",Return the number of non-zero entries of a row.
+6367676c1a6d9265ec018223,containsInstance,"public static boolean containsInstance(Collection collection,Object element){
+  if (collection != null) {
+    for (    Object candidate : collection) {
+      if (candidate == element) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+","/** 
+ * Check whether the given Collection contains the given element instance. <p>Enforces the given instance to be present, rather than returning <code>true</code> for an equal element as well.
+ * @param collection the Collection to check
+ * @param element the element to look for
+ * @return <code>true</code> if found, <code>false</code> else
+ */
+",Check whether the element exists in the collection. 
+636766fa1a6d9265ec01779d,isAsciiControl,"public static boolean isAsciiControl(final char ch){
+  return ch < 32 || ch == 127;
+}
+","/** 
+ * <p>Checks whether the character is ASCII 7 bit control.</p> <pre> CharUtils.isAsciiControl('a')  = false CharUtils.isAsciiControl('A')  = false CharUtils.isAsciiControl('3')  = false CharUtils.isAsciiControl('-')  = false CharUtils.isAsciiControl('\n') = true CharUtils.isAsciiControl('&copy;') = false </pre>
+ * @param ch  the character to check
+ * @return true if less than 32 or equals 127
+ */
+",Check whether the character is ASCII 7 bit control.
+6367670b1a6d9265ec0179f2,containsKey,"@Override public boolean containsKey(final Object key){
+  if (this.fast) {
+    return this.map.containsKey(key);
+  }
+ else {
+synchronized (this.map) {
+      return this.map.containsKey(key);
+    }
+  }
+}
+","/** 
+ * Return <code>true</code> if this map contains a mapping for the specified key.
+ * @param key  the key to be searched for
+ * @return true if the map contains the key
+ */
+",Check whether a map contains a mapping for the specified key.
+636766fa1a6d9265ec017796,toObject,"public static Boolean[] toObject(final boolean[] array){
+  if (array == null) {
+    return null;
+  }
+ else   if (array.length == 0) {
+    return ArrayUtils.EMPTY_BOOLEAN_OBJECT_ARRAY;
+  }
+  final Boolean[] result=new Boolean[array.length];
+  for (int i=0; i < array.length; i++) {
+    result[i]=array[i] ? Boolean.TRUE : Boolean.FALSE;
+  }
+  return result;
+}
+","/** 
+ * <p>Converts an array of primitive booleans to objects.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  a <code>boolean</code> array
+ * @return a <code>Boolean</code> array, <code>null</code> if null array input
+ */
+",Convert an array of primitive booleans to objects.
+636767aa1a6d9265ec01864a,toByteArray,"public byte[] toByteArray(){
+  final int size=bytes.length;
+  final byte[] copy=new byte[size];
+  System.arraycopy(bytes,0,copy,0,size);
+  return copy;
+}
+","/** 
+ * Copies bytes to a  {@code byte[]}.
+ */
+",Copy bytes to a byte array.
+636767561a6d9265ec017f7c,edgeSetToTour,"protected GraphPath<V,E> edgeSetToTour(Set<E> tour,Graph<V,E> graph){
+  List<V> vertices=new ArrayList<>(tour.size() + 1);
+  MaskSubgraph<V,E> tourGraph=new MaskSubgraph<>(graph,v -> false,e -> !tour.contains(e));
+  new DepthFirstIterator<>(tourGraph).forEachRemaining(vertices::add);
+  return vertexListToTour(vertices,graph);
+}
+","/** 
+ * Transform from a Set representation to a graph path.
+ * @param tour a set containing the edges of the tour
+ * @param graph the graph
+ * @return a graph path
+ */
+",Convert a set representation to a graph path.
+6367670a1a6d9265ec0179f1,toObject,"public static Short[] toObject(final short[] array){
+  if (array == null) {
+    return null;
+  }
+ else   if (array.length == 0) {
+    return ArrayUtils.EMPTY_SHORT_OBJECT_ARRAY;
+  }
+  final Short[] result=new Short[array.length];
+  for (int i=0; i < array.length; i++) {
+    result[i]=new Short(array[i]);
+  }
+  return result;
+}
+","/** 
+ * <p>Converts an array of primitive shorts to objects.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  a <code>short</code> array
+ * @return a <code>Short</code> array, <code>null</code> if null array input
+ */
+",Convert an array of primitive shorts to objects.
+6367676c1a6d9265ec018204,concatenateStringArrays,"public static String[] concatenateStringArrays(String[] array1,String[] array2){
+  if (Objects.isEmpty(array1)) {
+    return array2;
+  }
+  if (Objects.isEmpty(array2)) {
+    return array1;
+  }
+  String[] newArr=new String[array1.length + array2.length];
+  System.arraycopy(array1,0,newArr,0,array1.length);
+  System.arraycopy(array2,0,newArr,array1.length,array2.length);
+  return newArr;
+}
+","/** 
+ * Concatenate the given String arrays into one, with overlapping array elements included twice. <p>The order of elements in the original arrays is preserved.
+ * @param array1 the first array (can be <code>null</code>)
+ * @param array2 the second array (can be <code>null</code>)
+ * @return the new array (<code>null</code> if both given arrays were <code>null</code>)
+ */
+",Concatenate two string arrays into one.
+6367676a1a6d9265ec0181d4,addStringToArray,"public static String[] addStringToArray(String[] array,String str){
+  if (Objects.isEmpty(array)) {
+    return new String[]{str};
+  }
+  String[] newArr=new String[array.length + 1];
+  System.arraycopy(array,0,newArr,0,array.length);
+  newArr[array.length]=str;
+  return newArr;
+}
+","/** 
+ * Append the given String to the given String array, returning a new array consisting of the input array contents plus the given String.
+ * @param array the array to append to (can be <code>null</code>)
+ * @param str the String to append
+ * @return the new array (never <code>null</code>)
+ */
+",Append a string to a string array.
+6367676b1a6d9265ec0181dd,countOccurrencesOf,"public static int countOccurrencesOf(String str,String sub){
+  if (str == null || sub == null || str.length() == 0 || sub.length() == 0) {
+    return 0;
+  }
+  int count=0;
+  int pos=0;
+  int idx;
+  while ((idx=str.indexOf(sub,pos)) != -1) {
+    ++count;
+    pos=idx + sub.length();
+  }
+  return count;
+}
+","/** 
+ * Returns the number of occurrences the substring  {@code sub} appears in string {@code str}.
+ * @param str string to search in. Return 0 if this is null.
+ * @param sub string to search for. Return 0 if this is null.
+ * @return the number of occurrences the substring {@code sub} appears in string {@code str}.
+ */
+",Return the frequencies that the substring appears in the string.
+636766fe1a6d9265ec017821,appendDetail,"protected void appendDetail(StringBuffer buffer,String fieldName,byte[] array){
+  buffer.append(arrayStart);
+  for (int i=0; i < array.length; i++) {
+    if (i > 0) {
+      buffer.append(arraySeparator);
+    }
+    appendDetail(buffer,fieldName,array[i]);
+  }
+  buffer.append(arrayEnd);
+}
+","/** 
+ * <p>Append to the <code>toString</code> the detail of a <code>byte</code> array.</p>
+ * @param buffer  the <code>StringBuffer</code> to populate
+ * @param fieldName  the field name, typically not used as already appended
+ * @param array  the array to add to the <code>toString</code>,not <code>null</code>
+ */
+",Append a byte array to a buffer.
+636767561a6d9265ec017f63,hasNext,"@Override public boolean hasNext(){
+  if (current != null) {
+    return true;
+  }
+  current=advance();
+  if (current != null && nListeners != 0) {
+    fireVertexTraversed(createVertexTraversalEvent(current));
+  }
+  return current != null;
+}
+","/** 
+ * Checks whether there exist unvisited vertices.
+ * @return true if there exist unvisited vertices.
+ */
+","Check whether there are unvisited vertices. If so, return true. Otherwise, return false."
+636766a81a6d9265ec017586,pop,"private void pop(final int elements){
+  if (outputStackTop >= elements) {
+    outputStackTop-=elements;
+  }
+ else {
+    outputStackStart-=elements - outputStackTop;
+    outputStackTop=0;
+  }
+}
+","/** 
+ * Pops the given number of abstract types from the output frame stack.
+ * @param elements the number of abstract types that must be popped.
+ */
+",Pop the given number of elements from the stack.
+636767e11a6d9265ec018795,isCompatible,"public boolean isCompatible(DataTable dataset){
+  final List<String> sortedKeys=dataset.sortedKeys(new HeatMap.KeyComparator(true));
+  long[] existedBuckets=new long[sortedKeys.size()];
+  for (int i=0; i < sortedKeys.size(); i++) {
+    String key=sortedKeys.get(i);
+    if (key.equals(Bucket.INFINITE_NEGATIVE)) {
+      existedBuckets[i]=Long.MIN_VALUE;
+    }
+ else {
+      if (key.contains("":"")) {
+        key=StringUtils.substringAfterLast(key,"":"");
+      }
+      existedBuckets[i]=Long.parseLong(key);
+    }
+  }
+  return Arrays.equals(buckets,existedBuckets);
+}
+","/** 
+ * @return true if the bucket is same.
+ */
+",Check whether the existed buckets are the same as the buckets.
+636767611a6d9265ec018112,provideNextVertex,"@Override protected V provideNextVertex(){
+  V v=super.provideNextVertex();
+  for (int i=path.size() - 1; i >= 0; --i) {
+    if (graph.containsEdge(path.get(i),v)) {
+      break;
+    }
+    path.remove(i);
+  }
+  path.add(v);
+  return v;
+}
+","/** 
+ * {@inheritDoc}
+ */
+",Get next vertext from a graph.
+636767131a6d9265ec017b23,addLineNumber,"final void addLineNumber(final int lineNumber){
+  if (this.lineNumber == 0) {
+    this.lineNumber=(short)lineNumber;
+  }
+ else {
+    if (otherLineNumbers == null) {
+      otherLineNumbers=new int[LINE_NUMBERS_CAPACITY_INCREMENT];
+    }
+    int otherLineNumberIndex=++otherLineNumbers[0];
+    if (otherLineNumberIndex >= otherLineNumbers.length) {
+      int[] newLineNumbers=new int[otherLineNumbers.length + LINE_NUMBERS_CAPACITY_INCREMENT];
+      System.arraycopy(otherLineNumbers,0,newLineNumbers,0,otherLineNumbers.length);
+      otherLineNumbers=newLineNumbers;
+    }
+    otherLineNumbers[otherLineNumberIndex]=lineNumber;
+  }
+}
+","/** 
+ * Adds a source line number corresponding to this label.
+ * @param lineNumber a source line number (which should be strictly positive).
+ */
+",Add the number of lines. 
+636767dd1a6d9265ec0186f3,overrideName,"public void overrideName(String oldName,String newName){
+  for (int i=0; i < columns.length; i++) {
+    if (columns[i].equals(oldName)) {
+      columns[i]=newName;
+    }
+  }
+}
+","/** 
+ * Keep the same name replacement as  {@link ColumnName#overrideName(String,String)}
+ * @param oldName to be replaced.
+ * @param newName to use in the storage level.
+ */
+",Change the elements whose values are oldName to newName in column
+636767631a6d9265ec018171,unlink,"private boolean unlink(ListNodeImpl<E> node){
+  ListNodeImpl<E> prev=node.prev;
+  ListNodeImpl<E> next=node.next;
+  if (removeListNode(node)) {
+    if (size == 0) {
+      head=null;
+    }
+ else {
+      link(prev,next);
+      if (head == node) {
+        head=next;
+      }
+    }
+    return true;
+  }
+  return false;
+}
+","/** 
+ * Remove the non null  {@code node} from the list. 
+ */
+","Remove the doubly circular linked list node.If success return true,otherwise return false."
+6367676c1a6d9265ec018220,stripFilenameExtension,"public static String stripFilenameExtension(String path){
+  if (path == null) {
+    return null;
+  }
+  int extIndex=path.lastIndexOf(EXTENSION_SEPARATOR);
+  if (extIndex == -1) {
+    return path;
+  }
+  int folderIndex=path.lastIndexOf(FOLDER_SEPARATOR);
+  if (folderIndex > extIndex) {
+    return path;
+  }
+  return path.substring(0,extIndex);
+}
+","/** 
+ * Strip the filename extension from the given path, e.g. ""mypath/myfile.txt"" -&gt; ""mypath/myfile"".
+ * @param path the file path (may be <code>null</code>)
+ * @return the path with stripped filename extension,or <code>null</code> if none
+ */
+",Return the path without the extension.
+636766fe1a6d9265ec017838,toPrimitive,"public static char[] toPrimitive(final Character[] array){
+  if (array == null) {
+    return null;
+  }
+ else   if (array.length == 0) {
+    return ArrayUtils.EMPTY_CHAR_ARRAY;
+  }
+  final char[] result=new char[array.length];
+  for (int i=0; i < array.length; i++) {
+    result[i]=array[i].charValue();
+  }
+  return result;
+}
+","/** 
+ * <p>Converts an array of object Characters to primitives.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  a <code>Character</code> array, may be <code>null</code>
+ * @return a <code>char</code> array, <code>null</code> if null array input
+ * @throws NullPointerException if array content is <code>null</code>
+ */
+","Return a string which is consist of the values of elements in the given array.If array is equal to null,return null,or return ArrayUtils.EMPTY_CHAR_ARRAY if the size of array is equal to zero."
+636766fa1a6d9265ec01779c,parseToken,"private String parseToken(final char[] terminators){
+  char ch;
+  i1=pos;
+  i2=pos;
+  while (hasChar()) {
+    ch=chars[pos];
+    if (isOneOf(ch,terminators)) {
+      break;
+    }
+    i2++;
+    pos++;
+  }
+  return getToken(false);
+}
+","/** 
+ * Parses out a token until any of the given terminators is encountered.
+ * @param terminators the array of terminating characters. Any of these characters when encountered signify the end of the token
+ * @return the token
+ */
+",Parses out a token until any of the given terminators is encountered and then return the token.
+636767691a6d9265ec0181a7,trimLeadingCharacter,"public static String trimLeadingCharacter(String str,char leadingCharacter){
+  if (!hasLength(str)) {
+    return str;
+  }
+  StringBuilder sb=new StringBuilder(str);
+  while (sb.length() > 0 && sb.charAt(0) == leadingCharacter) {
+    sb.deleteCharAt(0);
+  }
+  return sb.toString();
+}
+","/** 
+ * Trim all occurrences of the supplied leading character from the given String.
+ * @param str the String to check
+ * @param leadingCharacter the leading character to be trimmed
+ * @return the trimmed String
+ */
+","Trim all the characters which are equal to the given character and appear at the beginning of the given string,and return the trimmed string."
+636767041a6d9265ec01790f,toObject,"public static Integer[] toObject(final int[] array){
+  if (array == null) {
+    return null;
+  }
+ else   if (array.length == 0) {
+    return ArrayUtils.EMPTY_INTEGER_OBJECT_ARRAY;
+  }
+  final Integer[] result=new Integer[array.length];
+  for (int i=0; i < array.length; i++) {
+    result[i]=new Integer(array[i]);
+  }
+  return result;
+}
+","/** 
+ * <p>Converts an array of primitive ints to objects.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  an <code>int</code> array
+ * @return an <code>Integer</code> array, <code>null</code> if null array input
+ */
+",Return an array of Integer objects which are converted from an array of primitive ints.
+636766fa1a6d9265ec0177a4,toObject,"public static Double[] toObject(final double[] array){
+  if (array == null) {
+    return null;
+  }
+ else   if (array.length == 0) {
+    return ArrayUtils.EMPTY_DOUBLE_OBJECT_ARRAY;
+  }
+  final Double[] result=new Double[array.length];
+  for (int i=0; i < array.length; i++) {
+    result[i]=new Double(array[i]);
+  }
+  return result;
+}
+","/** 
+ * <p>Converts an array of primitive doubles to objects.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  a <code>double</code> array
+ * @return a <code>Double</code> array, <code>null</code> if null array input
+ */
+",Return an array of Double objects which are converted from an array of primitive doubles.
+636767461a6d9265ec017d0e,computeSuffixSum,"private Pair<List<Integer>,Long> computeSuffixSum(List<Integer> bounds){
+  List<Integer> suffixSum=new ArrayList<>(Collections.nCopies(bounds.size(),0));
+  long sum=0;
+  for (int i=bounds.size() - 1; i >= 0; i--) {
+    suffixSum.set(i,(int)Math.min(Integer.MAX_VALUE,sum));
+    sum+=bounds.get(i);
+  }
+  return Pair.of(suffixSum,sum);
+}
+","/** 
+ * Computes a suffix sum of the  {@code bounds}. Returns computed suffix sum and the sum of all elements in the  {@code bounds list}.
+ * @param bounds list of integers.
+ * @return computed pair of suffix sum list and a sum of all elements.
+ */
+",Return a pair of the list of suffix sum and the sum of all elements of bounds.
+636767491a6d9265ec017d90,reverse,"public static final <V>void reverse(V[] arr,int from,int to){
+  for (int i=from, j=to; i < j; ++i, --j) {
+    swap(arr,i,j);
+  }
+}
+","/** 
+ * Reverses the order of the elements in the specified range within the given array.
+ * @param < V > the type of elements in the array
+ * @param arr the array
+ * @param from the index of the first element (inclusive) inside the range to reverse
+ * @param to the index of the last element (inclusive) inside the range to reverse
+ */
+",Reverse the order of the given elements in the specified range.
+6367674a1a6d9265ec017da9,moveAllListNodes,"private void moveAllListNodes(DoublyLinkedList<E> list){
+  for (ListNodeIteratorImpl it=list.new ListNodeIteratorImpl(0); it.hasNext(); ) {
+    ListNodeImpl<E> node=it.nextNode();
+    assert node.list == list;
+    node.list=this;
+  }
+  size+=list.size;
+  list.size=0;
+  modCount++;
+  list.modCount++;
+}
+","/** 
+ * Atomically moves all  {@link ListNode ListNodes} from {@code list} to this list as if eachnode was removed with  {@link #removeListNode(ListNodeImpl)} from {@code list} andsubsequently added to this list by  {@link #addListNode(ListNodeImpl)}.
+ */
+",Move the nodes of the given doubly linked list to a new list sequentially.
+636767151a6d9265ec017b6b,startsWith,"private static boolean startsWith(final String str,final String prefix,final boolean ignoreCase){
+  if (str == null || prefix == null) {
+    return str == null && prefix == null;
+  }
+  if (prefix.length() > str.length()) {
+    return false;
+  }
+  return str.regionMatches(ignoreCase,0,prefix,0,prefix.length());
+}
+","/** 
+ * <p>Check if a String starts with a specified prefix (optionally case insensitive).</p>
+ * @see String#startsWith(String)
+ * @param str  the String to check, may be null
+ * @param prefix the prefix to find, may be null
+ * @param ignoreCase inidicates whether the compare should ignore case(case insensitive) or not.
+ * @return <code>true</code> if the String starts with the prefix orboth <code>null</code>
+ */
+","Return true if the given string has the specified prefix with optional cases which can be ignored,or both string and prefix are null.Otherwise return false. "
+636766fe1a6d9265ec01781c,toCharacterObject,"public static Character toCharacterObject(final char ch){
+  if (ch < CharUtils.CHAR_ARRAY.length) {
+    return CharUtils.CHAR_ARRAY[ch];
+  }
+  return new Character(ch);
+}
+","/** 
+ * <p>Converts the character to a Character.</p> <p>For ASCII 7 bit characters, this uses a cache that will return the same Character object each time.</p> <pre> CharUtils.toCharacterObject(' ')  = ' ' CharUtils.toCharacterObject('A')  = 'A' </pre>
+ * @param ch  the character to convert
+ * @return a Character of the specified character
+ */
+",Return the Character object converted from the given character.
+636766fb1a6d9265ec0177c1,isAsciiAlphaUpper,"public static boolean isAsciiAlphaUpper(final char ch){
+  return ch >= 'A' && ch <= 'Z';
+}
+","/** 
+ * <p>Checks whether the character is ASCII 7 bit alphabetic upper case.</p> <pre> CharUtils.isAsciiAlphaUpper('a')  = false CharUtils.isAsciiAlphaUpper('A')  = true CharUtils.isAsciiAlphaUpper('3')  = false CharUtils.isAsciiAlphaUpper('-')  = false CharUtils.isAsciiAlphaUpper('\n') = false CharUtils.isAsciiAlphaUpper('&copy;') = false </pre>
+ * @param ch  the character to check
+ * @return true if between 65 and 90 inclusive
+ */
+",Return true if the character is ASCII alphabetic upper case.Otherwise return false.
+636767781a6d9265ec018250,decide,"public int decide(LoggingEvent event){
+  String msg=event.getRenderedMessage();
+  if (msg == null || stringToMatch == null)   return Filter.NEUTRAL;
+  if (msg.indexOf(stringToMatch) == -1) {
+    return Filter.NEUTRAL;
+  }
+ else {
+    if (acceptOnMatch) {
+      return Filter.ACCEPT;
+    }
+ else {
+      return Filter.DENY;
+    }
+  }
+}
+","/** 
+ * Returns  {@link Filter#NEUTRAL} is there is no string match.
+ */
+",Return a decision based on the message generated by the event and whether the given string is matched.
+636766861a6d9265ec017553,isTemplateVariablePresent,"public final boolean isTemplateVariablePresent(String name){
+  for (  String s : templateVariables) {
+    if (s.equals(name))     return true;
+  }
+  return false;
+}
+","/** 
+ * Ascertain if a template variable is a member of this template.
+ * @param name name The template variable.
+ * @return true if the template variable is a member of the template, otherwisefalse.
+ */
+","Return true if the given name is a member variable of this template,otherwise return false."
+6367670a1a6d9265ec0179d9,length,"public static int length(final String str){
+  return str == null ? 0 : str.length();
+}
+","/** 
+ * Gets a String's length or <code>0</code> if the String is <code>null</code>.
+ * @param str a String or <code>null</code>
+ * @return String length or <code>0</code> if the String is <code>null</code>.
+ * @since 2.4
+ */
+","Return the given string's length.If the string is null,and zero will be returned."
+636767ab1a6d9265ec018676,isHex,"private static boolean isHex(final char c){
+  return ('0' <= c && c <= '9') || ('a' <= c && c <= 'f') || ('A' <= c && c <= 'F');
+}
+","/** 
+ * Is this a hex digit?
+ */
+","Return true if the given character is a hex digit,otherwise return false."
+636766f11a6d9265ec017663,isSameLength,"public static boolean isSameLength(final double[] array1,final double[] array2){
+  if (array1 == null && array2 != null && array2.length > 0 || array2 == null && array1 != null && array1.length > 0 || array1 != null && array2 != null && array1.length != array2.length) {
+    return false;
+  }
+  return true;
+}
+","/** 
+ * <p>Checks whether two arrays are the same length, treating <code>null</code> arrays as length <code>0</code>.</p>
+ * @param array1 the first array, may be <code>null</code>
+ * @param array2 the second array, may be <code>null</code>
+ * @return <code>true</code> if length of arrays matches, treating<code>null</code> as an empty array
+ */
+","Return true if the length of array1 is the same as the length of array2 or both them are null,otherwise return false."
+636767691a6d9265ec0181a6,split,"public static String[] split(String toSplit,String delimiter){
+  if (!hasLength(toSplit) || !hasLength(delimiter)) {
+    return null;
+  }
+  int offset=toSplit.indexOf(delimiter);
+  if (offset < 0) {
+    return null;
+  }
+  String beforeDelimiter=toSplit.substring(0,offset);
+  String afterDelimiter=toSplit.substring(offset + delimiter.length());
+  return new String[]{beforeDelimiter,afterDelimiter};
+}
+","/** 
+ * Split a String at the first occurrence of the delimiter. Does not include the delimiter in the result.
+ * @param toSplit the string to split
+ * @param delimiter to split the string up with
+ * @return a two element array with index 0 being before the delimiter, andindex 1 being after the delimiter (neither element includes the delimiter); or <code>null</code> if the delimiter wasn't found in the given input String
+ */
+","Split the given string toSplit at the first occurrence of the given delimiter,and return two substrings that don't include the delimiter."
+636767601a6d9265ec0180e2,computeGlobalSeparatorList,"private List<Pair<List<Pair<Integer,Integer>>,E>> computeGlobalSeparatorList(){
+  List<Pair<List<Pair<Integer,Integer>>,E>> globalSeparatorList=new ArrayList<>();
+  for (  E edge : graph.edgeSet()) {
+    V source=graph.getEdgeSource(edge);
+    V target=graph.getEdgeTarget(edge);
+    if (source != target) {
+      List<Set<V>> edgeSeparators=findSeparators(graph,edge);
+      globalSeparatorList.addAll(reformatSeparatorList(edgeSeparators,edge));
+    }
+  }
+  return globalSeparatorList;
+}
+","/** 
+ * Computes the global separator list of the  {@code graph}. More precisely, for every edge $e$ in the $G = (V, E)$ computes list of minimal separators $S_e$ in the neighborhood of $e$ and then concatenates these lists. Note: the result may contain duplicates
+ * @return the list of minimal separators of every edge $e$ in the inspected graph
+ */
+","Select an edge which isn't a circle in the graph,compute the list of the minimal separators in the neighborhood of the edge and put the pair of list and edge into the return list.Repeat for each edge in the graph and then return the final list."
+636766f31a6d9265ec01768f,clone,"public static char[] clone(final char[] array){
+  if (array == null) {
+    return null;
+  }
+  return array.clone();
+}
+","/** 
+ * <p>Clones an array returning a typecast result and handling <code>null</code>.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  the array to clone, may be <code>null</code>
+ * @return the cloned array, <code>null</code> if <code>null</code> input
+ */
+",Return a clone of the given array.
+636766831a6d9265ec0174eb,addReverse,"private void addReverse(final File[] files){
+  if (files == null)   return;
+  for (int i=files.length - 1; i >= 0; --i) {
+    stack.add(files[i]);
+  }
+}
+","/** 
+ * Add the specified files in reverse order.
+ */
+",Put the given array of files into a stack in reverse order. 
+636766fd1a6d9265ec017814,arrayequals,"public static boolean arrayequals(byte[] a,byte[] b,int count){
+  for (int i=0; i < count; i++) {
+    if (a[i] != b[i]) {
+      return false;
+    }
+  }
+  return true;
+}
+","/** 
+ * Compares <code>count</code> first bytes in the arrays <code>a</code> and <code>b</code>.
+ * @param a     The first array to compare.
+ * @param b     The second array to compare.
+ * @param count How many bytes should be compared.
+ * @return <code>true</code> if <code>count</code> first bytes in arrays<code>a</code> and <code>b</code> are equal.
+ */
+","Given two arrays with the given length count,return true if the array a is equal to array b,otherwise return false."
+636767861a6d9265ec018440,abbreviate,"public void abbreviate(final int nameStart,final StringBuffer buf){
+  int i=count;
+  for (int pos=buf.indexOf(""."",nameStart); pos != -1; pos=buf.indexOf(""."",pos + 1)) {
+    if (--i == 0) {
+      buf.delete(nameStart,pos + 1);
+      break;
+    }
+  }
+}
+","/** 
+ * Abbreviate name.
+ * @param buf buffer to append abbreviation.
+ * @param nameStart start of name to abbreviate.
+ */
+","The given name can be split into several substrings by ""."",and abbreviate the name in the buf by deleting the first count substrings. "
+6367667d1a6d9265ec01741d,resolveBound,"public static Type resolveBound(TypeVariable<?> typeVariable){
+  Type[] bounds=typeVariable.getBounds();
+  if (bounds.length == 0)   return Unknown.class;
+  Type bound=bounds[0];
+  if (bound instanceof TypeVariable)   bound=resolveBound((TypeVariable<?>)bound);
+  return bound == Object.class ? Unknown.class : bound;
+}
+","/** 
+ * Resolves the first bound for the  {@code typeVariable}, returning  {@code Unknown.class} if nonecan be resolved.
+ */
+","Resolve the class of the first bound for the typeVariable recursively,return Unknown.class if it can't be resolved.Otherwise return the bound."
+6367675f1a6d9265ec0180cf,isClique,"private static <V,E>boolean isClique(Graph<V,E> graph,Set<V> vertices){
+  for (  V v1 : vertices) {
+    for (    V v2 : vertices) {
+      if (!v1.equals(v2) && (graph.getEdge(v1,v2) == null)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+","/** 
+ * Check whether the subgraph of <code>graph</code> induced by the given <code>vertices</code> is complete, i.e. a clique.
+ * @param graph the graph.
+ * @param vertices the vertices to induce the subgraph from.
+ * @return true if the induced subgraph is a clique.
+ */
+","Return true if the subgraph of the given graph induced by the given vertices is a clique,otherwise return false."
+636767431a6d9265ec017c88,computeLowerBounds,"private List<Integer> computeLowerBounds(List<K> keys){
+  List<Integer> keyLowerBounds=new ArrayList<>(keys.size());
+  for (  K key : keys) {
+    int lowerBound=0;
+    for (    Function<K,Integer> lowerBoundFunction : lowerBounds) {
+      lowerBound=Math.max(lowerBound,lowerBoundFunction.apply(key));
+    }
+    keyLowerBounds.add(lowerBound);
+  }
+  return keyLowerBounds;
+}
+","/** 
+ * Finds a maximum lower bound for every key.
+ * @param keys list of keys.
+ * @return the computed key lower bounds.
+ */
+","The type of key has several lower bounds conducted by different function,this function will return a list of the maximum lower bound of each key in the given list."
+636766a91a6d9265ec0175c4,pop,"private void pop(final String descriptor){
+  char firstDescriptorChar=descriptor.charAt(0);
+  if (firstDescriptorChar == '(') {
+    pop((Type.getArgumentsAndReturnSizes(descriptor) >> 2) - 1);
+  }
+ else   if (firstDescriptorChar == 'J' || firstDescriptorChar == 'D') {
+    pop(2);
+  }
+ else {
+    pop(1);
+  }
+}
+","/** 
+ * Pops as many abstract types from the output frame stack as described by the given descriptor.
+ * @param descriptor a type or method descriptor (in which case its argument types are popped).
+ */
+",Pop different value of type based on the first character of the given descriptor.
+636766fb1a6d9265ec0177c3,isAscii,"public static boolean isAscii(final char ch){
+  return ch < 128;
+}
+","/** 
+ * <p>Checks whether the character is ASCII 7 bit.</p> <pre> CharUtils.isAscii('a')  = true CharUtils.isAscii('A')  = true CharUtils.isAscii('3')  = true CharUtils.isAscii('-')  = true CharUtils.isAscii('\n') = true CharUtils.isAscii('&copy;') = false </pre>
+ * @param ch  the character to check
+ * @return true if less than 128
+ */
+","Return true if the given character is a ASCII seven bit character,otherwise return false."
+636767581a6d9265ec017fb4,computeUpperBounds,"private List<Integer> computeUpperBounds(List<K> keys){
+  List<Integer> keyUpperBounds=new ArrayList<>(keys.size());
+  for (  K key : keys) {
+    int upperBound=Integer.MAX_VALUE;
+    for (    Function<K,Integer> upperBoundFunction : upperBounds) {
+      upperBound=Math.min(upperBound,upperBoundFunction.apply(key));
+    }
+    keyUpperBounds.add(upperBound);
+  }
+  return keyUpperBounds;
+}
+","/** 
+ * Finds a minimum lower bound for every key.
+ * @param keys a list of keys.
+ * @return the computed key upper bound.
+ */
+","The type of key has several upper bounds conducted by different function,this function will return a list of the minimum upper bound of each key in the given list."
+636766801a6d9265ec017487,encodeTemplateNames,"public static String encodeTemplateNames(String s){
+  int i=s.indexOf('{');
+  if (i != -1)   s=s.replace(""{"",""%7B"");
+  i=s.indexOf('}');
+  if (i != -1)   s=s.replace(""}"",""%7D"");
+  return s;
+}
+","/** 
+ * Encodes a string with template parameters names present, specifically the characters '{' and '}' will be percent-encoded.
+ * @param s the string with zero or more template parameters names
+ * @return the string with encoded template parameters names.
+ */
+","Encoding the given string by changing '{' and '}' to the specified character for each,return the string after encoding."
+636767691a6d9265ec0181ac,applyRelativePath,"public static String applyRelativePath(String path,String relativePath){
+  int separatorIndex=path.lastIndexOf(FOLDER_SEPARATOR);
+  if (separatorIndex != -1) {
+    String newPath=path.substring(0,separatorIndex);
+    if (!relativePath.startsWith(FOLDER_SEPARATOR)) {
+      newPath+=FOLDER_SEPARATOR;
+    }
+    return newPath + relativePath;
+  }
+ else {
+    return relativePath;
+  }
+}
+","/** 
+ * Apply the given relative path to the given path, assuming standard Java folder separation (i.e. ""/"" separators).
+ * @param path the path to start from (usually a full file path)
+ * @param relativePath the relative path to apply(relative to the full file path above)
+ * @return the full file path that results from applying the relative path
+ */
+","Combine the substring before FOLDER_SEPARATOR of the given path with the given relative path to construct a new full file path,and return the full file path."
+636767021a6d9265ec0178bc,indexOf,"public static int indexOf(String str,String searchStr){
+  if (str == null || searchStr == null) {
+    return StringUtils.INDEX_NOT_FOUND;
+  }
+  return str.indexOf(searchStr);
+}
+","/** 
+ * Finds the first index within a String, handling <code>null</code>. This method uses  {@link String#indexOf(String)}. 
+ */
+",Return the first index of the searchStr in the given string.
+636766fc1a6d9265ec0177ef,toNoNullStringArray,"static String[] toNoNullStringArray(Object[] array){
+  ArrayList<String> list=new ArrayList<String>(array.length);
+  for (int i=0; i < array.length; i++) {
+    Object e=array[i];
+    if (e != null) {
+      list.add(e.toString());
+    }
+  }
+  return (String[])list.toArray(ArrayUtils.EMPTY_STRING_ARRAY);
+}
+","/** 
+ * Returns a new array of Strings without null elements. Internal method used to normalize exclude lists (arrays and collections). Note that  {@link Arrays#sort(Object[])} will throw an {@link NullPointerException}if an array element is <code>null</code>.
+ * @param array The array to check
+ * @return The given array or a new array without null.
+ */
+","Return a new array of strings converted from the elements which are not null of the given array,if the size of the array is zero,it will throw an exception."
+636767061a6d9265ec01794a,indexOfExtension,"public static int indexOfExtension(String filename){
+  if (filename == null) {
+    return -1;
+  }
+  int extensionPos=filename.lastIndexOf(EXTENSION_SEPARATOR);
+  int lastSeparator=indexOfLastSeparator(filename);
+  return lastSeparator > extensionPos ? -1 : extensionPos;
+}
+","/** 
+ * Returns the index of the last extension separator character, which is a dot. <p> This method also checks that there is no directory separator after the last dot. To do this it uses  {@link #indexOfLastSeparator(String)} which willhandle a file in either Unix or Windows format. <p> The output will be the same irrespective of the machine that the code is running on.
+ * @param filename  the filename to find the last path separator in, null returns -1
+ * @return the index of the last separator character, or -1 if thereis no such character
+ */
+","Return the last index of the extension separator in the given filename,it will return -1 if the filename doesn't have the separator or there is a directory separator after it."
+636767dd1a6d9265ec0186de,isExpired,"public boolean isExpired(long timestamp,long expiredThreshold){
+  return timestamp - lastUpdateTimestamp > expiredThreshold;
+}
+","/** 
+ * @param timestamp        of current time
+ * @param expiredThreshold represents the duration between last update time and the time point removing from cache.
+ * @return true means this metrics should be removed from cache.
+ */
+","Return true if the timestamp minus the lastUpdateTimestamp is greater than expiredThreshold,otherwise return false."
+6367675d1a6d9265ec018082,edgeToNext,"Edge edgeToNext(){
+  Edge edge=prev.embedded.getFirst();
+  Node target=toExistingNode(current);
+  Node source=toExistingNode(prev);
+  if (edge.getOpposite(source) == target) {
+    return edge;
+  }
+ else {
+    return prev.embedded.getLast();
+  }
+}
+","/** 
+ * Returns an edge connecting previously returned node with node, which will be returned next. If either of the mentioned nodes is virtual, the edge will be incident to its real counterpart.
+ * @return an edge from the current node to the next node
+ */
+",Return the edge connecting the previously returned node with the current node.
+6367676b1a6d9265ec0181e9,substringMatch,"public static boolean substringMatch(CharSequence str,int index,CharSequence substring){
+  for (int j=0; j < substring.length(); j++) {
+    int i=index + j;
+    if (i >= str.length() || str.charAt(i) != substring.charAt(j)) {
+      return false;
+    }
+  }
+  return true;
+}
+","/** 
+ * Returns  {@code true} if the given string matches the given substring at the given index, {@code false} otherwise.
+ * @param str the original string (or StringBuilder)
+ * @param index the index in the original string to start matching against
+ * @param substring the substring to match at the given index
+ * @return {@code true} if the given string matches the given substring at the given index, {@code false} otherwise.
+ */
+","Return true if starting at the given index,the given string matches the given substring.Otherwise return false."
+6367670b1a6d9265ec017a05,toString,"public static String toString(final char ch){
+  if (ch < 128) {
+    return CharUtils.CHAR_STRING_ARRAY[ch];
+  }
+  return new String(new char[]{ch});
+}
+","/** 
+ * <p>Converts the character to a String that contains the one character.</p> <p>For ASCII 7 bit characters, this uses a cache that will return the same String object each time.</p> <pre> CharUtils.toString(' ')  = "" "" CharUtils.toString('A')  = ""A"" </pre>
+ * @param ch  the character to convert
+ * @return a String containing the one specified character
+ */
+",Return the String object that contains the given character.
+636767a31a6d9265ec01854f,checkIfPackedField,"private void checkIfPackedField() throws IOException {
+  if (packedLimit == 0 && WireFormat.getTagWireType(lastTag) == WIRETYPE_LENGTH_DELIMITED) {
+    final int length=readRawVarint32();
+    if (length < 0)     throw ProtobufException.negativeSize();
+    this.packedLimit=getTotalBytesRead() + length;
+  }
+}
+","/** 
+ * Check if this field have been packed into a length-delimited field. If so, update internal state to reflect that packed fields are being read.
+ * @throws IOException
+ */
+","Check if the field should be packed,if so,read the field and update the internal state. It will throw an exception when the process of reading is wrong."
+636767a81a6d9265ec0185fc,readTag,"public int readTag() throws IOException {
+  if (!buffer.hasRemaining()) {
+    lastTag=0;
+    return 0;
+  }
+  final int tag=readRawVarint32();
+  if (tag >>> TAG_TYPE_BITS == 0) {
+    throw ProtobufException.invalidTag();
+  }
+  lastTag=tag;
+  return tag;
+}
+","/** 
+ * Attempt to read a field tag, returning zero if we have reached EOF. Protocol message parsers use this to read tags, since a protocol message may legally end wherever a tag occurs, and zero is not a valid tag number.
+ */
+","Return a field tag, and if reach the EOF the tag will be zero.It will throw an exception when the tag is equal to zero after logical shift right  TAG_TYPE_BITS."
+636766a81a6d9265ec017595,put11,"final ByteVector put11(final int byteValue1,final int byteValue2){
+  int currentLength=length;
+  if (currentLength + 2 > data.length) {
+    enlarge(2);
+  }
+  byte[] currentData=data;
+  currentData[currentLength++]=(byte)byteValue1;
+  currentData[currentLength++]=(byte)byteValue2;
+  length=currentLength;
+  return this;
+}
+","/** 
+ * Puts two bytes into this byte vector. The byte vector is automatically enlarged if necessary.
+ * @param byteValue1 a byte.
+ * @param byteValue2 another byte.
+ * @return this byte vector.
+ */
+",Put two bytes into a byte vector called data.The vector will be enlarged if necessary.And return the ByteVector object.
+636766ae1a6d9265ec0175d8,buildContentRange,"private String buildContentRange(){
+  Integer limit=drc.getLimit() == null ? getDefaultNumberPagination() - 1 : drc.getLimit();
+  Integer offset=drc.getOffset() == null ? 0 : drc.getOffset();
+  Long count=drc.getCount() == null ? 0 : drc.getCount();
+  return offset + ""-"" + (limit.equals(0) ? count - 1 : limit)+ ""/""+ count;
+}
+","/** 
+ * Build the 'Content-Range' HTTP Header value.
+ * @return 'Content-Range' value
+ */
+","Return the string that contains the content range from offset to limit(when limit is zero,the upper bound will be count-1) and count."
