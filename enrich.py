@@ -1,9 +1,16 @@
+import os
 import openai
 import pandas as pd
-import os
 import time
+from dotenv import load_dotenv
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+load_dotenv()
+API_KEY = os.getenv("OPENAI_API_KEY")
+
+if not API_KEY:
+    raise ValueError("ERROR: OPENAI_API_KEY is not set! Check your .env file.")
+
+client = openai.OpenAI(api_key=API_KEY)
 
 CSV_INPUT_PATH = "CoderEval4Java_Raw_Filtered.csv"
 CSV_OUTPUT_PATH = "CoderEval4Java_Enriched.csv"
@@ -37,12 +44,10 @@ def generate_enriched_description(name, code):
     """
 
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4o",
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=800
-        )
-        return response["choices"][0]["message"]["content"]
+        response = client.chat.completions.create(model="gpt-4o",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=800)
+        return response.choices[0].message.content
     except Exception as e:
         print(f"Error processing function '{name}': {e}")
         return "ERROR"
@@ -50,9 +55,9 @@ def generate_enriched_description(name, code):
 enriched_descriptions = []
 for index, row in df.iterrows():
     print(f"Processing function {index + 1}/{len(df)}: {row['name']}")
-    
+
     enriched_desc = generate_enriched_description(row["name"], row["code"])
-    
+
     enriched_descriptions.append(enriched_desc)
 
     time.sleep(1)
