@@ -33,7 +33,11 @@ def generate_enriched_description(name, code):
     **1. One-line summary:** (MUST be ultra-short, NO details, NO corner cases.)
     **2. Function behavior:** (Describe how the function works in detail.)
     **3. Function signature:** (Describe the parameters and return type.)
-    **4. Examples:** (Show input-output examples.)
+    **4. Examples:** (Provide a few input-output examples that best illustrate the function’s behavior, including:
+       - A **typical usage**
+       - A **boundary edge case**
+       - A **special or unusual case if relevant**
+       Keep responses concise.)
     **5. Preconditions & Postconditions:** (Explain constraints, expected outputs, and failure cases.)
     ---
 
@@ -44,9 +48,11 @@ def generate_enriched_description(name, code):
     """
 
     try:
-        response = client.chat.completions.create(model="gpt-4o",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=800)
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=800
+        )
         return response.choices[0].message.content
     except Exception as e:
         print(f"Error processing function '{name}': {e}")
