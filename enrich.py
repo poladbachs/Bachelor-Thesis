@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 API_KEY = os.getenv("OPENAI_API_KEY")
-
 if not API_KEY:
     raise ValueError("ERROR: OPENAI_API_KEY is not set! Check your .env file.")
 
@@ -29,22 +28,25 @@ def generate_enriched_description(name, code):
 
     Answer STRICTLY in this format WITHOUT extra text, introductions, or explanations.
 
-    ---
-    **1. One-line summary:** (MUST be ultra-short, NO details, NO corner cases.)
-    **2. Function behavior:** (Describe how the function works in detail.)
-    **3. Function signature:** (Describe the parameters and return type.)
-    **4. Examples:** (Provide a few input-output examples that best illustrate the function's behavior, including:
-       - A **typical usage**
-       - A **boundary edge case**
-       - A **special or unusual case if relevant**
-       Keep responses concise.)
-    **5. Preconditions & Postconditions:** (Explain constraints, expected outputs)
-    ---
+    1. One-line summary: (MUST be ultra-short, no corner cases.)
+    2. Function behavior: (Max 2 lines describing what the function does.)
+    3. Function signature: (Use @param, @return, @throws only if relevant, each on its own line, with a very brief description.
+    @param <param_name> <param_type>: <brief parameter description>
+    @return <return_type>: <brief return description>
+    @throws <exception_type>: <brief exception description>
+    Include ONLY the relevant tags. If the method has no parameters, skip @param. If it has no return value, skip @return. If it throws no exceptions, skip @throws.)
+    4. Examples: (Provide minimal examples on single lines, no code blocks, no extra symbols, NO backticks:
+    input -> output (brief note)
+    input -> output (brief note)
+    input -> output (brief note)
+    )
+    5. Preconditions & Postconditions: (Concise constraints and outcomes, max 2 lines.)
 
     IMPORTANT RULES:
-    - DO NOT include any greeting or opening like “Certainly!” or “Here's your response”.
-    - DO NOT add explanations about what you are doing.
-    - JUST OUTPUT the descriptions, formatted exactly as specified above.
+    - Do NOT include any greeting or opening like “Certainly!” or “Here's your response”.
+    - Do NOT add code blocks, triple backticks, or lines like “Copy”/“Edit”.
+    - Keep everything concise, no bullet points, no extra parentheses.
+    - JUST OUTPUT the descriptions in the exact format above.
     """
 
     try:
@@ -53,7 +55,7 @@ def generate_enriched_description(name, code):
             messages=[{"role": "user", "content": prompt}],
             max_tokens=800
         )
-        return response.choices[0].message.content
+        return response.choices[0].message.content.strip()
     except Exception as e:
         print(f"Error processing function '{name}': {e}")
         return "ERROR"
