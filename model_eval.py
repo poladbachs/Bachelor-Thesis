@@ -53,7 +53,7 @@ def evaluate_candidate(prompt):
     inputs = tokenizer(prompt, return_tensors="pt", truncation=True)
     inputs = {k: v.to(model.device) for k, v in inputs.items()}
     with torch.no_grad():
-        outputs = model.generate(**inputs, max_new_tokens=20, do_sample=False)
+        outputs = model.generate(**inputs, max_new_tokens=20, do_sample=True)
     output_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     if "# Output:" in output_text:
         generated = output_text.split("# Output:")[-1].strip()
