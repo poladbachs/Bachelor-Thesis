@@ -5,7 +5,7 @@ import random
 ENRICHED_CSV = "CoderEval4Java_Split5.csv"         # Enriched CSV with multi-level descriptions (181 function IDs)
 KB_CSV = "kb_clean.csv"                             # Cleaned KB with candidate implementations
 REFERENCE_CSV = "CoderEval4Java_Raw_Filtered.csv"   # Fallback reference for correct implementations
-FINAL_SUBSET_CSV = "subset_362.csv"                 # Final output: 362 rows (181 IDs x 2 candidates)
+FINAL_SUBSET_CSV = "subset_360.csv"                 # Final output: 360 rows (179 IDs x 2 candidates (2 incorrect missing))
 
 # Load CSVs
 df_enriched = pd.read_csv(ENRICHED_CSV)

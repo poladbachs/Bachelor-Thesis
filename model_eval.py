@@ -4,7 +4,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
 MODEL_NAME = "Qwen/Qwen2.5-Coder-0.5B-Instruct"
-INPUT_CSV = "final_dataset.csv"
+INPUT_CSV = "subset_362_final.csv"
 OUTPUT_CSV = "final_dataset_with_predictions.csv"
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
@@ -52,8 +52,9 @@ def build_evaluation_prompt(row):
 def evaluate_candidate(prompt):
     inputs = tokenizer(prompt, return_tensors="pt", truncation=True)
     inputs = {k: v.to(model.device) for k, v in inputs.items()}
+    # Set a low temperature for deterministic output.
     with torch.no_grad():
-        outputs = model.generate(**inputs, max_new_tokens=20, do_sample=True)
+        outputs = model.generate(**inputs, max_new_tokens=20, do_sample=True, temperature=0.2)
     output_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
     if "# Output:" in output_text:
         generated = output_text.split("# Output:")[-1].strip()
@@ -80,13 +81,18 @@ df["predicted_exit_code"] = predictions
 df.to_csv(OUTPUT_CSV, index=False, encoding="utf-8")
 print(f"Final dataset with predictions saved as: {OUTPUT_CSV}")
 
+# Compute evaluation metrics
 tp = len(df[(df["exit_code"] == 0) & (df["predicted_exit_code"] == 0)])
 tn = len(df[(df["exit_code"] == 1) & (df["predicted_exit_code"] == 1)])
 fp = len(df[(df["exit_code"] == 1) & (df["predicted_exit_code"] == 0)])
 fn = len(df[(df["exit_code"] == 0) & (df["predicted_exit_code"] == 1)])
+total = len(df)
+
+accuracy = (tp + tn) / total if total > 0 else 0
 
 print("Evaluation Metrics:")
 print("True Positives:", tp)
 print("True Negatives:", tn)
 print("False Positives:", fp)
 print("False Negatives:", fn)
+print("Accuracy:", accuracy)
