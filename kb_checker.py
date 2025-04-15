@@ -2,64 +2,87 @@ import pandas as pd
 import re
 
 # File paths
-RAW_KB_CSV = "knowlbase_codereval.csv"   # Provided KB CSV
-CLEAN_KB_CSV = "kb_clean.csv"             # Output: Cleaned KB
-KB_RESULTS_CSV = "kb_check_results.csv"   # Output: Report of problematic function IDs
+RAW_KB_CSV = "knowlbase_codereval.csv"
+CLEAN_KB_CSV = "kb_clean.csv"
+KB_RESULTS_CSV = "kb_check_results.csv"
 
-def is_trivial(method):
+def is_trivial(code):
     """
-    Check if the implementation code is trivial.
-    Returns True if the code is only comments or trivial placeholders (e.g., // TODO).
+    Flags implementations that are trivial, placeholder, or useless.
     """
-    if pd.isna(method) or not method.strip():
+    if pd.isna(code) or not code.strip():
         return True
-    lines = method.splitlines()
-    non_comment_lines = []
-    for line in lines:
-        stripped_line = line.strip()
-        # Skip lines that are comments or block comment boundaries.
-        if stripped_line.startswith("//") or stripped_line.startswith("/*") or stripped_line.endswith("*/"):
-            continue
-        # Skip lines that contain only trivial placeholders.
-        if "TODO" in stripped_line.upper():
-            continue
-        non_comment_lines.append(stripped_line)
-    code_without_comments = " ".join(non_comment_lines).strip()
-    # If nothing remains or only very little code is present, consider it trivial.
-    if not code_without_comments or len(code_without_comments) < 10:
+
+    code_lower = code.lower()
+    
+    # Detect common placeholder patterns
+    indicators = [
+        "todo",
+        "not implemented",
+        "unsupportedoperationexception",
+        "implementation not provided",
+        "placeholder",
+        "dummy",
+        "illustration",
+        "example usage",
+        "just print",
+        "you would need to",
+        "for illustration",
+        "assume",
+        "assuming",
+        "this would involve",
+        "pass",
+        "here",
+        "there",
+        "you",
+        "implement",
+        "this",
+        "do something",
+        "..."
+    ]
+    for pattern in indicators:
+        if pattern in code_lower:
+            return True
+
+    # Check if it looks like a main method without logic
+    if re.match(r".*public\s+static\s+void\s+main\s*\(\s*String\[\]\s+args\s*\).*", code_lower):
+        if len(code_lower.splitlines()) < 10 and "System.out" in code_lower:
+            return True
+
+    # Check if buffer usage is a dummy placeholder
+    if "buffer.flip()" in code_lower and "write" not in code_lower:
         return True
+
+    # Strip comments and check code density
+    lines = code.splitlines()
+    non_comment = [line.strip() for line in lines if not line.strip().startswith("//") and len(line.strip()) > 0]
+    joined = " ".join(non_comment)
+    if len(joined) < 30:
+        return True
+
     return False
 
-# Load the raw knowledge base
+# Load raw KB
 df_kb = pd.read_csv(RAW_KB_CSV)
 
-# Original filter: remove rows with missing or empty candidate implementations.
+# Drop missing or empty method bodies
 df_kb = df_kb[df_kb["method"].notnull() & (df_kb["method"].str.strip() != "")]
 
-# Additional filter: remove trivial implementations (only comments or TODOs).
+# Drop trivial ones
 df_kb = df_kb[~df_kb["method"].apply(is_trivial)]
 
-# Convert IDs to string for merging later
+# Report
 df_kb["target_id"] = df_kb["target_id"].astype(str)
-
-# Group by target_id and generate report on candidate presence
-grouped = df_kb.groupby("target_id")
 results = []
-for func_id, group in grouped:
-    has_correct = (group["exit_code"] == 0).any()
-    has_wrong = (group["exit_code"] == 1).any()
+for func_id, group in df_kb.groupby("target_id"):
     results.append({
         "function_id": func_id,
-        "has_correct": has_correct,
-        "has_wrong": has_wrong,
+        "has_correct": (group["exit_code"] == 0).any(),
+        "has_wrong": (group["exit_code"] == 1).any(),
         "total_candidates": len(group)
     })
+pd.DataFrame(results).to_csv(KB_RESULTS_CSV, index=False)
 
-results_df = pd.DataFrame(results)
-results_df.to_csv(KB_RESULTS_CSV, index=False, encoding="utf-8")
-print("KB check results saved to", KB_RESULTS_CSV)
-
-# Save the cleaned knowledge base
-df_kb_clean = df_kb.copy()
-df_kb_clean.to_csv(CLEAN_KB_CSV, index=False, encoding="utf-8")
-print("Cleaned KB saved to", CLEAN_KB_CSV)
+# Save cleaned KB
+df_kb.to_csv(CLEAN_KB_CSV, index=False)
+print(f"✅ Cleaned KB saved to {CLEAN_KB_CSV}")
