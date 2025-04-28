@@ -123,6 +123,6 @@ if final_rows:
     final_df.to_csv(FINAL_SUBSET_CSV, index=False, encoding="utf-8")
     unique_ids = final_df["_id"].nunique() if "_id" in final_df.columns else "unknown"
     total_rows = len(final_df)
-    print(f"✅ Final dataset created: {FINAL_SUBSET_CSV} with {total_rows} rows and {unique_ids} unique function IDs.")
+    print(f"Final dataset created: {FINAL_SUBSET_CSV} with {total_rows} rows and {unique_ids} unique function IDs.")
 else:
-    print("❌ No valid rows were collected.")
+    print("No valid rows were collected.")

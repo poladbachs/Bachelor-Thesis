@@ -85,4 +85,4 @@ pd.DataFrame(results).to_csv(KB_RESULTS_CSV, index=False)
 
 # Save cleaned KB
 df_kb.to_csv(CLEAN_KB_CSV, index=False)
-print(f"✅ Cleaned KB saved to {CLEAN_KB_CSV}")
+print(f"Cleaned KB saved to {CLEAN_KB_CSV}")
