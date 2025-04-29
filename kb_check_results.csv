@@ -1,182 +1,182 @@
-function_id,has_correct,has_wrong,total_candidates
-6367667d1a6d9265ec017401,True,True,15
-6367667d1a6d9265ec01741d,False,True,35
-6367667e1a6d9265ec01743a,False,True,22
-6367667f1a6d9265ec017457,False,True,33
-6367667f1a6d9265ec01745d,True,True,24
-636766801a6d9265ec017487,True,True,28
-636766821a6d9265ec0174b6,False,True,37
-636766821a6d9265ec0174bf,True,True,31
-636766821a6d9265ec0174c9,True,True,35
-636766831a6d9265ec0174eb,False,True,32
-636766851a6d9265ec01751b,True,True,37
-636766861a6d9265ec017553,True,True,28
-636766861a6d9265ec01755a,False,True,36
-636766a81a6d9265ec017586,True,True,30
-636766a81a6d9265ec01758e,False,True,31
-636766a81a6d9265ec017595,True,True,30
-636766a91a6d9265ec0175ae,True,True,38
-636766a91a6d9265ec0175c1,True,True,41
-636766a91a6d9265ec0175c2,False,True,32
-636766a91a6d9265ec0175c4,False,True,35
-636766aa1a6d9265ec0175ce,False,True,35
-636766ae1a6d9265ec0175d8,False,True,20
-636766ae1a6d9265ec0175dc,False,True,32
-636766f01a6d9265ec01762e,True,True,13
-636766f01a6d9265ec017639,True,True,23
-636766f01a6d9265ec01763e,False,True,28
-636766f11a6d9265ec017641,False,True,28
-636766f11a6d9265ec01764f,True,True,21
-636766f11a6d9265ec017651,True,True,17
-636766f11a6d9265ec017658,True,True,27
-636766f11a6d9265ec017663,True,True,25
-636766f21a6d9265ec017667,True,True,30
-636766f21a6d9265ec017677,True,True,12
-636766f21a6d9265ec01767d,True,True,14
-636766f31a6d9265ec01768f,True,True,19
-636766f61a6d9265ec017701,True,True,26
-636766f71a6d9265ec017730,True,True,22
-636766f81a6d9265ec017758,False,True,33
-636766f81a6d9265ec01775b,True,True,19
-636766f81a6d9265ec01775c,True,True,12
-636766f91a6d9265ec01776e,False,True,30
-636766f91a6d9265ec01777d,True,True,39
-636766f91a6d9265ec01777f,True,False,14
-636766fa1a6d9265ec017796,True,True,35
-636766fa1a6d9265ec01779c,False,True,36
-636766fa1a6d9265ec01779d,True,True,31
-636766fa1a6d9265ec0177a4,True,True,26
-636766fa1a6d9265ec0177a9,False,True,32
-636766fb1a6d9265ec0177c1,True,True,12
-636766fb1a6d9265ec0177c3,True,True,18
-636766fc1a6d9265ec0177da,True,True,34
-636766fc1a6d9265ec0177ef,True,True,35
-636766fd1a6d9265ec017814,True,True,32
-636766fe1a6d9265ec01781c,True,True,7
-636766fe1a6d9265ec017821,False,True,32
-636766fe1a6d9265ec01782a,False,True,27
-636766fe1a6d9265ec017834,False,True,28
-636766fe1a6d9265ec017838,True,True,28
-636766ff1a6d9265ec01783b,True,True,19
-636766ff1a6d9265ec017842,True,True,34
-636766ff1a6d9265ec01784b,True,True,23
-636766ff1a6d9265ec017851,True,True,29
-636766ff1a6d9265ec017853,True,True,21
-636767001a6d9265ec017873,True,True,18
-636767021a6d9265ec0178b2,False,True,41
-636767021a6d9265ec0178bb,True,True,23
-636767021a6d9265ec0178bc,True,True,17
-636767021a6d9265ec0178bf,False,True,21
-636767031a6d9265ec0178dd,True,True,24
-636767031a6d9265ec0178e6,True,True,29
-636767031a6d9265ec0178ef,True,True,34
-636767041a6d9265ec0178f8,True,True,35
-636767041a6d9265ec01790f,True,True,28
-636767041a6d9265ec017911,False,True,39
-636767061a6d9265ec01794a,True,True,32
-636767081a6d9265ec017989,True,True,30
-636767081a6d9265ec0179a2,False,True,25
-6367670a1a6d9265ec0179cf,True,False,15
-6367670a1a6d9265ec0179d8,True,True,28
-6367670a1a6d9265ec0179d9,True,True,10
-6367670a1a6d9265ec0179dc,False,True,29
-6367670a1a6d9265ec0179e7,False,True,29
-6367670a1a6d9265ec0179e8,True,True,21
-6367670a1a6d9265ec0179f1,True,True,32
-6367670b1a6d9265ec0179f2,True,True,15
-6367670b1a6d9265ec0179fe,True,True,23
-6367670b1a6d9265ec0179ff,True,True,21
-6367670b1a6d9265ec017a00,True,True,9
-6367670b1a6d9265ec017a05,True,True,14
-6367670b1a6d9265ec017a0f,True,True,27
-6367670c1a6d9265ec017a2a,True,True,27
-6367670c1a6d9265ec017a35,True,True,36
-636767121a6d9265ec017b0a,False,True,38
-636767131a6d9265ec017b23,False,True,30
-636767151a6d9265ec017b6b,True,True,29
-636767191a6d9265ec017c0f,False,True,42
-6367671a1a6d9265ec017c15,False,True,35
-6367672d1a6d9265ec017c73,True,True,24
-6367672d1a6d9265ec017c74,False,True,23
-6367672d1a6d9265ec017c78,True,True,10
-636767431a6d9265ec017c88,False,True,30
-636767441a6d9265ec017cc1,False,True,27
-636767461a6d9265ec017d0e,False,True,39
-636767491a6d9265ec017d90,True,True,22
-6367674a1a6d9265ec017da9,False,True,31
-6367674a1a6d9265ec017dab,True,True,25
-6367674f1a6d9265ec017e74,False,True,31
-636767501a6d9265ec017e86,False,True,22
-636767511a6d9265ec017eb0,False,True,25
-636767511a6d9265ec017eb6,False,True,24
-636767521a6d9265ec017ecc,True,True,31
-636767551a6d9265ec017f3f,True,True,19
-636767561a6d9265ec017f63,False,True,25
-636767561a6d9265ec017f7c,False,True,30
-636767581a6d9265ec017fb4,False,True,31
-636767581a6d9265ec017fc4,True,True,28
-6367675c1a6d9265ec018058,False,True,29
-6367675c1a6d9265ec01805b,False,True,31
-6367675d1a6d9265ec018082,False,True,23
-6367675f1a6d9265ec0180cf,True,True,32
-6367675f1a6d9265ec0180d3,False,True,37
-636767601a6d9265ec0180e2,False,True,32
-636767611a6d9265ec018112,False,True,26
-636767611a6d9265ec018116,True,True,25
-636767631a6d9265ec018171,True,True,39
-636767691a6d9265ec0181a6,True,True,32
-636767691a6d9265ec0181a7,True,True,29
-636767691a6d9265ec0181aa,True,True,38
-636767691a6d9265ec0181ac,True,True,41
-6367676a1a6d9265ec0181bf,True,True,20
-6367676a1a6d9265ec0181cd,True,True,23
-6367676a1a6d9265ec0181d4,True,True,30
-6367676b1a6d9265ec0181dd,True,True,36
-6367676b1a6d9265ec0181df,True,True,19
-6367676b1a6d9265ec0181e2,True,True,31
-6367676b1a6d9265ec0181e9,True,True,36
-6367676b1a6d9265ec0181ee,True,True,27
-6367676c1a6d9265ec018204,True,True,23
-6367676c1a6d9265ec01820b,True,True,36
-6367676c1a6d9265ec018220,True,True,37
-6367676c1a6d9265ec018223,True,True,14
-6367676d1a6d9265ec018229,False,True,14
-636767781a6d9265ec018250,False,True,31
-636767791a6d9265ec01826d,False,True,28
-6367677b1a6d9265ec0182bd,False,True,25
-6367677d1a6d9265ec0182fd,True,True,36
-6367677e1a6d9265ec01830f,False,True,34
-6367677e1a6d9265ec01832e,False,True,22
-6367677f1a6d9265ec018347,False,True,36
-6367677f1a6d9265ec01834b,False,True,24
-636767821a6d9265ec0183a0,True,True,23
-636767821a6d9265ec0183ab,True,True,25
-636767831a6d9265ec0183c9,False,True,26
-636767841a6d9265ec0183e8,False,True,30
-636767861a6d9265ec018440,False,True,34
-636767861a6d9265ec01844c,False,True,33
-636767871a6d9265ec01846d,True,True,34
-636767a21a6d9265ec018517,False,True,40
-636767a31a6d9265ec01854f,False,True,30
-636767a31a6d9265ec018552,False,True,26
-636767a41a6d9265ec01856c,False,True,33
-636767a41a6d9265ec018572,True,True,35
-636767a41a6d9265ec01857e,True,True,22
-636767a41a6d9265ec018582,False,True,31
-636767a51a6d9265ec01859d,True,True,32
-636767a61a6d9265ec0185b7,False,True,29
-636767a81a6d9265ec0185fc,False,True,40
-636767aa1a6d9265ec01864a,True,True,35
-636767ab1a6d9265ec018676,True,True,18
-636767dc1a6d9265ec0186be,True,True,33
-636767dc1a6d9265ec0186cb,False,True,29
-636767dd1a6d9265ec0186de,True,True,18
-636767dd1a6d9265ec0186e5,False,True,31
-636767dd1a6d9265ec0186f3,False,True,28
-636767de1a6d9265ec01871c,True,True,31
-636767df1a6d9265ec01873c,False,True,31
-636767df1a6d9265ec018744,False,True,31
-636767e01a6d9265ec018755,False,True,43
-636767e01a6d9265ec018764,True,True,32
-636767e11a6d9265ec018781,False,True,31
-636767e11a6d9265ec018795,False,True,38
+function_id,has_correct,has_wrong,num_correct,num_incorrect,total_candidates,models_contributed,all_generated_by,is_balanced,num_trivial_removed,original_total,trivial_ratio_removed
+6367667d1a6d9265ec017401,True,True,5,10,15,5,"Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,15,0.0
+6367667d1a6d9265ec01741d,False,True,0,30,30,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,5,35,0.14285714285714285
+6367667e1a6d9265ec01743a,False,True,0,16,16,4,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, starcoder2-7b",False,6,22,0.2727272727272727
+6367667f1a6d9265ec017457,False,True,0,29,29,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,4,33,0.12121212121212122
+6367667f1a6d9265ec01745d,True,True,1,19,20,4,"CodeLlama-7b-Instruct-hf, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",True,4,24,0.16666666666666666
+636766801a6d9265ec017487,True,True,1,27,28,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,28,0.0
+636766821a6d9265ec0174b6,False,True,0,33,33,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,4,37,0.10810810810810811
+636766821a6d9265ec0174bf,True,True,9,22,31,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,31,0.0
+636766821a6d9265ec0174c9,True,True,12,23,35,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,35,0.0
+636766831a6d9265ec0174eb,False,True,0,22,22,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,10,32,0.3125
+636766851a6d9265ec01751b,True,True,5,31,36,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,1,37,0.02702702702702703
+636766861a6d9265ec017553,False,True,0,14,14,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",False,14,28,0.5
+636766861a6d9265ec01755a,False,True,0,12,12,4,"CodeLlama-7b-Instruct-hf, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,24,36,0.6666666666666666
+636766a81a6d9265ec017586,True,True,1,20,21,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,9,30,0.3
+636766a81a6d9265ec01758e,False,True,0,28,28,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,3,31,0.0967741935483871
+636766a81a6d9265ec017595,False,True,0,15,15,4,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,15,30,0.5
+636766a91a6d9265ec0175ae,False,True,0,13,13,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,25,38,0.6578947368421053
+636766a91a6d9265ec0175c1,True,True,2,22,24,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,17,41,0.4146341463414634
+636766a91a6d9265ec0175c2,False,True,0,28,28,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,4,32,0.125
+636766a91a6d9265ec0175c4,False,True,0,28,28,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,7,35,0.2
+636766aa1a6d9265ec0175ce,False,True,0,18,18,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,17,35,0.4857142857142857
+636766ae1a6d9265ec0175d8,False,True,0,15,15,4,"Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo",False,5,20,0.25
+636766ae1a6d9265ec0175dc,False,True,0,19,19,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,13,32,0.40625
+636766f01a6d9265ec01762e,True,True,7,6,13,4,"CodeLlama-7b-Instruct-hf, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,0,13,0.0
+636766f01a6d9265ec017639,True,True,6,17,23,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,23,0.0
+636766f01a6d9265ec01763e,False,True,0,26,26,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,2,28,0.07142857142857142
+636766f11a6d9265ec017641,False,True,0,16,16,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,12,28,0.42857142857142855
+636766f11a6d9265ec01764f,True,True,2,7,9,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,12,21,0.5714285714285714
+636766f11a6d9265ec017651,True,True,12,5,17,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,17,0.0
+636766f11a6d9265ec017658,True,True,14,12,26,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,1,27,0.037037037037037035
+636766f11a6d9265ec017663,True,True,18,7,25,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,25,0.0
+636766f21a6d9265ec017667,True,True,4,21,25,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,5,30,0.16666666666666666
+636766f21a6d9265ec017677,True,True,9,2,11,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",True,1,12,0.08333333333333333
+636766f21a6d9265ec01767d,True,True,11,3,14,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,14,0.0
+636766f31a6d9265ec01768f,True,True,5,11,16,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,3,19,0.15789473684210525
+636766f61a6d9265ec017701,True,True,2,20,22,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,4,26,0.15384615384615385
+636766f71a6d9265ec017730,True,True,3,18,21,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,1,22,0.045454545454545456
+636766f81a6d9265ec017758,False,True,0,12,12,4,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,21,33,0.6363636363636364
+636766f81a6d9265ec01775b,True,True,1,13,14,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,5,19,0.2631578947368421
+636766f81a6d9265ec01775c,True,True,10,2,12,4,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, starcoder2-7b",True,0,12,0.0
+636766f91a6d9265ec01776e,False,True,0,15,15,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,15,30,0.5
+636766f91a6d9265ec01777d,True,True,16,23,39,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,39,0.0
+636766f91a6d9265ec01777f,True,False,14,0,14,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,0,14,0.0
+636766fa1a6d9265ec017796,True,True,6,29,35,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,35,0.0
+636766fa1a6d9265ec01779c,False,True,0,22,22,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,14,36,0.3888888888888889
+636766fa1a6d9265ec01779d,True,True,15,15,30,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,1,31,0.03225806451612903
+636766fa1a6d9265ec0177a4,True,True,8,15,23,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,3,26,0.11538461538461539
+636766fa1a6d9265ec0177a9,False,True,0,20,20,4,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,12,32,0.375
+636766fb1a6d9265ec0177c1,True,True,9,3,12,3,"CodeLlama-7b-Instruct-hf, Qwen2.5-Coder-7B-Instruct, starcoder2-7b",True,0,12,0.0
+636766fb1a6d9265ec0177c3,True,True,15,3,18,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,18,0.0
+636766fc1a6d9265ec0177da,True,True,2,32,34,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,34,0.0
+636766fc1a6d9265ec0177ef,True,True,7,28,35,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,35,0.0
+636766fd1a6d9265ec017814,True,True,14,15,29,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,3,32,0.09375
+636766fe1a6d9265ec01781c,True,True,4,2,6,3,"CodeLlama-7b-Instruct-hf, Qwen2.5-Coder-7B-Instruct, starcoder2-7b",True,1,7,0.14285714285714285
+636766fe1a6d9265ec017821,False,True,0,32,32,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,0,32,0.0
+636766fe1a6d9265ec01782a,False,True,0,17,17,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,10,27,0.37037037037037035
+636766fe1a6d9265ec017834,False,True,0,24,24,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,4,28,0.14285714285714285
+636766fe1a6d9265ec017838,True,True,21,6,27,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,1,28,0.03571428571428571
+636766ff1a6d9265ec01783b,True,True,2,16,18,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",True,1,19,0.05263157894736842
+636766ff1a6d9265ec017842,True,True,2,24,26,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,8,34,0.23529411764705882
+636766ff1a6d9265ec01784b,True,True,9,14,23,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,23,0.0
+636766ff1a6d9265ec017851,True,True,9,16,25,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,4,29,0.13793103448275862
+636766ff1a6d9265ec017853,True,True,8,11,19,4,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, starcoder2-7b",True,2,21,0.09523809523809523
+636767001a6d9265ec017873,True,True,3,12,15,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,3,18,0.16666666666666666
+636767021a6d9265ec0178b2,False,True,0,30,30,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,11,41,0.2682926829268293
+636767021a6d9265ec0178bb,True,True,12,9,21,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,2,23,0.08695652173913043
+636767021a6d9265ec0178bc,True,True,3,12,15,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,17,0.11764705882352941
+636767021a6d9265ec0178bf,False,True,0,19,19,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,2,21,0.09523809523809523
+636767031a6d9265ec0178dd,True,True,2,11,13,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,11,24,0.4583333333333333
+636767031a6d9265ec0178e6,True,True,15,11,26,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,3,29,0.10344827586206896
+636767031a6d9265ec0178ef,True,True,5,26,31,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,3,34,0.08823529411764706
+636767041a6d9265ec0178f8,True,True,22,13,35,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,35,0.0
+636767041a6d9265ec01790f,True,True,9,17,26,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,2,28,0.07142857142857142
+636767041a6d9265ec017911,False,True,0,33,33,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,6,39,0.15384615384615385
+636767061a6d9265ec01794a,True,True,10,21,31,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,1,32,0.03125
+636767081a6d9265ec017989,True,True,15,15,30,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,30,0.0
+636767081a6d9265ec0179a2,False,True,0,25,25,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,0,25,0.0
+6367670a1a6d9265ec0179cf,True,False,15,0,15,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,0,15,0.0
+6367670a1a6d9265ec0179d8,True,True,1,9,10,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,18,28,0.6428571428571429
+6367670a1a6d9265ec0179d9,True,True,8,1,9,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,1,10,0.1
+6367670a1a6d9265ec0179dc,False,True,0,17,17,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",False,12,29,0.41379310344827586
+6367670a1a6d9265ec0179e7,False,True,0,24,24,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,5,29,0.1724137931034483
+6367670a1a6d9265ec0179e8,True,True,16,5,21,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,0,21,0.0
+6367670a1a6d9265ec0179f1,True,True,10,20,30,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,32,0.0625
+6367670b1a6d9265ec0179f2,True,True,4,7,11,4,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, starcoder2-7b",True,4,15,0.26666666666666666
+6367670b1a6d9265ec0179fe,True,True,4,11,15,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,8,23,0.34782608695652173
+6367670b1a6d9265ec0179ff,True,True,14,7,21,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,0,21,0.0
+6367670b1a6d9265ec017a00,True,True,3,5,8,4,"CodeLlama-7b-Instruct-hf, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",True,1,9,0.1111111111111111
+6367670b1a6d9265ec017a05,True,True,8,4,12,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,14,0.14285714285714285
+6367670b1a6d9265ec017a0f,True,True,9,18,27,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,27,0.0
+6367670c1a6d9265ec017a2a,True,True,13,12,25,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,27,0.07407407407407407
+6367670c1a6d9265ec017a35,True,True,15,19,34,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,36,0.05555555555555555
+636767121a6d9265ec017b0a,False,True,0,35,35,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,3,38,0.07894736842105263
+636767131a6d9265ec017b23,False,True,0,14,14,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,16,30,0.5333333333333333
+636767151a6d9265ec017b6b,True,True,17,12,29,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,29,0.0
+636767191a6d9265ec017c0f,False,True,0,23,23,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,19,42,0.4523809523809524
+6367671a1a6d9265ec017c15,False,True,0,11,11,4,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct",False,24,35,0.6857142857142857
+6367672d1a6d9265ec017c73,True,True,10,9,19,4,"Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo",True,5,24,0.20833333333333334
+6367672d1a6d9265ec017c74,False,True,0,18,18,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,5,23,0.21739130434782608
+6367672d1a6d9265ec017c78,True,True,3,7,10,4,"Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo",True,0,10,0.0
+636767431a6d9265ec017c88,False,True,0,23,23,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,7,30,0.23333333333333334
+636767441a6d9265ec017cc1,False,True,0,22,22,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,5,27,0.18518518518518517
+636767461a6d9265ec017d0e,False,True,0,35,35,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,4,39,0.10256410256410256
+636767491a6d9265ec017d90,True,True,14,8,22,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,22,0.0
+6367674a1a6d9265ec017da9,False,True,0,16,16,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,15,31,0.4838709677419355
+6367674a1a6d9265ec017dab,True,True,15,6,21,4,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo",True,4,25,0.16
+6367674f1a6d9265ec017e74,False,True,0,17,17,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,14,31,0.45161290322580644
+636767501a6d9265ec017e86,False,True,0,13,13,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,9,22,0.4090909090909091
+636767511a6d9265ec017eb0,False,True,0,18,18,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,7,25,0.28
+636767511a6d9265ec017eb6,False,True,0,17,17,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",False,7,24,0.2916666666666667
+636767521a6d9265ec017ecc,True,True,2,27,29,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,31,0.06451612903225806
+636767551a6d9265ec017f3f,True,True,15,2,17,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,2,19,0.10526315789473684
+636767561a6d9265ec017f63,False,True,0,14,14,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo",False,11,25,0.44
+636767561a6d9265ec017f7c,False,True,0,22,22,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,8,30,0.26666666666666666
+636767581a6d9265ec017fb4,False,True,0,23,23,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,8,31,0.25806451612903225
+636767581a6d9265ec017fc4,True,True,24,1,25,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,3,28,0.10714285714285714
+6367675c1a6d9265ec018058,False,True,0,28,28,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,1,29,0.034482758620689655
+6367675c1a6d9265ec01805b,False,True,0,10,10,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,21,31,0.6774193548387096
+6367675d1a6d9265ec018082,False,True,0,10,10,4,"CodeLlama-7b-Instruct-hf, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,13,23,0.5652173913043478
+6367675f1a6d9265ec0180cf,True,True,8,21,29,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,3,32,0.09375
+6367675f1a6d9265ec0180d3,False,True,0,33,33,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,4,37,0.10810810810810811
+636767601a6d9265ec0180e2,False,True,0,19,19,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,13,32,0.40625
+636767611a6d9265ec018112,False,True,0,8,8,3,"Phi-3-mini-4k-instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,18,26,0.6923076923076923
+636767611a6d9265ec018116,True,True,15,10,25,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,25,0.0
+636767631a6d9265ec018171,True,True,2,25,27,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,12,39,0.3076923076923077
+636767691a6d9265ec0181a6,True,True,1,29,30,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,32,0.0625
+636767691a6d9265ec0181a7,True,True,11,15,26,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,3,29,0.10344827586206896
+636767691a6d9265ec0181aa,True,True,1,37,38,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,38,0.0
+636767691a6d9265ec0181ac,True,True,4,30,34,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,7,41,0.17073170731707318
+6367676a1a6d9265ec0181bf,True,True,6,13,19,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",True,1,20,0.05
+6367676a1a6d9265ec0181cd,True,True,10,12,22,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,1,23,0.043478260869565216
+6367676a1a6d9265ec0181d4,True,True,22,6,28,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,30,0.06666666666666667
+6367676b1a6d9265ec0181dd,True,True,7,27,34,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,36,0.05555555555555555
+6367676b1a6d9265ec0181df,True,True,9,10,19,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,19,0.0
+6367676b1a6d9265ec0181e2,True,True,2,27,29,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,2,31,0.06451612903225806
+6367676b1a6d9265ec0181e9,True,True,28,7,35,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,1,36,0.027777777777777776
+6367676b1a6d9265ec0181ee,True,True,11,15,26,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,1,27,0.037037037037037035
+6367676c1a6d9265ec018204,True,True,2,21,23,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,23,0.0
+6367676c1a6d9265ec01820b,True,True,20,15,35,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,1,36,0.027777777777777776
+6367676c1a6d9265ec018220,True,True,3,32,35,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,37,0.05405405405405406
+6367676c1a6d9265ec018223,True,True,12,2,14,5,"CodeLlama-7b-Instruct-hf, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,14,0.0
+6367676d1a6d9265ec018229,False,True,0,12,12,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,2,14,0.14285714285714285
+636767781a6d9265ec018250,False,True,0,16,16,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",False,15,31,0.4838709677419355
+636767791a6d9265ec01826d,False,True,0,19,19,4,"CodeLlama-7b-Instruct-hf, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,9,28,0.32142857142857145
+6367677b1a6d9265ec0182bd,False,True,0,21,21,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",False,4,25,0.16
+6367677d1a6d9265ec0182fd,True,True,16,20,36,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,36,0.0
+6367677e1a6d9265ec01830f,False,True,0,15,15,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,19,34,0.5588235294117647
+6367677e1a6d9265ec01832e,False,True,0,16,16,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,6,22,0.2727272727272727
+6367677f1a6d9265ec018347,False,True,0,23,23,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,13,36,0.3611111111111111
+6367677f1a6d9265ec01834b,False,True,0,14,14,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,10,24,0.4166666666666667
+636767821a6d9265ec0183a0,True,True,14,6,20,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",True,3,23,0.13043478260869565
+636767821a6d9265ec0183ab,True,True,2,12,14,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,11,25,0.44
+636767831a6d9265ec0183c9,False,True,0,21,21,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,5,26,0.19230769230769232
+636767841a6d9265ec0183e8,False,True,0,16,16,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,14,30,0.4666666666666667
+636767861a6d9265ec018440,False,True,0,30,30,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,4,34,0.11764705882352941
+636767861a6d9265ec01844c,False,True,0,20,20,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,13,33,0.3939393939393939
+636767871a6d9265ec01846d,True,True,15,19,34,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",True,0,34,0.0
+636767a21a6d9265ec018517,False,True,0,19,19,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,21,40,0.525
+636767a31a6d9265ec01854f,False,True,0,14,14,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, gpt-4-turbo, starcoder2-7b",False,16,30,0.5333333333333333
+636767a31a6d9265ec018552,False,True,0,16,16,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,10,26,0.38461538461538464
+636767a41a6d9265ec01856c,False,True,0,32,32,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,1,33,0.030303030303030304
+636767a41a6d9265ec018572,True,True,3,22,25,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,10,35,0.2857142857142857
+636767a41a6d9265ec01857e,True,True,15,7,22,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,0,22,0.0
+636767a41a6d9265ec018582,False,True,0,27,27,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,4,31,0.12903225806451613
+636767a51a6d9265ec01859d,True,True,2,11,13,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,19,32,0.59375
+636767a61a6d9265ec0185b7,False,True,0,29,29,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,0,29,0.0
+636767a81a6d9265ec0185fc,False,True,0,31,31,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,9,40,0.225
+636767aa1a6d9265ec01864a,False,True,0,13,13,4,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,22,35,0.6285714285714286
+636767ab1a6d9265ec018676,True,True,14,4,18,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",True,0,18,0.0
+636767dc1a6d9265ec0186be,True,True,6,26,32,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,1,33,0.030303030303030304
+636767dc1a6d9265ec0186cb,False,True,0,16,16,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,13,29,0.4482758620689655
+636767dd1a6d9265ec0186de,True,True,7,8,15,5,"CodeLlama-7b-Instruct-hf, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,3,18,0.16666666666666666
+636767dd1a6d9265ec0186e5,False,True,0,18,18,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo",False,13,31,0.41935483870967744
+636767dd1a6d9265ec0186f3,False,True,0,11,11,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,17,28,0.6071428571428571
+636767de1a6d9265ec01871c,False,True,0,22,22,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,9,31,0.2903225806451613
+636767df1a6d9265ec01873c,False,True,0,25,25,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,6,31,0.1935483870967742
+636767df1a6d9265ec018744,False,True,0,28,28,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,3,31,0.0967741935483871
+636767e01a6d9265ec018755,False,True,0,34,34,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,9,43,0.20930232558139536
+636767e01a6d9265ec018764,True,True,7,23,30,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",True,2,32,0.0625
+636767e11a6d9265ec018781,False,True,0,18,18,6,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, gpt-4-turbo, starcoder2-7b",False,13,31,0.41935483870967744
+636767e11a6d9265ec018795,False,True,0,15,15,5,"CodeLlama-7b-Instruct-hf, Phi-3-mini-4k-instruct, Qwen2.5-Coder-7B-Instruct, deepseek-coder-6.7b-instruct, starcoder2-7b",False,23,38,0.6052631578947368
