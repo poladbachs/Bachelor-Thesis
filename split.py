@@ -22,7 +22,7 @@ def parse_enriched_description(text):
     if match:
         examples = match.group(4).strip()
 
-        # 🔥 **Ensure proper line breaks ONLY after (brief note)**
+        # **Ensure proper line breaks ONLY after (brief note)**
         examples = re.sub(r"(\(.*?\))\s*", r"\1\n", examples)  # New line after each (brief note)
 
         return {
