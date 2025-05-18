@@ -52,10 +52,15 @@ Each model was tested across 5 prompt levels (L1–L5) and additional **ablation
 | `patch_subset.py`    | Add 2 missing incorrect cases → 362 rows    |
 | `model_eval.py`      | Run Hugging Face LLMs                       |
 | `comparison_full.py` | Generate accuracy/confusion plots           |
+| `report/`            | LaTeX report source files                   |
 | `results/`           | Evaluation outputs (CSV)                    |
 | `plots/`             | Accuracy + TP/TN/FP/FN charts               |
 | `additional_results/`| Ablation result CSVs                        |
 | `dataset/`           | Final 362-row dataset                       |
+
+---
+
+📄 The **Project Report (PDF)** is available in the `report/` folder alongside with LaTeX source files.
 
 ---
 
