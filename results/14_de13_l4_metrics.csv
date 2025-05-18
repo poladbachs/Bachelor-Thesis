@@ -1,0 +1,6 @@
+Metric,Value
+True Positives,151.0
+True Negatives,4.0
+False Positives,154.0
+False Negatives,2.0
+Accuracy,0.4281767955801105

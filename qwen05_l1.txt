@@ -1,9 +1,0 @@
-TP (89): Correct impls predicted correctly
-
-TN (99): Incorrect impls predicted correctly
-
-FP (79): Incorrect impls judged as correct
-
-FN (92): Correct impls judged as incorrect
-
-Accuracy: 51.9%
