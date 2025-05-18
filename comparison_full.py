@@ -101,7 +101,7 @@ for model in models:
                         textcoords='offset points')
 
     plt.tight_layout()
-    plt.savefig(f"{model}_matrix_metrics.png")
+    plt.savefig(f"plots/{model}_matrix_metrics.png")
     plt.close()
 
 # ------------------ Accuracy ------------------
@@ -131,7 +131,7 @@ for p in ax2.patches:
                      textcoords='offset points')
 
 plt.tight_layout()
-plt.savefig("accuracy_comparison.png")
+plt.savefig("plots/accuracy_comparison.png")
 plt.close()
 
 print("DONE: Charts saved for matrix metrics (per model) and accuracy.")
