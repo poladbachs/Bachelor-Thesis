@@ -35,7 +35,7 @@ Each model was tested across 5 prompt levels (L1–L5) and additional **ablation
 - Metrics: Accuracy, TP, TN, FP, FN
 - Results:
   - `results/`: 15 full runs (3 models × 5 levels)  
-  - `additional_results/`: ablation runs (e.g. without L3)  
+  - `additional_results/`: ablation runs (e.g. without L4 (examples))  
   - `plots/`: visual comparisons (accuracy and confusion)  
 
 ---
