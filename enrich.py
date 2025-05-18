@@ -11,8 +11,8 @@ if not API_KEY:
 
 client = openai.OpenAI(api_key=API_KEY)
 
-CSV_INPUT_PATH = "CoderEval4Java_Raw_Filtered.csv"
-CSV_OUTPUT_PATH = "CoderEval4Java_Enriched.csv"
+CSV_INPUT_PATH = "CoderEval/CoderEval4Java_Raw_Filtered.csv"
+CSV_OUTPUT_PATH = "CoderEval/CoderEval4Java_Enriched.csv"
 
 df = pd.read_csv(CSV_INPUT_PATH)
 

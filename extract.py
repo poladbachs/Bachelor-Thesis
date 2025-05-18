@@ -1,8 +1,8 @@
 import json
 import pandas as pd
 
-JSON_INPUT_PATH = "CoderEval4Java.json"
-CSV_OUTPUT_PATH = "CoderEval4Java_Raw_Filtered.csv"
+JSON_INPUT_PATH = "CoderEval/CoderEval4Java.json"
+CSV_OUTPUT_PATH = "CoderEval/CoderEval4Java_Raw_Filtered.csv"
 
 EXCLUDED_IDS = {
     "6367667f1a6d9265ec017458", "6367667d1a6d9265ec0173ff", "636766821a6d9265ec0174d2",

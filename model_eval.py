@@ -5,10 +5,10 @@ import torch
 
 # CONFIG
 MODEL_NAME = "deepseek-ai/deepseek-coder-1.3b-instruct"
-INPUT_CSV = "subset_362_final.csv"
-OUTPUT_CSV = "25_de13_nol5.csv"
-RAW_OUTPUTS_TXT = "25_de13_nol5_output.txt"
-METRICS_CSV = "25_de13_nol5_metrics.csv"
+INPUT_CSV = "dataset/subset_362_final.csv"
+OUTPUT_CSV = "results/25_de13_nol5.csv"
+RAW_OUTPUTS_TXT = "results/25_de13_nol5_output.txt"
+METRICS_CSV = "results/25_de13_nol5_metrics.csv"
 TEMPERATURE = 0.2
 
 # Load model

@@ -2,8 +2,8 @@ import pandas as pd
 import re
 
 # Input and output CSV paths
-INPUT_CSV = "CoderEval4Java_Enriched2.csv"
-OUTPUT_CSV = "CoderEval4Java_Split5.csv"
+INPUT_CSV = "CoderEval/CoderEval4Java_Enriched.csv"
+OUTPUT_CSV = "CoderEval/CoderEval4Java_Split.csv"
 
 def parse_enriched_description(text):
     """

@@ -1,7 +1,7 @@
 import pandas as pd
 
-INPUT_CSV = "subset_360.csv"
-OUTPUT_CSV = "subset_362_final.csv"
+INPUT_CSV = "dataset/subset_360.csv"
+OUTPUT_CSV = "dataset/subset_362_final.csv"
 
 manual_injections = {
     "6367670a1a6d9265ec0179cf": """public static char toChar(final Character ch, final char defaultValue){

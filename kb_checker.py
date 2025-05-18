@@ -2,9 +2,9 @@ import pandas as pd
 import re
 
 # File paths
-RAW_KB_CSV = "knowlbase_codereval.csv"
-CLEAN_KB_CSV = "kb_clean.csv"
-KB_RESULTS_CSV = "kb_check_results.csv"
+RAW_KB_CSV = "CoderEval/knowlbase_codereval.csv"
+CLEAN_KB_CSV = "dataset/kb_clean.csv"
+KB_RESULTS_CSV = "dataset/kb_check_results.csv"
 
 def is_trivial(code):
     """
