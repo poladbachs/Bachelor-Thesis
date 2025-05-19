@@ -132,7 +132,7 @@ The application of Large Language Models (LLMs) as evaluators in software engine
 \section{Study Design}\label{sec:design}
 
 \subsection*{Research question}
-\noindent\textbf{RQ} –  
+\noindent\textbf{RQ} -  
 \emph{To what extent the information reported in the code description impact the ability of the LLMs to judge the correctness of a given code?}
 
 \subsection{Models evaluated}\label{sec:models}
@@ -198,7 +198,7 @@ TP, TN, FP, FN; Accuracy = (TP+TN)/362.
 We observe clear divergence in how each model responds to additional natural-language context:
 
 \begin{itemize}[leftmargin=12pt]
-  \item \textbf{Qwen-0.5B}: After stagnating on L1–L2, the model improves through L3 and L4, peaking at 0.511. L5 slightly degrades performance, suggesting diminishing returns or confusion from formal logic.
+  \item \textbf{Qwen-0.5B}: After stagnating on L1-L2, the model improves through L3 and L4, peaking at 0.511. L5 slightly degrades performance, suggesting diminishing returns or confusion from formal logic.
   
   \item \textbf{Qwen-1.5B}: Displays consistent benefit from each additional layer, rising steadily to 0.575 at L5. This model appears to handle verbosity well and leverages the full specification.
 
@@ -248,12 +248,12 @@ Despite its comparable size, DeepSeek behaves like a brittle small model in judg
 \subsection{Single-layer ablations}
 
 \begin{table}[H]\centering
-\caption{Accuracy after removing one layer (Δ vs. full L1–L5).}
+\caption{Accuracy after removing one layer. Values in parentheses show the change relative to the full prompt (L1--L5).}
 \begin{tabular}{lccc}
 \toprule
 \textbf{Model} & \textbf{No L1} & \textbf{No L2} & \textbf{No L4} \\ \midrule
-Qwen-0.5B  & 0.481 (–0.025) & \textbf{0.450 (–0.056)} & 0.494 (–0.012) \\
-Qwen-1.5B  & 0.572 (–0.003) & 0.558 (–0.017) & 0.552 (–0.023) \\
+Qwen-0.5B  & 0.481 (-0.025) & \textbf{0.450 (-0.056)} & 0.494 (-0.012) \\
+Qwen-1.5B  & 0.572 (-0.003) & 0.558 (-0.017) & 0.552 (-0.023) \\
 DeepSeek-1.3B & \textbf{0.500 (+0.099)} & 0.434 (+0.034) & 0.428 (+0.028) \\
 \bottomrule
 \end{tabular}
@@ -261,9 +261,10 @@ DeepSeek-1.3B & \textbf{0.500 (+0.099)} & 0.434 (+0.034) & 0.428 (+0.028) \\
 
 \paragraph*{Interpretation.}
 \begin{itemize}[leftmargin=12pt,itemsep=0pt]
-  \item Removing behaviour (L2) cripples Qwen-0.5B (–5.6pp) ⇒ small model needs that layer.  
+  \item Removing behaviour (L2) cripples Qwen-0.5B (-5.6pp) $A \Rightarrow B$
+ small model needs that layer.  
   \item Summary (L1) is useless or noisy for DeepSeek (+9.9pp when removed).  
-  \item Qwen-1.5B tolerates all removals (≤2 pp), showing robustness.
+  \item Qwen-1.5B tolerates all removals ($\leq$2pp), showing robustness.
 \end{itemize}
 
 \subsection{Compound ablations (illustrative)}
@@ -271,8 +272,8 @@ DeepSeek-1.3B & \textbf{0.500 (+0.099)} & 0.434 (+0.034) & 0.428 (+0.028) \\
 For space we discuss one illustrative combo per model:
 
 \begin{itemize}[leftmargin=12pt]
-  \item \textbf{Qwen-0.5B No L1 \& No L4}: accuracy 0.506 (–0.006 vs. full) — removing summary offsets example noise.  
-  \item \textbf{Qwen-1.5B No L1 \& No L4}: 0.558 (–0.017) — examples help this model.  
+  \item \textbf{Qwen-0.5B No L1 \& No L4}: accuracy 0.506 (-0.006 vs. full) — removing summary offsets example noise.  
+  \item \textbf{Qwen-1.5B No L1 \& No L4}: 0.558 (-0.017) — examples help this model.  
   \item \textbf{DeepSeek No L2 \& No L4}: 0.478 (+0.078) — minimal prompt is best.  
 \end{itemize}
 
@@ -289,9 +290,9 @@ Manual error analysis highlights three patterns:
 \section{Conclusions \& Future Work}\label{sec:concl}
 
 \begin{itemize}[leftmargin=12pt]
-  \item Moderate enrichment (+behaviour, +signature) boosts small models (+8 pp).  
+  \item Moderate enrichment (+behaviour, +signature) boosts small models (+8pp).  
   \item Verbose layers (examples, formal conditions) help mid-size models but harm 0.5 B and DeepSeek.  
-  \item Removing noisy layers (summary or examples) can recover performance (DeepSeek +10 pp).  
+  \item Removing noisy layers (summary or examples) can recover performance (DeepSeek +10pp).  
 \end{itemize}
 
 \textbf{Next steps}.  
