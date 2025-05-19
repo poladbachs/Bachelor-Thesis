@@ -45,55 +45,15 @@ The study highlights the importance of model-specific prompt design and shows th
 
 % ——————————————————————————— 1 INTRODUCTION
 \section{Introduction}\label{sec:intro}
-
-\subsection{LLMs and the promise of autonomous code review}
-
-Tools such as GitHub Copilot, ChatGPT Code Interpreter, and StarCoder have moved LLMs from research prototypes into the daily workflow of developers. Beyond generating or explaining code, a natural next milestone is \emph{autonomous code review}—having the model assess whether an implementation correctly matches a given specification. At the core of this task is the LLM’s ability to judge \textbf{functional correctness}.
-
-\subsection{Why correctness judgement matters}
-
-Failure to judge correctness accurately can cause critical issues in two major settings:
-
-\begin{enumerate}[label=\textbf{S\arabic*},leftmargin=14pt,itemsep=0pt]
-  \item \textbf{Pull-request triage}: Models that approve buggy code or reject valid patches mislead developers and reduce trust in automation.
-  \item \textbf{Self-refinement loops}: Recent LLM-based code generators incorporate feedback loops where the model critiques and iteratively improves its own output. These loops are only effective if the internal judge is reliable.
-\end{enumerate}
-
-\subsection{Gaps in current understanding}
-
-While LLMs have shown impressive results in generation and repair tasks, their reliability in correctness judgment remains underexplored. Moreover, existing benchmarks often include only short or vague natural-language descriptions, potentially limiting the model’s reasoning capability.
-
-\subsection{Our hypothesis: prompt complexity vs. model capacity}
-
-Intuitively, richer natural-language context should help LLMs reason more accurately. But overly verbose prompts may contain redundancy, ambiguity, or distractions. We hypothesize that:
-
-\begin{quote}
-\centering
-\emph{Smaller models benefit from concise, focused descriptions, while larger models can exploit more detailed and structured context.}
-\end{quote}
-
-\subsection{Approach overview}
-
-To test this hypothesis, we extended the \textsc{CoderEval} benchmark with five structured documentation layers:
-
-\begin{itemize}[leftmargin=14pt]
-  \item L1: one-line summary,
-  \item L2: behavioral description,
-  \item L3: signature semantics,
-  \item L4: examples (input/output),
-  \item L5: pre- and post-conditions.
-\end{itemize}
-We ran three instruction-tuned LLMs (Qwen-0.5B, Qwen-1.5B, DeepSeek-1.3B) on 362 function–candidate pairs, testing both \textit{cumulative} prompts (gradually adding more documentation layers) and \textit{ablation} prompts (removing one specific layer at a time to isolate its impact, if any). A unified evaluation pipeline was used to measure accuracy and confusion metrics.
-
-\subsection{Key insights}
-
-Our findings confirm the importance of tailoring prompts to model capacity:
-
-\begin{itemize}[leftmargin=14pt]
-  \item Small models improve with behavior descriptions but are easily misled by verbose context.
-  \item Larger models leverage all five layers to reduce misclassifications and false negatives.
-  \item Some documentation elements (e.g., examples) can hurt performance if not well-integrated.
-\end{itemize}
+Large Language Models (LLMs) such as ChatGPT, GitHub Copilot, and StarCoder have become widely adopted in software development workflows. Originally developed for general language understanding, these models have rapidly gained traction in code-related tasks, including code generation, explanation, repair, and synthesis. Researchers are increasingly exploring the use of LLMs for more advanced code understanding tasks, such as debugging, static analysis, and functional correctness evaluation.\\
+\\[2pt]
+Among the many challenges in this space, one particularly important question is whether LLMs can serve as reliable evaluators of automatically generated code. In industrial settings, such as at Google, the proportion of code written or assisted by machine learning systems is steadily increasing. However, verifying the correctness of such code remains an open problem. Traditional techniques like writing unit tests are time-consuming and require substantial human effort, creating a bottleneck in workflows that rely heavily on automated code generation. This motivates the need for automatic, oracle-free evaluation mechanisms capable of assessing whether a candidate implementation adheres to a given specification.\\
+\\[2pt]
+Despite promising results in code generation, LLMs’ reliability in evaluating correctness remains underexplored. Much of the existing work focuses on generation benchmarks with minimal or vague natural language descriptions, which offer limited insight into how models reason about correctness. Furthermore, it is unclear how the structure and depth of the task description impact the model’s evaluation ability.\\
+\\[2pt]
+In this work, we investigate whether more detailed and structured descriptions help LLMs better judge the correctness of candidate implementations. Specifically, we extend the \textsc{CoderEval} benchmark by enriching each function with five levels of natural language documentation, ranging from a one-line summary to detailed behavioral, signature-level, example-based, and pre/postcondition specifications. We evaluate three instruction-tuned models—Qwen-0.5B, Qwen-1.5B, and DeepSeek-1.3B—across 362 function–candidate pairs, comparing their accuracy under cumulative and ablation prompt settings.\\
+\\[2pt]
+Our results suggest that model capacity plays a significant role in how different types of documentation are utilized. Smaller models, such as Qwen-0.5B, benefit from concise behavioral context but are negatively impacted by verbose or redundant input. In contrast, Qwen-1.5B leverages detailed structure effectively, showing consistent accuracy gains as more layers are added. Meanwhile, DeepSeek-1.3B performs best with minimal input and degrades when faced with richer prompts—suggesting sensitivity to verbosity and limited ability to exploit complex descriptions. These findings highlight the importance of prompt design in aligning LLM reasoning with software correctness.
 
 \subsection*{Report structure}
 
@@ -105,34 +65,26 @@ Section~\ref{sec:concl} concludes and outlines future directions.
 % ——————————————————————————— 2 RELATED WORK
 \section{Related Work}\label{sec:related}
 
-The application of Large Language Models (LLMs) as evaluators in software engineering tasks has garnered significant attention. This section reviews pivotal studies that explore LLMs' capabilities in assessing code correctness, understanding, and alignment with coding preferences, providing context and contrast to our investigation into LLM-based code correctness judgment.
-
-\subsection{LLMs as Judges: Datasets and Benchmarks}
-
-\textbf{CodeUltraFeedback} by Weyssow et al.~\cite{weyssow2024codeultrafeedback} introduces a dataset comprising 10,000 coding instructions, each annotated with responses from 14 diverse LLMs. These responses are evaluated based on five coding preferences: instruction following, code explanation, code complexity and efficiency, code readability, and coding style. GPT-3.5 serves as the judge to rank these responses. The study demonstrates that fine-tuning models like CodeLlama-7B-Instruct using this dataset can outperform larger models in aligning with coding preferences and improving functional correctness on benchmarks like HumanEval+. This work underscores the potential of LLMs not only in code generation but also in nuanced evaluation tasks, aligning closely with our focus on LLMs as code correctness judges.\\
+The use of Large Language Models (LLMs) for code understanding and evaluation has become an active area of research. While LLMs have demonstrated impressive capabilities in code generation tasks, recent work highlights a critical gap in their ability to evaluate or judge the correctness of code—a task that requires genuine semantic understanding rather than pattern memorization.\\
 \\[2pt]
-\textbf{CodeJudge-Eval} by Zhao et al.~\cite{zhao2024codejudgeeval} presents a benchmark designed to evaluate LLMs' code understanding abilities from the perspective of code judging rather than code generation. The benchmark includes tasks where models must determine the correctness of provided code solutions, including those with subtle errors or compilation issues. Evaluations of 12 prominent LLMs reveal that even state-of-the-art models struggle with this task, highlighting the need for improved code understanding in LLMs. This benchmark provides a direct comparison point for our study, emphasizing the challenges LLMs face in accurately assessing code correctness.\\
+Several studies have investigated this limitation. West et al.~\cite{west2023generative} introduce the "Generative AI Paradox", noting that models often produce high-quality outputs without fully understanding them. Gu et al.~\cite{gu2024counterfeit} further expose this gap through the "Counterfeit Conundrum", showing that LLMs struggle to recognize subtle flaws in their own generations. These findings suggest that correctness judgment is a non-trivial challenge, especially in the absence of explicit oracles such as test cases.\\
 \\[2pt]
-\textbf{ICE-Score} introduced by Zhuo~\cite{zhuo2023icescore} proposes an evaluation metric that instructs LLMs to assess code quality, addressing the limitations of traditional token-matching metrics like BLEU. ICE-Score correlates more strongly with functional correctness and human preferences, eliminating the need for test oracles or reference implementations. Evaluations across four programming languages demonstrate its effectiveness in aligning with human judgments. This approach aligns with our methodology of leveraging LLMs for code evaluation, reinforcing the viability of instruction-based assessment metrics.
-
-\subsection{Understanding LLM Limitations in Code Evaluation}
-
-\textbf{The Generative AI Paradox} by West et al.~\cite{west2023generative} explores the discrepancy between the generative capabilities of LLMs and their understanding of the generated content. The study finds that while models can produce outputs that surpass human performance, they often lack a deep understanding of the content, leading to brittleness and susceptibility to adversarial inputs. This paradox underscores the challenges in relying on LLMs for tasks that require genuine comprehension, a concern directly relevant to our investigation into LLM-based code correctness judgment.\\
+In response to this, researchers have proposed new benchmarks and evaluation strategies. Zhao et al.~\cite{zhao2024codejudgeeval} present CodeJudge-Eval, a benchmark specifically designed to test whether LLMs can distinguish correct from incorrect implementations. The results reveal that even strong models frequently misclassify buggy or misleading solutions, reinforcing that functional correctness evaluation remains an open question. Similarly, Zhuo~\cite{zhuo2023icescore} introduces ICE-Score, an instruction-based metric where LLMs are explicitly guided to assess code correctness and quality. This approach avoids traditional test-based evaluation and aligns with the growing interest in oracle-free evaluation pipelines.\\
 \\[2pt]
-\textbf{The Counterfeit Conundrum} by Gu et al.~\cite{gu2024counterfeit} investigates whether code language models can discern the nuances of their incorrect generations, termed "counterfeits." The study identifies three primary failure modes: models misclassify incorrect code as correct, struggle to reason about the execution behavior of counterfeits, and often fail to repair them effectively. These findings highlight the shallow understanding LLMs have of their erroneous outputs, emphasizing the need for improved evaluation mechanisms, as pursued in our research.
-
-\subsection{LLMs in Educational Contexts and Evaluation Frameworks}
-
-\textbf{Evaluating Language Models for Generating and Judging Programming Feedback} by Koutcheme et al.~\cite{koutcheme2025evaluating} assesses the efficiency of open-source LLMs in generating high-quality feedback for programming assignments and judging the quality of programming feedback. Their evaluations on a dataset of students' submissions to introductory Python programming exercises suggest that state-of-the-art open-source LLMs are nearly at the same level with proprietary models in both generating and assessing programming feedback. This finding underscores the potential of open-source models in educational contexts and the importance of further research in this area, complementing our focus on LLMs' evaluative capabilities.\\
+Building on ICE-Score, Tong and Zhang~\cite{tong2024codejudge} propose CodeJudge, a more structured framework where LLMs are prompted to follow a multi-step "slow thinking" process before rendering a correctness decision. Their results demonstrate that structured prompting can significantly improve evaluation quality, even when using relatively small models. Our study builds on these insights by also employing layered prompt structures but focuses more explicitly on how the level of detail and structure in descriptions interacts with model capacity.\\
 \\[2pt]
-\textbf{CodeJudge} by Tong and Zhang~\cite{tong2024codejudge} proposes a framework that leverages LLMs to evaluate the semantic correctness of generated code without relying on test cases. The approach involves guiding LLMs through a "slow thinking" process to perform in-depth evaluations. Experiments across four code generation datasets and five programming languages show that CodeJudge outperforms existing methods, achieving better results even with smaller models like Llama-3-8B-Instruct. This framework aligns with our objective of enhancing LLM-based code evaluation, offering insights into effective evaluation strategies.
+Other efforts have focused on aligning LLM judgments with human preferences or pedagogical goals. Weyssow et al.~\cite{weyssow2024codeultrafeedback} introduce CodeUltraFeedback, a dataset where 14 LLMs respond to coding instructions and are judged on dimensions such as readability, style, and instruction-following. Their findings suggest that LLMs can be aligned to human-like evaluation standards through supervised fine-tuning. While our work also investigates LLMs-as-judges, our focus is on functional correctness rather than stylistic alignment.\\
+\\[2pt]
+The educational domain provides additional context. Koutcheme et al.~\cite{koutcheme2025evaluating} explore whether LLMs can generate and assess programming feedback in student assignments. Their findings suggest that LLMs—both open-source and proprietary—are approaching the reliability of human graders in introductory programming contexts. Though focused on feedback generation rather than correctness verification, this line of work highlights the growing confidence in LLM-based evaluation systems.\\
+\\[2pt]
+In summary, prior work has identified the limits of current LLMs in judging code, proposed structured prompting techniques and evaluation metrics, and explored domain-specific use cases. Our study complements these directions by systematically varying the structure and depth of prompt documentation and examining how different model sizes respond to these changes in the context of correctness judgment.
 
 
 % ——————————————————————————— 3 STUDY DESIGN
 \section{Study Design}\label{sec:design}
 
 \subsection*{Research question}
-\noindent\textbf{RQ} -  
+\noindent\textbf{RQ} –  
 \emph{To what extent the information reported in the code description impact the ability of the LLMs to judge the correctness of a given code?}
 
 \subsection{Models evaluated}\label{sec:models}
@@ -198,7 +150,7 @@ TP, TN, FP, FN; Accuracy = (TP+TN)/362.
 We observe clear divergence in how each model responds to additional natural-language context:
 
 \begin{itemize}[leftmargin=12pt]
-  \item \textbf{Qwen-0.5B}: After stagnating on L1-L2, the model improves through L3 and L4, peaking at 0.511. L5 slightly degrades performance, suggesting diminishing returns or confusion from formal logic.
+  \item \textbf{Qwen-0.5B}: After stagnating on L1–L2, the model improves through L3 and L4, peaking at 0.511. L5 slightly degrades performance, suggesting diminishing returns or confusion from formal logic.
   
   \item \textbf{Qwen-1.5B}: Displays consistent benefit from each additional layer, rising steadily to 0.575 at L5. This model appears to handle verbosity well and leverages the full specification.
 
@@ -252,8 +204,8 @@ Despite its comparable size, DeepSeek behaves like a brittle small model in judg
 \begin{tabular}{lccc}
 \toprule
 \textbf{Model} & \textbf{No L1} & \textbf{No L2} & \textbf{No L4} \\ \midrule
-Qwen-0.5B  & 0.481 (-0.025) & \textbf{0.450 (-0.056)} & 0.494 (-0.012) \\
-Qwen-1.5B  & 0.572 (-0.003) & 0.558 (-0.017) & 0.552 (-0.023) \\
+Qwen-0.5B  & 0.481 (–0.025) & \textbf{0.450 (–0.056)} & 0.494 (–0.012) \\
+Qwen-1.5B  & 0.572 (–0.003) & 0.558 (–0.017) & 0.552 (–0.023) \\
 DeepSeek-1.3B & \textbf{0.500 (+0.099)} & 0.434 (+0.034) & 0.428 (+0.028) \\
 \bottomrule
 \end{tabular}
@@ -261,7 +213,7 @@ DeepSeek-1.3B & \textbf{0.500 (+0.099)} & 0.434 (+0.034) & 0.428 (+0.028) \\
 
 \paragraph*{Interpretation.}
 \begin{itemize}[leftmargin=12pt,itemsep=0pt]
-  \item Removing behaviour (L2) cripples Qwen-0.5B (-5.6pp) $A \Rightarrow B$
+  \item Removing behaviour (L2) cripples Qwen-0.5B (–5.6pp) $A \Rightarrow B$
  small model needs that layer.  
   \item Summary (L1) is useless or noisy for DeepSeek (+9.9pp when removed).  
   \item Qwen-1.5B tolerates all removals ($\leq$2pp), showing robustness.
@@ -272,8 +224,8 @@ DeepSeek-1.3B & \textbf{0.500 (+0.099)} & 0.434 (+0.034) & 0.428 (+0.028) \\
 For space we discuss one illustrative combo per model:
 
 \begin{itemize}[leftmargin=12pt]
-  \item \textbf{Qwen-0.5B No L1 \& No L4}: accuracy 0.506 (-0.006 vs. full) — removing summary offsets example noise.  
-  \item \textbf{Qwen-1.5B No L1 \& No L4}: 0.558 (-0.017) — examples help this model.  
+  \item \textbf{Qwen-0.5B No L1 \& No L4}: accuracy 0.506 (–0.006 vs. full) — removing summary offsets example noise.  
+  \item \textbf{Qwen-1.5B No L1 \& No L4}: 0.558 (–0.017) — examples help this model.  
   \item \textbf{DeepSeek No L2 \& No L4}: 0.478 (+0.078) — minimal prompt is best.  
 \end{itemize}
 
