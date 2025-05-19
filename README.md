@@ -1,5 +1,5 @@
 # LLM as Code Correctness Judge (Bachelor Thesis)
-![Image](https://github.com/user-attachments/assets/f0d5eb85-6473-421d-9cd2-319d35c0fd25)
+![Image](https://github.com/user-attachments/assets/8f18475b-2ae8-4d60-81db-5c59f34137cd)
 
 Evaluate if instruction-tuned LLMs can judge **Java function correctness**.  
 Models classify candidate implementations as either **correct (1)** or **wrong (0)**.
