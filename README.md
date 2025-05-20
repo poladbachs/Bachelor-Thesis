@@ -40,6 +40,19 @@ Each model was tested across 5 prompt levels (L1–L5) and additional **ablation
 
 ---
 
+## 🛠️ Tech Stack
+
+| Tool / Library              | Purpose                                             |
+|-----------------------------|-----------------------------------------------------|
+| **Python**                  | Core scripting and orchestration                    |
+| **Java**                  | Dataset language (functions + candidates)                    |
+| **Hugging Face Transformers** | Inference with Qwen and DeepSeek models             |
+| **OpenAI API**     | Prompt enrichment for multi-level descriptions      |
+| **Pandas**                  | Data manipulation and CSV handling                  |
+| **Matplotlib** / **Seaborn**| Accuracy/confusion chart plotting  
+
+---
+
 ## 📁 Project Structure
 
 | Path                 | Description                                 |
