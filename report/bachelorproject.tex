@@ -84,54 +84,81 @@ In summary, the field is converging on the idea that LLMs can act as judges, but
 \section{Study Design}\label{sec:design}
 
 \subsection*{Research question}
-\noindent\textbf{RQ} –  
-\emph{To what extent the information reported in the code description impact the ability of the LLMs to judge the correctness of a given code?}
+\noindent\textbf{RQ –} \emph{To what extent does the quality and depth of natural language documentation affect the ability of LLMs to judge the correctness of a given Java function?}
 
-\subsection{Models evaluated}\label{sec:models}
-\begin{itemize}[leftmargin=12pt,itemsep=1pt]
-  \item \textbf{Qwen-0.5B Instruct} (0.5 B params).  
-  \item \textbf{Qwen-1.5B Instruct} (1.5 B).  
-  \item \textbf{DeepSeek-Coder-1.3B Instruct}.  
-\end{itemize}
+\subsection{Context: LLMs}\label{sec:llms}
+We selected three instruction-tuned LLMs of relatively small size to simulate cost-efficient evaluation scenarios: \textbf{Qwen2.5-Coder-0.5B-Instruct} and \textbf{Qwen2.5-Coder-1.5B-Instruct}~\cite{qwen2024repo}, both from Alibaba’s Qwen family, and \textbf{DeepSeek-Coder-1.3B-Instruct}~\cite{deepseek2024repo}. These models are available on Hugging Face and optimized for multi-turn interaction with structured task prompts. Each model was prompted in identical conditions, across five enrichment levels and multiple ablation runs, to evaluate how their judgment accuracy evolved as more semantic information was added—or selectively removed—from the prompt.
 
-\subsection{Dataset}\label{sec:dataset}
-From the Java subset of \textsc{CoderEval}:
-\begin{enumerate}[label=\alph*),leftmargin=14pt,itemsep=0pt]
-  \item Removed noisy IDs.  
-  \item For each remaining ID, selected one correct and one incorrect candidate (existing model outputs).  
+\subsection{Context: Dataset}\label{sec:dataset}
+Our base dataset is the publicly available Java subset of the \textsc{CoderEval} benchmark~\cite{coderEval2023}, a manually verified corpus of real-world Java functions with associated candidate implementations. We started with 230 function IDs and removed 49 based on prior TA-provided exclusion criteria (e.g., functions that were duplicates, ambiguous, or noisy), ending with 181 valid functions. Each function includes the original code, a natural language docstring, and a human-assigned correctness label. However, in its raw form, \textsc{CoderEval} is generation-focused and lacks structured documentation layers. We therefore augmented each instance with a richer, five-part description to enable code understanding evaluation.
+
+\subsection{Data Collection}\label{sec:collection}
+
+\subsubsection{Augmenting the code generation dataset}\label{sec:augmentation}
+To transform \textsc{CoderEval} from a code generation benchmark into a code understanding benchmark, we enriched each Java function with a multi-level natural language description. This transformation was performed using GPT-4o, guided by a custom prompt that forced the model to output structured information in five distinct documentation layers:
+\begin{enumerate}[leftmargin=15pt]
+  \item[\textbf{L1}] \textbf{Summary}: a concise one-sentence description of the function's high-level purpose, strictly excluding edge cases.
+  \item[\textbf{L2}] \textbf{Behavioral description}: a 1--2 sentence narrative detailing the function’s logic, including how edge cases and special conditions are handled.
+  \item[\textbf{L3}] \textbf{Signature explanation}: structured tags describing the meaning of each parameter and the return value (\texttt{@param}, \texttt{@return}, \texttt{@throws}), if applicable.
+  \item[\textbf{L4}] \textbf{Examples}: several one-line input–output pairs with explanatory notes clarifying expected behavior.
+  \item[\textbf{L5}] \textbf{Preconditions and postconditions}: short logical statements capturing required input constraints and expected output guarantees.
 \end{enumerate}
-Final size: \textbf{362} rows (balanced).
+The input to GPT-4o consisted of the full function body and its name, and the output was strictly constrained to follow the five-part format with no extra commentary or filler tokens. During development, multiple iterations of the prompt were tested to reduce verbosity, ensure syntactic consistency, and avoid contamination of L1 with behavioral detail.\\
+\\[2pt]
+Once the final prompt format was locked, we generated all five layers for the full set of 181 function IDs. We manually inspected and corrected the outputs for all rows, initially spot-checking 20–30 examples, then proceeding to a full sweep. Particular attention was paid to ensuring:
+\begin{itemize}[leftmargin=12pt]
+  \item L1 never included edge cases or technical terms.
+  \item L2 correctly expanded the logic and covered edge behavior.
+  \item L3 tags were accurate and omitted irrelevant fields.
+  \item L4 examples reflected both standard and boundary behavior.
+  \item L5 constraints were logically sound and matched the function logic.
+\end{itemize}
+After parsing the output into structured columns, the enriched dataset was stored in CSV format, ready for prompt composition.
 
-\subsection{Documentation layers}\label{sec:layers}
-\begin{description}[style=nextline,leftmargin=15pt]
-  \item[L1] Summary (1 sentence).  
-  \item[L2] Behaviour narrative (detailed summary).  
-  \item[L3] Signature description (argument/return semantics).  
-  \item[L4] Examples (I/O pairs).  
-  \item[L5] Pre/post-conditions.  
-\end{description}
-ChatGPT-4o generated all layers for each of 181 Java functions.
+\subsubsection{Generating the LLM’s judgments}\label{sec:judgments}
+To evaluate whether LLMs can judge functional correctness from natural language descriptions, we paired each of the 181 functions with two candidate implementations: one correct and one incorrect. These implementations were selected from the official CoderEval knowledge base\footnote{\url{https://github.com/poladbachs/Bachelor-Thesis/blob/main/CoderEval/knowlbase_codereval.csv}}, which contains over 5,000 Java methods previously generated by various models.\\
+\\[2pt]
+We applied a strict filtering process to clean this pool and remove trivial or placeholder code. The cleaning was done using a custom script that rejected candidates based on several heuristics:
+\begin{itemize}[leftmargin=12pt]
+  \item Contained known placeholder phrases such as \texttt{“TODO”}, \texttt{“not implemented”}, \texttt{“assuming”}, etc.
+  \item Contained only print statements or placeholder bodies, such as \texttt{System.out.println("To be implemented");}.
+\item Had extremely low information density, for example: \texttt{return;} or \texttt{return 0;}.
+\item Consisted of vague pseudocode or empty shells without logic, such as \texttt{/* implementation goes here */}.
+\end{itemize}
+For each function, we then attempted to find one correct and one incorrect candidate from the filtered KB. When multiple valid candidates existed, a random sample was selected. If no valid correct candidate was found in the KB, we used the official CoderEval reference code as a fallback. If no valid incorrect candidate was found, we either skipped the entry or, in two edge cases, manually injected incorrect candidates by rewriting a correct one into a subtly incorrect form. This process yielded a total of 362 candidate pairs (181 functions × 2), forming a balanced dataset.\\
+\\[2pt]
+Each of the three LLMs—Qwen-0.5B, Qwen-1.5B, and DeepSeek-1.3B—was evaluated using a consistent prompt template. The prompt contained:
+\begin{itemize}[leftmargin=12pt]
+  \item A fixed task instruction: "Judge whether the candidate implementation is correct given the function description."
+  \item A binary output schema: 0 = incorrect, 1 = correct.
+  \item One or more of the five documentation layers (L1–L5), depending on the experimental condition.
+  \item The first line of the candidate function (its signature).
+  \item The full candidate code.
+\end{itemize}
+The models were loaded via Hugging Face Transformers with the following inference settings: temperature 0.2, max\_new\_tokens 20. Prompts were fed in via the tokenizer, and the generated output was parsed to extract either \texttt{0} or \texttt{1}. Any deviations were treated as invalid predictions, outputting None. This pipeline was run across 15 incremental configurations (3 models × 5 levels), plus 8 additional ablation runs where selected layers were removed to analyze their individual contribution to accuracy. All results were logged, converted to structured CSVs, and stored for downstream analysis and visualization.
 
-\subsection{Prompt template}
-\textbf{Constant preamble}: task, label scheme (`0/1`, no extra text).\\
-\textbf{Variable payload}: selected layers + \textit{first line of candidate code} (argument/return).\\
-\textbf{Generation}: temperature 0.2, max\_new\_tokens 20.
 
-\subsection{Experimental conditions}
-\textbf{Incremental} (5 runs):
+\subsection{Data Analysis}\label{sec:analysis}
+We analyzed the model predictions along two experimental axes: prompt enrichment and prompt ablation.\\
+\\[2pt]
+In the \textbf{prompt enrichment setting}, each model was evaluated across five runs:
 \[
 \text{L1};\; \text{L1+L2};\; \text{L1+L2+L3};\; \text{L1+L2+L3+L4};\; \text{L1+L2+L3+L4+L5}
 \]
-\textbf{Ablations}:
-\[
-\text{No L1};\; \text{No L2};\; \text{No L4};\; \text{No L5}
-\]
+This resulted in 15 total runs (3 models × 5 levels). We tracked confusion matrix components—true positives, true negatives, false positives, and false negatives—for each run, and computed accuracy as the primary metric.\\
+\\[2pt]
+We then conducted an \textbf{ablation study} with 8 additional runs. Here, we removed selected documentation levels from the full prompt, isolating their individual contribution. Importantly, the ablations were not exhaustive. Instead, we focused on levels that appeared least influential based on prior analysis—e.g., removing L4 (Examples) or L5 (Pre/postconditions). In some cases, notably with DeepSeek-1.3B, performance improved when L5 was excluded, suggesting that some prompts introduced noise or confusion rather than clarity.\\
+\\[2pt]All outputs and metrics were saved as CSV files, and visualization scripts generated comparative bar plots per model. These allowed us to contrast how models responded to incremental detail versus selective removal of context.
 
-\subsection{Metrics}
-TP, TN, FP, FN; Accuracy = (TP+TN)/362.
+\subsection{Replication Package}\label{sec:replication}
+All source code, enriched datasets, model evaluation scripts, and plotting tools are available in the following GitHub repository:
 
-\subsection{Project Repository}
-\href{https://github.com/poladbachs/Bachelor-Thesis}{\texttt{github.com/poladbachs/Bachelor-Thesis}}.
+\begin{center}
+\url{https://github.com/poladbachs/Bachelor-Thesis}
+\end{center}
+
+The repository includes all CSVs, ablation results, accuracy plots, and confusion matrix visualizations. Dependencies are listed in a `requirements.txt`, and a step-by-step guide for full replication is provided in the README.
+
 
 % ——————————————————————————— 4 RESULTS
 \section{Results \& Discussion}\label{sec:results}
