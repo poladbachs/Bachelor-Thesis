@@ -7,6 +7,8 @@
 \usepackage{enumitem}
 \usepackage{booktabs}
 \usepackage{hyperref}
+\usepackage{listings}
+\usepackage{tabularx}
 
 \author{POLAD BAKHISHZADE}
 
@@ -87,41 +89,31 @@ In summary, the field is converging on the idea that LLMs can act as judges, but
 \noindent\textbf{RQ –} \emph{To what extent does the quality and depth of natural language documentation affect the ability of LLMs to judge the correctness of a given Java function?}
 
 \subsection{Context: LLMs}\label{sec:llms}
-We selected three instruction-tuned large language models (LLMs) of relatively small size: \textbf{Qwen2.5-Coder-0.5B-Instruct}, \textbf{Qwen2.5-Coder-1.5B-Instruct}~\cite{qwen2024report}, and \textbf{DeepSeek-Coder-1.3B-Instruct}~\cite{deepseek2024report}. These models were chosen to balance performance and computational efficiency, enabling us to run multiple evaluation configurations on local hardware without relying on high-end GPUs or cloud infrastructure. Although computational cost was not a formal constraint of the study, using smaller models made experimentation more feasible and reproducible in standard academic settings.\\
+We selected three instruction-tuned large language models (LLMs) of relatively small size: \textbf{Qwen2.5-Coder-0.5B-Instruct}, \textbf{Qwen2.5-Coder-1.5B-Instruct}~\cite{qwen2024report}, and \textbf{DeepSeek-Coder-1.3B-Instruct}~\cite{deepseek2024report}. These models feature approximately 0.5, 1.5, and 1.3 billion trainable parameters respectively, which is three orders of magnitude smaller than the latest foundation models such as GPT-4, estimated to exceed one trillion parameters. We chose these smaller models to balance performance and computational feasibility, allowing us to run multiple evaluations on local academic hardware without relying on large-scale infrastructure. Although computational cost was not a formal constraint of the study, using smaller models made experimentation more feasible and reproducible in standard academic settings.\\
 \\[2pt]
 All three models are optimized for code-related tasks and released with instruction-following tuning, meaning they have been fine-tuned to generate appropriate responses to structured natural language instructions. This makes them well-suited for prompt-based evaluation tasks like the one in this study.\\
 \\[2pt]
 The term \emph{“Instruct”} indicates that the model has undergone additional fine-tuning on datasets that include natural language prompts and desired completions, making it more responsive to task-specific queries. The Qwen models are part of Alibaba’s Qwen2.5 series, designed for code tasks and instruction-following scenarios. Qwen2.5-Coder models were trained on a large mixture of public and synthetic datasets, including a multilingual corpus of code, technical Q\&A, and structured programming tutorials~\cite{qwen2024report}. In particular, Qwen2.5-Coder-1.5B was optimized for multi-task code understanding and generation, and supports fine-grained control over function-level behavior through instruction tuning.\\
 \\[2pt]
-DeepSeek-Coder is a family of decoder-only transformer models specifically built for programming-related tasks~\cite{deepseek2024report}. The DeepSeek-Coder-1.3B variant used in our study was pre-trained on a massive 2 trillion token corpus that includes 87.5\% code and 12.5\% natural language. It was then instruction-tuned on 2 billion tokens of high-quality problem–solution pairs and user queries. The model supports over 80 programming languages and is explicitly optimized for tasks such as code completion, explanation, and functional verification, making it particularly suitable for prompt-based correctness evaluation.\\
+DeepSeek-Coder is a family of decoder-only transformer models specifically built for programming-related tasks~\cite{deepseek2024report}. The DeepSeek-Coder-1.3B variant used in our study was pre-trained on a massive 2 trillion token corpus that includes 87.5\% code and 12.5\% natural language. It was then instruction-tuned on 2 billion tokens of high-quality problem–solution pairs and user queries. The model supports over 80 programming languages and is explicitly optimized for tasks such as code completion, explanation, and functional verification, making it suitable for prompt-based correctness evaluation.\\
 \\[2pt]
 All models were accessed via the Hugging Face Hub\footnote{\url{https://huggingface.co}}, an open-source platform that hosts pre-trained machine learning models and provides tools for deployment and evaluation. We used the Transformers library to run the models, which handled prompt tokenization, model loading, and inference (i.e., generating predictions) through a standardized API.
 
 \subsection{Context: Dataset}\label{sec:dataset}
-We based our experiments on the Java subset of the \textsc{CoderEval} benchmark~\cite{coderEval2023}, a code generation dataset containing 230 manually curated Java programming tasks. Each task includes: (i) a natural language specification describing what the function is expected to do, (ii) a reference implementation showcasing a possible correct solution, and (iii) an associated test suite for automated correctness verification.\\
+We based our experiments on the Java subset of the \textsc{CoderEval} benchmark~\cite{coderEval2023}, a code generation dataset containing 230 manually curated Java programming tasks. Each task includes: (i) a natural language specification describing what the function is expected to do, (ii) a reference implementation showcasing a possible correct solution, and (iii) an associated test suite for automated correctness verification. The output of each test suite is a boolean: \texttt{pass} indicates that a candidate satisfies all test cases, while \texttt{fail} indicates that it fails at least one.\\
 \\[2pt]
 Before adopting all 230 tasks, we performed a thorough quality assurance procedure to ensure the reliability of the test suites. This step was crucial, as test misbehavior could bias our evaluation—for instance, by incorrectly labeling an actually wrong solution as correct.\\
 \\[2pt]
-We discarded 49 problems for the following reasons:
-\begin{itemize}[leftmargin=12pt]
-  \item \textbf{20 tasks} had reference implementations that failed their own test suites.
-  \item \textbf{9 tasks} had test suites so weak that even empty functions passed them.
-  \item \textbf{17 tasks} passed with trivial dummy functions, e.g., \texttt{return null;} or \texttt{return 0;}, suggesting the test suite lacked discriminative power.
-  \item \textbf{3 tasks} gave inconsistent test results for identical implementations.
-\end{itemize}
-This left us with a final set of 181 Java tasks, all of which passed our quality criteria and offered reliable correctness labels inferred directly from their test results.\\
-\\[2pt]
-Although each problem includes a natural language docstring, these descriptions are often minimal—typically consisting of one vague sentence. For instance:
-\begin{itemize}[leftmargin=12pt]
-  \item “This method returns a string.”
-  \item “Calculate the result.”
-\end{itemize}
-Such documentation is insufficient for evaluating how LLMs understand code. Our goal was therefore to augment the dataset with rich, multi-layered natural language descriptions to enable a code understanding task, where LLMs must infer functional correctness from semantic cues.
+We discarded 49 problems during quality control. Specifically, 20 tasks had reference implementations that failed their own test suites, indicating internal inconsistencies. Another 9 tasks had such weak test coverage that even empty functions passed all test cases. Additionally, 17 tasks were accepted by trivial dummy implementations, such as \texttt{return null;} or \texttt{return 0;}, which revealed a lack of discriminative power in the test suites. Finally, 3 tasks yielded inconsistent results for identical implementations across different evaluation runs. After filtering out these cases, we retained a final set of 181 Java tasks that passed all quality criteria and provided reliable correctness labels inferred directly from test outcomes.
 
 \subsection{Data Collection}\label{sec:collection}
 
+Although each problem in the dataset includes a natural language docstring, these descriptions are often minimal—typically consisting of a single vague sentence. For example: “Performs a right node rotation.”, “Skips bytes until the end of the current line.”, or “Swap values at indexes i and j in arr.”\\
+\\[2pt]
+Since our goal is to evaluate the extent to which the natural language documentation affect the ability of LLMs to judge the correctness of a given Java function, the one-line documentation featured in the \textsc{CoderEval} dataset is insufficient to answer this question. For this reason, we augmented the description of each code generation problem with a five-layer natural language description covering different aspects of code documentation, such as parameter explanations and examples of input–expected output pairs.
+
 \subsubsection{Augmenting the Dataset}\label{sec:augmentation}
-The goal of enrichment was to convert \textsc{CoderEval} from a code generation benchmark into one suitable for evaluating code understanding. Instead of asking models to generate code from a description, we wanted to test whether they could judge the correctness of a given implementation based purely on natural language documentation of the target function.\\
+Our goal is to study the extent to which the quality and depth of natural language documentation affect the ability of LLMs to judge the correctness of Java functions. To enable this evaluation, we enriched the \textsc{CoderEval} dataset with additional structured documentation, since the original format was designed for code generation, not understanding.\\
 \\[2pt]
 We used GPT-4o to produce this documentation because it was both scalable and accurate. Manual annotation of all 181 Java functions across multiple levels would have been impractical, and GPT-4o consistently followed structured formatting and stylistic constraints when prompted correctly.\\
 \\[2pt]
@@ -136,40 +128,72 @@ Each prompt to GPT-4o included the full Java function body and its name. The mod
 \end{enumerate}
 The outputs followed a fixed format and were manually verified for quality and correctness. We ensured that L1 remained high-level, L2 captured the full logic and edge cases, and L3–L5 remained accurate, relevant, and specific to each function.\\
 \\[2pt]
-This enrichment gave us modular “building blocks” that could be flexibly combined into prompts with different levels of information. For example:
-\begin{itemize}[leftmargin=12pt]
-  \item \textbf{L1+L2}: A compact explanation of the function’s purpose and behavior.
-  \item \textbf{L1+L3}: Purpose plus interface-level understanding, without relying on examples or logic.
-\end{itemize}
-This modularity was essential for constructing the incremental and layer-removal settings used in our evaluation.
+This enrichment gave us modular “building blocks” that could be flexibly combined into prompts with different levels of information. For example, combining L1 and L2 produces a compact explanation of the function’s purpose and behavior, while L1 and L3 give purpose plus interface-level understanding without relying on examples or full logic. This modularity was essential for constructing the incremental and layer-removal settings used in our evaluation.\\
+\\[2pt]
+To make this enrichment structure more concrete, we present a full example based on one of the tasks from the dataset.
+
+\begin{lstlisting}[language=Java, caption={Reference implementation of \texttt{trimArrayElements}}, label={lst:trim}]
+public static String[] trimArrayElements(String[] array){
+  if (Objects.isEmpty(array)) {
+    return new String[0];
+  }
+  String[] result = new String[array.length];
+  for (int i = 0; i < array.length; i++) {
+    String element = array[i];
+    result[i] = (element != null ? element.trim() : null);
+  }
+  return result;
+}
+\end{lstlisting}
+The original \textsc{CoderEval} docstring was:
+
+\begin{flushleft}
+\ttfamily
+\small
+/\** \\
+Trim the elements of the given String array, calling String.trim() on each of them.\\
+@param array the original String array\\
+@return the resulting array (of the same size) with trimmed elements\\
+*\ /
+\end{flushleft}
+Below is the five-layer enrichment produced using GPT-4o:\\
+\\[2pt]
+\textbf{L1 – Summary:} Trims whitespace from each element of an array.\\[2pt]
+\textbf{L2 – Behavioral description:} Trims leading and trailing whitespace from each string in the input array. If the array is null, returns an empty array. If an element is null, it remains null in the output.\\[2pt]
+\textbf{L3 – Signature explanation:}
+\begin{quote}\ttfamily
+@param array String[]: The input array of strings to be trimmed.\\
+@return String[]: A new array with trimmed strings, or nulls where applicable.
+\end{quote}
+\textbf{L4 – Examples:}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}l@{\hskip 1em}l@{}}
+\ttfamily [``  hello '', `` world  ''] $\rightarrow$ [``hello'', ``world''] & (trims spaces) \\
+\ttfamily [``foo'', ``bar''] $\rightarrow$ [``foo'', ``bar''] & (no trimming needed) \\
+\ttfamily null $\rightarrow$ [] & (handles null input)
+\end{tabular}
+\end{center}
+\textbf{L5 – Preconditions and postconditions:} Input may be null or contain null elements. Output array has the same length as input; each non-null string is trimmed, nulls are preserved.
+
+
 
 \subsubsection{Building Candidate Pairs}\label{sec:judgments}
-To evaluate whether LLMs can judge the functional correctness of code based on natural language descriptions, we paired each of the 181 Java functions with two candidate implementations: one correct and one incorrect. These implementations were not drawn from CoderEval itself, but were generated by us using several large language models, including DeepSeek-Coder-6.7B~\cite{deepseek2024report} and Qwen2.5-Coder-7B~\cite{qwen2024report}. We generated multiple candidate solutions for each function and compiled them into a custom knowledge base of over 5,000 Java implementations\footnote{\url{https://github.com/poladbachs/Bachelor-Thesis/blob/main/CoderEval/knowlbase_codereval.csv}}.\\
+To evaluate whether LLMs can judge the functional correctness of code based on natural language descriptions, we paired each of the 181 Java problems with two candidate implementations: one correct and one incorrect. These implementations were not drawn from \textsc{CoderEval} itself, but were generated by us using several large language models, including DeepSeek-Coder-6.7B~\cite{deepseek2024report} and Qwen2.5-Coder-7B~\cite{qwen2024report}. We generated multiple candidate solutions for each problem and compiled them into a custom knowledge base of over 5,000 Java implementations.\footnote{\url{https://github.com/poladbachs/Bachelor-Thesis/blob/main/CoderEval/knowlbase_codereval.csv}}\\
 \\[2pt]
-To ensure quality, we applied a filtering process to remove trivial, duplicate, or non-functional code. Specifically, we removed:
-\begin{itemize}[leftmargin=18pt]
-  \item Placeholder code, such as \texttt{/* implementation goes here */} or empty function bodies.
-  \item Logic-less shells, including \texttt{return;} or \texttt{return 0;} with no computation.
-  \item Print-only stubs like \texttt{System.out.println("TODO");}.
-  \item Duplicates across the candidate pool.
-  \item Candidates containing ambiguous or speculative language.
-\end{itemize}
-In particular, we discarded implementations containing the word \texttt{“assuming”}, such as:
-\begin{itemize}[leftmargin=18pt]
-  \item \texttt{// Assuming there's a getDefaultValue method for the class}
-  \item \texttt{// Assuming IsomorphicGraphMapping is a custom class}
-  \item \texttt{// Update heights (assuming that updateHeight() is defined)}
-\end{itemize}
-We excluded these because phrases like \emph{“assuming...”} indicate speculative dependencies on external structures, methods, or definitions not guaranteed to exist within the task context. Including such candidates would undermine our goal of evaluating implementations strictly based on the given information.\\
+We applied a filtering process to remove trivial, duplicate, or unusable code. First, we discarded placeholder code such as \texttt{/* implementation goes here */} or empty function bodies, which clearly lacked any executable logic. Second, we excluded logic-less shells like \texttt{return;} or \texttt{return 0;} that performed no computation and could not plausibly be evaluated for correctness. Third, we removed print-only stubs such as \texttt{System.out.println("TODO");}, as these were clearly placeholders and not real attempts at implementation. Fourth, we eliminated duplicate implementations to ensure that each candidate pair provided a distinct comparison case. Finally, we removed candidates that relied on methods, classes, or functionality not defined within the task scope. For example, some generated implementations contained comments such as:
+\begin{quote}\ttfamily\small
+// Assuming there's a getDefaultValue method for the class\\
+// Assuming IsomorphicGraphMapping is a custom class\\
+// Update heights (assuming that updateHeight() is defined)
+\end{quote}
+Such phrases indicate that the code presumes the existence of external dependencies that are not guaranteed to be available within the function's context. Including these candidates would introduce ambiguity, as correctness could no longer be determined purely based on the prompt and provided code. We therefore excluded all such cases to maintain a closed-world evaluation setup, where all necessary information is explicitly present.\\
 \\[2pt]
-After cleaning, we finalized the dataset by selecting one correct and one incorrect implementation per function. When no valid correct candidate was found, we used the reference implementation from \textsc{CoderEval}. In two edge cases where no suitable incorrect candidate was available for a function, we manually inserted a faulty variant into the dataset to complete the correct–incorrect pairing.
+After filtering, we finalized the dataset by selecting one correct and one incorrect implementation per problem. When no valid correct candidate was found, we fell back to using the original reference implementation from \textsc{CoderEval}. In two exceptional cases where no usable incorrect candidates were available, we manually inserted a faulty variant into the dataset to complete the correct–incorrect pairing.
 
 \subsection{Prompting and Evaluation Setup}\label{sec:evaluation}
-Each model was asked to solve the following binary classification task:
-
-\begin{quote}
-\emph{Given a natural language description and the signature of a target Java function, along with a candidate implementation, predict whether the implementation correctly satisfies the described functionality. Output \texttt{1} if it is correct, \texttt{0} otherwise.}
-\end{quote}
+Each model was tasked with a binary classification problem: given a natural language description, a function signature, and a candidate implementation, it must decide whether the implementation correctly satisfies the described behavior. The model outputs \texttt{1} if the implementation is correct, and \texttt{0} otherwise.
 The exact prompt given to the models was formatted as follows, using placeholders to insert task-specific information:
 
 \begin{quote}\ttfamily
@@ -193,53 +217,33 @@ You will be provided with the description ("Description") and the signature ("Si
 
 \# Output:
 \end{quote}
-All prompts were encoded and passed to the models using Hugging Face Transformers with temperature set to 0.2 to reduce randomness and \texttt{max\_new\_tokens = 20}. A limit of \texttt{max\_new\_tokens = 20} was enforced to constrain output length and prevent verbose completions, as the task only required a single-digit response (0 or 1). Model outputs were parsed to extract a binary classification (\texttt{0} or \texttt{1}). Any output that did not conform to the expected format was treated as invalid and recorded as \texttt{None}.\\
+All prompts were encoded and passed to the models using Hugging Face Transformers with temperature set to 0.2. This low temperature was chosen to reduce randomness, since we could not afford to run multiple evaluations on the same instance. A limit of \texttt{max\_new\_tokens = 20} was enforced to constrain output length and prevent verbose completions, as the task only required a single-digit response (0 or 1). Model outputs were parsed to extract a binary classification, and any non-conforming output was treated as invalid and recorded as \texttt{None}.\\
 \\[2pt]
-We evaluated model performance under two experimental settings:
-
-\paragraph{1. Prompt Enrichment.}
-For each model, we incrementally increased the amount of documentation information provided in the prompt. The five enrichment levels were:
-\begin{itemize}[leftmargin=15pt]
-  \item \textbf{L1 only}: Summary of the function’s purpose.
-  \item \textbf{L1 + L2}: Adds behavioral explanation with edge cases.
-  \item \textbf{L1 + L2 + L3}: Adds signature-level tags.
-  \item \textbf{L1 + L2 + L3 + L4}: Adds concrete input–output examples.
-  \item \textbf{L1 + L2 + L3 + L4 + L5}: Full prompt including logical constraints.
-\end{itemize}
-This yielded 15 enrichment runs in total: 3 models × 5 levels each.
-
-\paragraph{2. Layer Removal.}
-We then conducted 8 additional runs where we removed specific documentation layers from the full prompt to isolate their impact. These configurations varied by model:
-\begin{itemize}[leftmargin=15pt]
-  \item For Qwen-0.5B, we performed 5 runs, each removing a single layer (L1 through L5) from the full prompt.
-  \item For Qwen-1.5B, we tested the impact of removing L4 and L5 individually.
-  \item For DeepSeek-1.3B, we ran 1 configuration without L5, motivated by prior observations of noise in that layer.
-\end{itemize}
-This dual-axis experimental design—incremental addition and targeted removal—enabled us to evaluate not only whether more documentation helps, but also whether certain kinds of documentation may hinder performance by introducing ambiguity or unnecessary detail.
+We evaluated model performance under two experimental settings. In both, the baseline was the minimal prompt containing only the L1 summary layer.\\
+\\[2pt]
+In the first setting, prompt enrichment, we incrementally increased the amount of documentation information provided to the model. Starting from L1 alone, we progressively added layers in the following order: L2 (behavioral explanation), L3 (signature-level tags), L4 (input–output examples), and finally L5 (logical constraints). This yielded five prompt configurations per model, corresponding to L1, L1+L2, L1+L2+L3, L1+L2+L3+L4, and the full L1–L5 stack. We applied this setup to three LLMs—Qwen-0.5B, Qwen-1.5B, and DeepSeek-1.3B—resulting in 15 enrichment experiments in total.\\
+\\[2pt]
+In the second setting, layer removal, we started from the full prompt containing all five documentation layers (L1–L5) and selectively removed individual or combined layers to assess their individual effect on model performance. Rather than exhaustively testing all combinations, we defined a limited set of configurations per model to observe the contribution of each layer. This experimental approach helped isolate which layers had the greatest impact on accuracy and whether some components could be omitted without harming performance. The detailed discussion of results is presented in Section~\ref{sec:results}.
 
 \subsection{Data Analysis}\label{sec:analysis}
-The models were tasked with binary classification: decide whether a given candidate implementation correctly matches the described function behavior.\\
+
+Each model was evaluated on a binary classification task: given a natural language description of a Java function and a candidate implementation, decide whether the implementation correctly satisfies the described behavior. Ground truth correctness labels were drawn from the dataset: each candidate was pre-labeled as either correct or incorrect. Separately, the model was instructed to output \texttt{1} if it judged the implementation to be correct, and \texttt{0} if it judged it to be incorrect.\\
+\\
+Using these two independent sources—predefined correctness labels and model predictions—we computed standard confusion matrix metrics. A true positive (TP) occurs when the model correctly identifies a correct implementation. A true negative (TN) is when the model correctly identifies an incorrect implementation. A false positive (FP) occurs when the model mistakenly labels an incorrect implementation as correct, and a false negative (FN) when the model fails to recognize a correct implementation.\\
 \\[2pt]
-To evaluate performance, we computed standard confusion matrix metrics—true positives (TP), true negatives (TN), false positives (FP), and false negatives (FN). Accuracy was used as the main metric:
+Because our dataset was balanced—containing 181 correct and 181 incorrect implementations—we report accuracy as the primary performance metric. Accuracy reflects the overall proportion of correct classifications (TP and TN) over all evaluated samples:
 \[
 \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
 \]
+Model outputs that did not include a valid binary prediction (\texttt{0} or \texttt{1}) were marked as invalid and excluded from metric calculations.
 
-We examined two experimental conditions:
-\begin{enumerate}[leftmargin=15pt]
-  \item[\textbf{(1)}] \textbf{Prompt enrichment:} For each model, we tracked how accuracy changed as we incrementally added documentation layers (L1, L1+L2, ..., L1–L5).
-  \item[\textbf{(2)}] \textbf{Layer removal:} Starting from the full L1–L5 prompt, we removed one or more layers to observe their individual effect.
-\end{enumerate}
-For example, to test the effect of Examples (L4), we compared accuracy on L1–L5 vs. L1+L2+L3+L5. In some cases (e.g., DeepSeek), accuracy increased after removing L5, suggesting it introduced misleading constraints.\\
-\\[2pt]Results were visualized via bar charts, allowing a direct comparison of model performance across prompt types. This analysis helped us understand not only how much context is helpful, but also which types of documentation may confuse smaller models.
 
 \subsection{Replication Package}\label{sec:replication}
 All source code, enriched datasets, model evaluation scripts, and plotting tools are available in the following GitHub repository:
-
 \begin{center}
 \url{https://github.com/poladbachs/Bachelor-Thesis}
 \end{center}
-The repository includes all CSVs, accuracy plots, confusion matrices, and detailed README instructions for full replication. Environment dependencies are specified in \texttt{requirements.txt}.
+The repository includes all CSVs, accuracy plots, confusion matrices, and detailed README instructions for full optional replication. Environment dependencies are specified in \texttt{requirements.txt}.
 
 % ——————————————————————————— 4 RESULTS
 \section{Results \& Discussion}\label{sec:results}
