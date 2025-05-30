@@ -6,9 +6,9 @@ import torch
 # CONFIG
 MODEL_NAME = "deepseek-ai/deepseek-coder-1.3b-instruct"
 INPUT_CSV = "dataset/subset_362_final.csv"
-OUTPUT_CSV = "results/25_de13_nol5.csv"
 RAW_OUTPUTS_TXT = "results/25_de13_nol5_output.txt"
-METRICS_CSV = "results/25_de13_nol5_metrics.csv"
+OUTPUT_CSV = "additional_results/25_de13_nol245.csv"
+METRICS_CSV = "additional_results/25_de13_nol245_metrics.csv"
 TEMPERATURE = 0.2
 
 # Load model
@@ -75,16 +75,20 @@ with open(RAW_OUTPUTS_TXT, "w", encoding="utf-8") as f:
 df["predicted_exit_code"] = predictions
 df.to_csv(OUTPUT_CSV, index=False)
 
+df_valid = df[df["predicted_exit_code"].isin([0, 1])].copy()
+invalid_count = len(df) - len(df_valid)
+print(f"Invalid predictions (non-0/1): {invalid_count}")
+
 tp = len(df[(df["exit_code"] == 0) & (df["predicted_exit_code"] == 1)])  # Correct predicted as correct
 tn = len(df[(df["exit_code"] == 1) & (df["predicted_exit_code"] == 0)])  # Incorrect predicted as incorrect
 fp = len(df[(df["exit_code"] == 1) & (df["predicted_exit_code"] == 1)])  # Incorrect predicted as correct
 fn = len(df[(df["exit_code"] == 0) & (df["predicted_exit_code"] == 0)])  # Correct predicted as incorrect
-acc = (tp + tn) / len(df)
+acc = (tp + tn) / len(df_valid)
 
 # Save metrics
 metrics = {
-    "Metric": ["True Positives", "True Negatives", "False Positives", "False Negatives", "Accuracy"],
-    "Value": [tp, tn, fp, fn, acc]
+    "Metric": ["True Positives", "True Negatives", "False Positives", "False Negatives", "Accuracy", "Invalid Outputs (None)"],
+    "Value": [tp, tn, fp, fn, acc, invalid_count]
 }
 metrics_df = pd.DataFrame(metrics)
 metrics_df.to_csv(METRICS_CSV, index=False)

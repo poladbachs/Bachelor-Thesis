@@ -4,3 +4,4 @@ True Negatives,60.0
 False Positives,121.0
 False Negatives,34.0
 Accuracy,0.5718232044198895
+Invalid Outputs (None),0.0
