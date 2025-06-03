@@ -29,7 +29,7 @@ def build_prompt(row):
 - Preconditions and Postconditions: {row['precond_postcond']}
 
 # Signature:
-{row['candidate'].strip().splitlines()[0]}
+{row['code'].strip().splitlines()[0]}
 
 # Candidate:
 {row['candidate']}
