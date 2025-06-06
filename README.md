@@ -1,7 +1,7 @@
 # LLM as Code Correctness Judge (Bachelor Thesis)
 ![Image](https://github.com/user-attachments/assets/8f18475b-2ae8-4d60-81db-5c59f34137cd)
 
-Evaluate if instruction-tuned LLMs can judge **Java function correctness**.  
+Investigate if instruction-tuned LLMs can judge **Java function correctness**.  
 Models classify candidate implementations as either **correct (1)** or **wrong (0)**.
 
 ---
@@ -57,18 +57,19 @@ Each model was tested across 5 prompt levels (L1–L5) and additional **ablation
 
 | Path                 | Description                                 |
 |----------------------|---------------------------------------------|
-| `extract.py`         | Filter raw CoderEval JSON                   |
-| `kb_checker.py`      | Clean trivial candidate code                |
-| `enrich.py`          | Generate 5-level descriptions (GPT-4o)      |
-| `split.py`           | Parse enriched text into columns            |
-| `subset_former.py`   | Match correct+incorrect candidates          |
-| `patch_subset.py`    | Add 2 missing incorrect cases → 362 rows    |
-| `model_eval.py`      | Run Hugging Face LLMs                       |
-| `comparison_full.py` | Generate accuracy/confusion plots           |
+| `extract.py`         | Filters raw CoderEval JSON                   |
+| `kb_checker.py`      | Cleans trivial candidate code                |
+| `enrich.py`          | Generates 5-level descriptions (GPT-4o)      |
+| `split.py`           | Parses enriched text into columns            |
+| `subset_former.py`   | Matches correct+incorrect candidates          |
+| `patch_subset.py`    | Adds 2 missing incorrect cases → 362 rows    |
+| `model_eval.py`      | Runs Hugging Face LLMs                       |
+| `comparison_plots.py` | Generates accuracy/confusion plots           |
+| `ablation_plots.py` | Generates layer removal accuracy plots           |
 | `report/`            | LaTeX report source files                   |
 | `results/`           | Evaluation outputs (CSV)                    |
 | `plots/`             | Accuracy + TP/TN/FP/FN charts               |
-| `additional_results/`| Ablation result CSVs                        |
+| `additional_results/`| Layer removal result CSVs                        |
 | `dataset/`           | Final 362-row dataset                       |
 
 ---
@@ -115,4 +116,7 @@ python patch_subset.py
 python model_eval.py
 
 # 8. Plot final accuracy + confusion charts
-python comparison_full.py
+python comparison_plots.py
+
+# 9. (Optional) Plot accuracy under selective layer removal
+python ablation_plots.py # You choose which layers to exclude/include in the model_eval.py
