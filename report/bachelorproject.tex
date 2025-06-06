@@ -10,7 +10,7 @@
 \usepackage{listings}
 \usepackage{tabularx}
 \usepackage{placeins}
-\usepackage{adjustbox}  % in preamble if not yet included
+\usepackage{adjustbox}
 
 
 \author{POLAD BAKHISHZADE}
@@ -231,40 +231,30 @@ Because our dataset was balanced—containing 181 correct and 181 incorrect impl
 \]
 Model outputs that did not include a valid binary prediction (\texttt{0} or \texttt{1}) were marked as invalid and excluded from metric calculations.
 
-
-\subsection{Replication Package}\label{sec:replication}
-All source code, enriched datasets, model evaluation scripts, and plotting tools are available in the following GitHub repository:
-\begin{center}
-\url{https://github.com/poladbachs/Bachelor-Thesis}
-\end{center}
-The repository includes all CSVs, accuracy plots, confusion matrices, and detailed README instructions for full optional replication. Environment dependencies are specified in \texttt{requirements.txt}.
-
 % ——————————————————————————— 4 RESULTS
 \section{Results \& Discussion}\label{sec:results}
 
 \subsection{Incremental Enrichment (L1 $\rightarrow$ L5)}
 
-To assess how progressively detailed documentation impacts model performance, we first examine the cumulative enrichment results shown in Figure~\ref{fig:acc-l1-l5}. Each model was evaluated across five prompt variants, from the minimal summary-only setting (L1) to the full specification (L1–L5), revealing distinct behavioral patterns across models. Table~\ref{tab:invalid-judgments} reports the number and percentage of invalid model judgments across enrichment levels.
+To assess how progressively detailed documentation impacts model performance, we first examine the cumulative enrichment results shown in Figure~\ref{fig:acc-l1-l5}. Each model was evaluated across five prompt variants, from the minimal summary-only setting (L1) to the full specification (L1–L5), revealing distinct behavioral patterns across models.
 
-
-\noindent
 \begin{table}[htbp]
 \centering
-\caption{Number and percentage of invalid model judgments (i.e., outputs not equal to 0 or 1) for each enrichment level. Percentages are relative to the full dataset of 362 problems.}
-\vspace{0.5em}
+\caption{Number and percentage of invalid model judgments (i.e., outputs not equal to 0 or 1) for each prompt variant. Each column represents a cumulative enrichment level: e.g., L1–L3 includes summary (L1), behavioral description (L2), and method signature (L3). Percentages are computed over the full set of 362 evaluated function pairs.}
 \begin{tabular}{lccccc}
 \toprule
-\textbf{Model} & \textbf{L1} & \textbf{L2} & \textbf{L3} & \textbf{L4} & \textbf{L5} \\
+\textbf{Model} & \textbf{L1} & \textbf{L1-L2} & \textbf{L1-L3} & \textbf{L1-L4} & \textbf{L1-L5} \\
 \midrule
-Qwen-0.5B & 2 (0.6\%) & 0 (0.0\%) & 0 (0.0\%) & 5 (1.4\%) & 2 (0.6\%) \\
-Qwen-1.5B & 1 (0.3\%) & 0 (0.0\%) & 0 (0.0\%) & 0 (0.0\%) & 0 (0.0\%) \\
-DeepSeek-1.3B & 11 (3.0\%) & 15 (4.1\%) & 20 (5.5\%) & 51 (14.1\%) & 70 (19.3\%) \\
+Qwen 2.5 Coder 0.5B & 2 (0.6\%) & 0 (0.0\%) & 0 (0.0\%) & 5 (1.4\%) & 2 (0.6\%) \\
+Qwen 2.5 Coder 1.5B & 1 (0.3\%) & 0 (0.0\%) & 0 (0.0\%) & 0 (0.0\%) & 0 (0.0\%) \\
+DeepSeek Coder 1.3B & 11 (3.0\%) & 15 (4.1\%) & 20 (5.5\%) & 51 (14.1\%) & 70 (19.3\%) \\
 \bottomrule
 \end{tabular}
 \label{tab:invalid-judgments}
 \end{table}
-\vspace{-1em}
+
 \noindent
+Table~\ref{tab:invalid-judgments} shows that DeepSeek Coder 1.3B exhibits a sharp increase in invalid judgments as more layers are added, peaking at nearly 20\% at L5. In contrast, both Qwen models maintain a low invalid rate across settings, with Qwen 2.5 Coder 1.5B producing no invalid predictions beyond L1. 
 
 \begin{figure}[H]
   \centering
@@ -273,11 +263,11 @@ DeepSeek-1.3B & 11 (3.0\%) & 15 (4.1\%) & 20 (5.5\%) & 51 (14.1\%) & 70 (19.3\%)
   \label{fig:acc-l1-l5}
 \end{figure}
 \noindent
-The smallest model, Qwen-0.5B, starts at an accuracy of 0.489 with only the summary (L1) and fails to gain meaningful improvement through L2. However, accuracy rises once signature explanations (L3) and concrete examples (L4) are introduced, reaching a peak of 0.511. The final documentation layer (L5), which introduces formal logical conditions, causes a slight performance drop. This pattern suggests that Qwen-0.5B benefits from moderate enrichment, particularly when structural or procedural cues are provided, but may be overwhelmed by overly formal content. \\
+The smallest model, Qwen-0.5B, starts at an accuracy of 0.49 with only the summary (L1) and fails to gain meaningful improvement through L2. However, accuracy rises once signature explanations (L3) and concrete examples (L4) are introduced, reaching a peak of 0.51. The final documentation layer (L5), which introduces formal logical conditions, causes a slight performance drop. This pattern suggests that Qwen-0.5B benefits from moderate enrichment, particularly when structural or procedural cues are provided, but may be overwhelmed by overly formal content. \\
 \\
-Qwen-1.5B, with three times the parameter count of 1.5 billion, exhibits a markedly different trajectory. It improves with each successive layer, rising from 0.524 at L1 to 0.575 at L5, a total improvement of 5.3\%. The gains are smooth and incremental but remain modest overall, indicating that while this model is capable of integrating richer, layered context, the improvement is limited in absolute terms. Notably, there is a slight dip at L3, where performance temporarily decreases before recovering with L4 and L5. This suggests that the inclusion of method signature descriptions may affect the model’s estimation of the most probable next token, leading to reduced accuracy. Unlike Qwen-0.5B, however, Qwen-1.5B shows no degradation with the introduction of preconditions or postconditions, suggesting a higher tolerance for semantic complexity. \\
+Qwen-1.5B, with three times the parameter count of 1.5 billion, exhibits a markedly different trajectory. It improves with each successive layer, rising from 0.52 at L1 to 0.57 at L5, a total improvement of 5.3\%. The gains are smooth and incremental but remain modest overall, indicating that while this model is capable of integrating richer, layered context, the improvement is limited in absolute terms. Notably, there is a slight dip at L3, where performance temporarily decreases before recovering with L4 and L5. This suggests that the inclusion of method signature descriptions may affect the model’s estimation of the most probable next token, leading to reduced accuracy. Unlike Qwen-0.5B, however, Qwen-1.5B shows no degradation with the introduction of preconditions or postconditions, suggesting a higher tolerance for semantic complexity. \\
 \\
-In contrast, DeepSeek-1.3B follows a declining trajectory. It reaches its highest accuracy of 0.497 under the minimal L1 prompt, but performance drops steadily with each additional layer, falling to 0.401 at L5. Unlike the Qwen models, DeepSeek does not benefit from richer documentation. The consistent decline indicates that the model’s performance decreases as more layers of information are added, suggesting a limited ability to leverage structured input.
+DeepSeek Coder 1.3B shows no consistent benefit from documentation enrichment. Accuracy starts at 0.51 under the minimal L1 prompt and fluctuates slightly with each additional layer, ending at 0.49 under the full L1–L5 prompt. The variation across all settings remains within a narrow 1.6 percentage point range, suggesting that the model is largely unaffected by prompt composition. Overall, the results indicate that documentation layering has little impact on DeepSeek’s ability to assess functional correctness in a zero-shot classification task.
 
 \subsection{Model Behavior via Confusion Matrix Metrics}
 To better understand these contrasting dynamics, we inspect the confusion matrix decomposition of model predictions across the enrichment levels. Figures~\ref{fig:qwen05-matrix},~\ref{fig:qwen15-matrix}, and~\ref{fig:deepseek-matrix} report true positives (TP), true negatives (TN), false positives (FP), and false negatives (FN) for Qwen-0.5B, Qwen-1.5B, and DeepSeek-1.3B respectively.
@@ -287,7 +277,7 @@ To better understand these contrasting dynamics, we inspect the confusion matrix
   \label{fig:qwen05-matrix}
 \end{figure}
 \noindent
-Qwen-0.5B demonstrates a high number of false negatives under the L1 (summary-only) and L1+L2 (summary plus behavioral description) prompts, with 0.39 and 0.31 misclassified correct implementations, respectively. When signature information is introduced at L3 (i.e., L1+L2+L3), the false negative count drops to 0.18, and true positives increase to 0.32, indicating that lightweight structural context can support more effective predictions. However, further enrichment leads to a decline in performance. At L4 (with examples), true positives decrease (to 0.28) and false negatives rise again (to 0.22), while true negatives increase slightly to 0.24, possibly reflecting improved rejection of incorrect candidates. At the fully enriched L5 prompt (which includes logical preconditions and postconditions), the model becomes increasingly conservative: false negatives continue to rise (to 0.25) and true positives fall (to 0.25). Overall, while L3 offers some benefits, the addition of L4 and L5 does not improve performance and may reduce Qwen-0.5B’s ability to recognize correct implementations.
+Qwen-0.5B demonstrates a high number of false negatives under the L1 (summary-only) and L1+L2 (summary plus behavioral description) prompts. These values are expressed as fractions of the total set of judged implementations: for example, a false negative rate of 0.39 means that 39\% of all correct implementations were incorrectly classified as incorrect. At L1 and L1+L2, the false negative rates are 0.39 and 0.31, respectively. When signature information is introduced at L3 (i.e., L1+L2+L3), the false negative count drops to 0.18, and true positives increase to 0.32, indicating that lightweight structural context can support more effective predictions. However, further enrichment leads to a decline in performance. At L4 (with examples), true positives decrease (to 0.28) and false negatives rise again (to 0.22), while true negatives increase slightly to 0.24, possibly reflecting improved rejection of incorrect candidates. At the fully enriched L5 prompt (which includes logical preconditions and postconditions), the model becomes increasingly conservative: false negatives continue to rise (to 0.25) and true positives fall (to 0.25). Overall, while L3 offers some benefits, the addition of L4 and L5 does not improve performance and may reduce Qwen-0.5B’s ability to recognize correct implementations.
 \begin{figure}[H]\centering
   \includegraphics[width=\linewidth]{figures/Qwen1.5B_matrix.png}
   \caption{Normalized confusion-matrix metrics for Qwen-1.5B across L1 to L5.}
@@ -301,15 +291,14 @@ Qwen-1.5B shows a mild improvement as more documentation is added, with true pos
   \label{fig:deepseek-matrix}
 \end{figure}
 \noindent
-DeepSeek-1.3B behaves like a constant classifier. From L1 to L3, it predicts almost all implementations as correct, leading to high TP and FP fractions and near-zero TN. By the time L4 and L5 are added, both TP and FP decline—not due to improved accuracy, but because the model increasingly fails to produce valid binary outputs. These results confirm that additional documentation does not help DeepSeek distinguish correct from incorrect implementations and may instead overwhelm it.
+DeepSeek Coder 1.3B behaves like a constant classifier. Across all enrichment levels, it predicts almost all implementations as correct, resulting in consistently high true positive (TP) and false positive (FP) rates—both fluctuating narrowly between 0.49 and 0.50—with near-zero true negatives (TN). The inclusion of additional documentation layers has no clear effect on these distributions. These results indicate that DeepSeek does not meaningfully adapt its behavior in response to richer prompts.
 
 \subsection{Documentation Layer Removal}
 The previous section highlighted how documentation enrichment impacts model behavior, with some layers providing slight benefit and others introducing instability. To better understand these effects, we now turn to targeted layer removals. The aim is to isolate the contribution of individual components and evaluate whether reduced prompts can maintain comparable performance to the fully enriched setting.\\
 \\
-Layer removal configurations were selected based on behavioral trends observed in Section~\ref{sec:results}. For Qwen-0.5B, we focused on removing L2, L4, and L5—layers that previously caused notable fluctuations in prediction quality. For Qwen-1.5B, L1 appeared consistently redundant, so all compound removals begin with its exclusion. For DeepSeek-1.3B, we excluded L2 and L4, which appeared to degrade reliability and increase invalid responses as shown in Table~\ref{tab:ablation-invalids}. We did not test arbitrary combinations such as removing L3 and L5, as no specific degradation patterns were observed when those layers were included, In fact, for Qwen-1.5B, the addition of L5 led to a 3\% increase in accuracy—a comparatively decent gain given the overall scale of variation, reinforcing its potential benefit rather than suggesting removal.
-
-\subsubsection{Single-Layer Removal Analysis}
-Having assessed the impact of our documentation enrichment strategy on the performance of LLMs judging the code correctness, we now isolate the impact of individual layers through selective removal from the full prompt containing all five documentation layers (L1–L5). Figure~\ref{fig:ablation-accuracy} displays model accuracy under selective documentation removal, with one or more layers omitted from the full prompt. Table~\ref{tab:ablation-invalids} shows the number of invalid outputs (non-binary model predictions) under selected layer removal configurations.
+Layer removal configurations were selected based on behavioral trends observed in Section~\ref{sec:results}. For Qwen 0.5B, we focused on removing L2, L4, and L5—layers that previously caused notable fluctuations in prediction quality. For Qwen 1.5B, L1 appeared consistently redundant, so all compound removals begin with its exclusion. For DeepSeek 1.3B, we excluded L2 and L4, which appeared to degrade reliability and increase invalid responses as shown in Table~\ref{tab:ablation-invalids}. We did not test arbitrary combinations such as removing L3 and L5, as no specific degradation patterns were observed when those layers were included, In fact, for Qwen 1.5B, the addition of L5 led to a 3\% increase in accuracy—a comparatively decent gain given the overall scale of variation, reinforcing its potential benefit rather than suggesting removal. \\
+\\
+Having assessed the impact of our documentation enrichment strategy on the performance of LLMs judging the code correctness, we now isolate the impact of individual layers through selective removal from the full prompt containing all five documentation layers (L1–L5). Figure~\ref{fig:ablation-accuracy} displays model accuracy under selective documentation removal, with one or more layers omitted from the full prompt.\\
 
 \begin{table}[H]
 \centering
@@ -318,10 +307,12 @@ Having assessed the impact of our documentation enrichment strategy on the perfo
 \toprule
 \textbf{Model} & \textbf{Layer Removal Setting} & \textbf{Invalid Outputs (None)} \\
 \midrule
-Qwen-0.5B & - L2 & 5 (1.4\%) \\
-          & - L1 - L4 - L5 & 1 (0.3\%) \\
-Qwen-1.5B & All Layer Removals & 0 (0.0\%) \\
-DeepSeek-1.3B & - L2 & 56 (15.5\%) \\
+Qwen 2.5 Coder 0.5B & - L1 & 0 (0.0\%) \\
+                    & - L2 & 5 (1.4\%) \\
+                    & - L1 - L4 & 0 (0.0\%) \\
+                    & - L1 - L4 - L5 & 1 (0.3\%) \\
+Qwen 2.5 Coder 1.5B & -L1, -L1-L4, -L1-L5, L1-L3 & 0 (0.0\%) \\
+DeepSeek Coder 1.3B & - L2 & 56 (15.5\%) \\
               & - L2 - L4 & 23 (6.4\%) \\
               & - L2 - L4 - L5 & 25 (6.9\%) \\
 \bottomrule
@@ -330,7 +321,7 @@ DeepSeek-1.3B & - L2 & 56 (15.5\%) \\
 \label{tab:ablation-invalids}
 \end{table}
 \noindent
-Qwen-1.5B consistently produces valid outputs regardless of prompt structure. Qwen-0.5B shows occasional instability, with a small number of invalid responses under certain compound removals. DeepSeek-1.3B stands out for its fragility—over 15\% of its outputs are invalid even under relatively moderate removals, confirming that prompt verbosity severely destabilizes its response format.
+Table~\ref{tab:ablation-invalids} shows invalid output rates under selected layer removals. Qwen 1.5B produces no invalid outputs in any setting. Qwen 0.5B is mostly stable, with minor issues under –L2 (1.4\%) and –L1–L4–L5 (0.3\%). DeepSeek 1.3B shows the most instability: removing just L2 causes 15.5\% invalids, while compound removals still result in 6–7\% failure rates.
 
 \begin{figure}[H]\centering
   \includegraphics[width=\linewidth]{template-bachelor-project/figures/ablation_accuracy_subfigs.png}
@@ -338,44 +329,40 @@ Qwen-1.5B consistently produces valid outputs regardless of prompt structure. Qw
   \label{fig:ablation-accuracy}
 \end{figure}
 \noindent
-Removing the behavioral layer (L2) causes the most significant accuracy drop for Qwen-0.5B, reducing performance from 0.50 to 0.45. This confirms that mid-level functional cues can be helpful to the model's success. Interestingly, removing the summary (L1) has a minor effect, suggesting that Qwen-0.5B does not depend heavily on introductory one-liner, since it already has a detailed description (L2). \\
+Removing the behavioral layer (L2) causes the most significant accuracy drop for Qwen 0.5B, reducing performance from 0.50 to 0.45. This confirms that functional behaviour can be relatively helpful to the model's success. Interestingly, removing the summary (L1) has a minor effect, suggesting that Qwen 0.5B does not depend heavily on introductory one-liner, since it already has a detailed description (L2). While removing only L1 or L1 and L4 yields 0.48 and 0.49 respectively, removing L1, L4, and L5—leaving only the behavioral and signature layers (L2 and L3)—achieves 0.51, slightly outperforming the full-prompt setting. This suggests that cutting certain prompt layers can help avoid the noise introduced by further layers. Note, however, that this improvement of 2\% is only marginal compared to the summary-only baseline at 0.49. \\
 \\
-Qwen-1.5B, in contrast, maintains a flat accuracy regardless of which individual layer is removed. The worst-case drop—removing L1 and L4—only reduces accuracy from 0.57 to 0.55. This demonstrates that no single layer is essential for the model to perform well and suggests that Qwen-1.5B can extract sufficient meaning from the remaining context when any one component is missing. Notably, removing L1 has almost no effect, confirming that this summary layer is redundant at this model size. For this reason, we exclude L1 in all compound removal scenarios and instead focus on testing the impact of removing richer content (L4, L5) under a reduced setting. The findings here support the view that Qwen-1.5B integrates context holistically and can remain robust under prompt variation, even when trimmed. \\
+Qwen 1.5B, in contrast, maintains a flat accuracy regardless of which individual layer is removed. The worst-case drop—removing L1 and L4—only reduces accuracy from 0.57 to 0.55. This demonstrates that no single layer is essential for the model to perform well and suggests that Qwen 1.5B can extract sufficient meaning from the remaining context when any one component is missing. Notably, removing L1 has almost no effect, confirming that this summary layer is redundant at this model size. For this reason, we exclude L1 in all compound removal scenarios and instead focus on testing the impact of removing richer content (L4, L5) under a reduced setting. The findings support the view that Qwen 1.5B integrates context holistically and can remain robust under prompt variation, even when trimmed. We also find that removing L3 alongside L1 yields no accuracy loss, reinforcing the minimal influence of the method signature layer in this model. \\
 \\
-DeepSeek-1.3B shows minimal sensitivity to individual layer removals. Accuracy remains low, and invalid outputs increase with even modest structural variation.
-
-\subsubsection{Compound Layer Removal}
-
-To assess how interactions between layers influence model behavior—and to investigate whether some components might be removed without degrading performance—we evaluate selected compound removals. These tests explore how combinations of omitted documentation layers affect final accuracy under the full prompt setting (L1–L5), as shown in Figure~\ref{fig:ablation-accuracy}. \\
-\\
-For Qwen-0.5B, slightly better accuracy is observed under selective reduction rather than cumulative enrichment. Removing only Layer 1 (summary) or Layer 2 (behavioral spec) results in a performance drop—down to 0.48 and 0.450 respectively—demonstrating that both layers are comparatively helpful. However, when Layers 1 and 4 are removed together, accuracy recovers to 0.49, approaching the full prompt result of 0.508. Most notably, when Layers 1, 4, and 5 are excluded—leaving only the behavioral and signature layers (L2 and L3)—accuracy increases to 0.511, the model's highest ever score across runs. This suggests that Qwen-0.5B is less negatively affected when the prompt is limited to behavioral and signature information, whereas adding examples or formal logic appears to reduce performance further. \\
-\\
-In Qwen-1.5B, we begin compound removal by discarding L1, which has already been shown to be redundant in single-layer analysis. Once L1 is excluded, we assess the contribution of L4 and L5 through two combinations: -L1 -L4 and -L1 -L5. Both lead to a slight performance drop—from 0.575 to 0.55 respectively—confirming that while examples (L4) and logical constraints (L5) are not essential, they still offer a modest benefit. We then reintroduce L4 and L5 and instead remove L1 and L3. The result remains 0.57, nearly identical to the full prompt. This confirms that L3, like L1, has minimal influence on performance. Overall, while absolute results remain modest, the least ineffective configurations are L2, L4, and L5, indicating that these layers are comparatively more informative. All compound configurations still outperform the +L1-only baseline (0.52), with gains ranging between 3 and 5\%.\\
-\\
-For DeepSeek-1.3B, compound removals such as –L2–L4 or –L2–L4–L5 yield marginal accuracy gains but do not resolve the model’s fundamental limitations. Additional documentation appears more harmful than helpful. \\
-\\
-These findings confirm that documentation layer utility is highly model-specific. DeepSeek benefits most from minimal structure, Qwen-0.5B from targeted specification, and Qwen-1.5B from full enrichment. Notably, the strongest-performing model is also the most flexible: Qwen-1.5B retains high accuracy even when limited layers such as the summary (L1) or method signature (L3) are omitted, indicating that these inputs contribute little beyond the richer behavioral and logical cues such as L2 and L4. Effective prompt design should therefore consider model size—i.e., the number of parameters—when determining how much detail to include.
+DeepSeek 1.3B shows minimal sensitivity to individual layer removals. Accuracy remains roughly flat across all configurations, ranging from 0.49 (full prompt) to a modest peak of 0.513 under –L2. Compound removals such as –L2–L4 or –L2–L4–L5 result in small fluctuations but do not improve the model’s ability to distinguish correct from incorrect implementations.
 
 \section{Conclusions \& Future Work} \label{sec:concl}
-
-This study set out to explore how different types of natural language documentation influence the ability of language models to judge the functional correctness of Java code. Motivated by the observation that existing datasets provide minimal supervision, we constructed an evaluation pipeline that progressively enriched function descriptions with five layered components—ranging from simple summaries to formal preconditions and postconditions. We then examined how three instruction-tuned LLMs of varying size—Qwen-0.5B, Qwen-1.5B, and DeepSeek-1.3B—responded to these prompt variants in both cumulative and subtractive (layer removal) conditions. \\
+The three models tested in this study—Qwen 0.5B, Qwen 1.5B, and DeepSeek 1.3B—performed poorly across all prompt configurations, with no setting exceeding 58\% accuracy. These results indicate that, in a zero-shot setting, the tested models cannot be practically used for assessing the correctness of code, even when provided with structured natural language documentation.\\
 \\
-Across 362 candidate pairs, we evaluated each model's binary judgments using accuracy and confusion matrix analysis. The results showed that prompt effectiveness is not uniform but deeply model-dependent. Qwen-0.5B benefited most from lightweight yet specific input: it achieved peak performance when provided only with the behavioral specification and the method signature (L2+L3), while further enrichment with examples and logical constraints introduced noise and reduced reliability. In contrast, Qwen-1.5B demonstrated robust improvements across the full prompt hierarchy, tolerating verbosity and integrating context holistically. Interestingly, DeepSeek-1.3B exhibited the opposite trend: its performance degraded with each added layer, and it reached peak accuracy only under compound removals that eliminated verbose or stylistically conflicting elements. \\
+This study aimed to explore how different types of documentation influence the ability of language models to judge the functional correctness of Java code. To that end, we constructed an evaluation pipeline that progressively enriched function descriptions with five layered components—ranging from brief summaries to formal preconditions and postconditions. We then tested three instruction-tuned LLMs of varying size—Qwen 0.5B, Qwen 1.5B, and DeepSeek 1.3B—on both cumulative enrichment and selective removal variants of these prompts. \\
 \\
-In practical terms, these results suggest that prompt design must be carefully tailored to each model. Qwen-0.5B, the smallest model in our evaluation, performed best with focused prompts containing only behavioral descriptions (L2) and method signatures (L3). When enriched with additional layers such as one-line summaries (L1), examples (L4), or formal pre/post constraints (L5), performance declined—indicating that the model struggled to extract meaningful cues from verbose or surface-level documentation.\\
+Across 362 candidate pairs, we evaluated each model's binary judgments using accuracy and confusion matrix analysis. The results showed that prompt effectiveness is not uniform but deeply model-dependent. Qwen 0.5B benefited most from lightweight yet specific input: it achieved peak performance when provided only with the behavioral specification and the method signature (L2+L3), while further enrichment with examples and logical constraints introduced noise and reduced reliability. In contrast, Qwen 1.5B demonstrated robust improvements across the full prompt hierarchy, tolerating verbosity and integrating context holistically. DeepSeek 1.3B, on the other hand, consistently struggled regardless of prompt structure. Accuracy remained low across all configurations, and enrichment with additional documentation layers did not lead to improvements. In some cases, removing select components such as L2, L4, and L5 produced marginal gains, but the overall pattern indicates limited capacity to use either concise or verbose prompts effectively. \\
 \\
-Qwen-1.5B, in contrast, was more tolerant to prompt verbosity and continued to perform well even when enriched with less critical layers. It benefited modestly from examples and constraints, and maintained high accuracy even when the summary or signature information was removed. These findings show that optimal prompt construction is not universal: models differ in what information they can effectively use. Designing effective prompts requires awareness of the specific model's behavior and how it responds to different types of documentation.
+In practical terms, these results show that optimal prompt design is not one-size-fits-all: each model responds differently to documentation structure. Smaller models such as Qwen-0.5B benefit from focused functional cues (L2+L3), while larger ones such as Qwen-1.5B tolerate verbosity. DeepSeek-1.3B, by contrast, appears largely unresponsive to prompt structure.
 
 \subsection*{Future Work}
 Several directions remain open for future exploration. First, our evaluation was static: models were asked to classify correctness using fixed input pairs, without follow-up clarification or iterative reasoning. Future work could investigate dynamic prompting strategies, such as presenting labeled examples before classification or incorporating intermediate feedback signals—e.g., using model confidence scores or tool-generated hints—to guide the model during the decision process. \\
 \\
-Second, our correctness labels were based strictly on the test suite's exit code. While this was appropriate for a binary classification task, it does not capture cases of subtler distinctions. For instance, a candidate might solve the main use cases correctly but fail on rare edge conditions (\textit{partial correctness}), or implement the same functionality using a different structure or algorithm (\textit{alternative valid implementations}). Similarly, some candidates may be correct but written in inefficient or hard-to-read styles (\textit{stylistic diversity}). Future evaluations could explore more nuanced supervision signals. For example, \textit{semantic equivalence scoring}—as explored in CodeXGLUE~\cite{Lu2021codexglue}—compares the behavior of two programs across a diverse set of inputs rather than relying on a fixed test suite. Alternatively, \textit{human-in-the-loop evaluation} could involve expert annotators scoring implementations on correctness, clarity, and style, providing richer feedback than correct/incorrect outputs alone~\cite{smith2021human}. \\
+Second, our correctness labels were based strictly on the test suite's exit code. While this binary scheme captures functional correctness in most cases, it does not distinguish between fully correct and partially correct implementations—e.g., solutions that pass core functionality but fail rare edge cases. Future evaluations could explore more nuanced supervision signals. For example, semantic equivalence scoring—as explored in CodeXGLUE~\cite{Lu2021codexglue}—compares the behavior of two programs across a diverse set of inputs rather than relying on a fixed test suite. Alternatively, human-in-the-loop evaluation could involve expert annotators scoring implementations on correctness and clarity, providing richer feedback than pass/fail outputs alone~\cite{smith2021human}. \\
 \\
-Third, our analysis focused on three small to moderately sized open models due to resource constraints. Including larger models, such as GPT-4 or Claude (Anthropic's large language model~\cite{claude2023blog}), could clarify whether the trends we observed generalize to higher-capacity systems or are unique to the models tested here.\\
+Third, our analysis focused on three small to moderately sized open models due to resource constraints. Including larger models, such as GPT-4 or Claude (Anthropic's large language model~\cite{claude2023blog}), could clarify whether the trends we observed generalize to higher-capacity systems or are limited to the models tested here.\\
 \\
 Finally, additional research could examine failure patterns in more detail—for instance, when and why specific layers like L4 or L5 confuse a model. Understanding such breakdowns could help define safer and more effective prompt templates for future applications in code assessment or feedback generation.\\
 \\
 In conclusion, this study demonstrates that not all layers of natural language documentation contribute equally to model accuracy. Some forms of enrichment help even though still moderately, while others may dilute or obscure the underlying intent. Prompting strategies should therefore be designed with model-specific behaviors in mind, not based on the assumption that more detail always leads to better results.\\
+
+\subsection*{Replication Package}\label{sec:replication}
+All source code, enriched datasets, model evaluation scripts, and plotting tools are available in the following GitHub repository:
+\begin{center}
+\url{https://github.com/poladbachs/Bachelor-Thesis}
+\end{center}
+The repository includes all CSVs, accuracy plots, confusion matrices, and detailed README instructions for full optional replication. Environment dependencies are specified in \texttt{requirements.txt}.
+
+\clearpage
 
 % ——————————————————————————— REFERENCES
 \bibliographystyle{abbrv}
