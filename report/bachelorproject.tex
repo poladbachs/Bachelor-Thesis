@@ -13,10 +13,10 @@
 \usepackage{adjustbox}
 
 
-\author{POLAD BAKHISHZADE}
+\author{Polad Bakhishzade}
 
-\title{\textbf{LLM as Code-Correctness Judge}}
-\subtitle{Unveiling the Causes of Large-Language-Model Failures when Assessing Java Code}
+\title{\textbf{How Documentation Depth Influences LLMs' Ability to Judge Code Correctness}}
+% \subtitle{Unveiling the Causes of Large-Language-Model Failures when Assessing Java Code}
 \versiondate{\today}
 
 \begin{committee}
@@ -26,22 +26,17 @@
 
 % ——————————————————————————— ABSTRACT
 \abstract{
-\textbf{Context.}  
-Large Language Models (LLMs) are increasingly being used in software development tasks such as code generation, explanation, and bug fixing. An emerging frontier is the use of LLMs for code review—specifically, assessing whether a given implementation is functionally correct. This requires reasoning over both the specification and the code, making it a strong benchmark for code understanding.\\
+Large Language Models (LLMs) are playing an increasingly significant role in software engineering tasks such as code generation, explanation, and bug fixing. A rapidly evolving application of LLMs is in the domain of automated code understanding—particularly in evaluating the functional correctness of code implementations. This task presents a challenging benchmark, as it requires the model to reason about both the code and its intended specification.
+
+This study explores how the quality and depth of natural-language documentation influence LLMs’ ability to assess whether a Java function is correct. Specifically, we ask: \emph{To what extent does the richness and structure of natural language context affect an LLM’s judgment of code correctness?}
+
+We extend the Java subset of the \textsc{CoderEval} code generation benchmark by systematically enriching the documentation of each problem with five structured documentation layers—ranging from brief summaries to formal pre/post-conditions. Our novel code understanding benchmark features 181 code generation problems. Each problem also features a correct and an incorrect candidate implementation (which are used to evaluate the models' abilities as a judge for code correctness), as well as five blocks of natural language documentation, each corresponding to a different level of detail. The documentation layers are designed to progressively enrich the context provided to the model, from a simple one-line summary (L1) to a full specification including behavioral descriptions, parameter explanations, examples, and formal constraints (L5). We then prompt three open-source LLMs—Qwen2.5-Coder-0.5B-Instruct, Qwen2.5-Coder-1.5B-Instruct, and DeepSeek-Coder-1.3B-Instruct—to act as zero-shot judges, under multiple prompt configurations, and evaluate their performances as code evaluators.
+
+Our results show that, despite the fact that all models struggle as judges of code correctness in zero-shot settings, the impact of added documentation varies significantly across models. Smaller models tend to benefit from concise descriptions but often struggle when faced with verbose or formalized inputs, leading to degraded performance. In contrast, larger models make better use of detailed specifications and exhibit improved judgment accuracy. Notably, some documentation layers—such as illustrative examples—can either aid understanding or introduce confusion, depending on the model.
+
+These findings underscore the need for model-aware prompt design when using LLMs for code understanding tasks. Importantly, the study challenges the assumption that more documentation always leads to better outcomes. Instead, it demonstrates that the type and presentation of natural language context must be carefully aligned with the model's input capabilities. These insights can guide the development of more effective LLM-based tools for software quality assurance.\\
 \\[2pt]
-\textbf{Objective.}  
-This study investigates how the quality and quantity of natural-language context affect the ability of LLMs to assess code correctness. We ask: \emph{What kind of descriptive information helps or harms the model’s ability to judge whether a function is correct?}\\
-\\[2pt]
-\textbf{Method.}  
-We extend the Java subset of the \textsc{CoderEval} benchmark by systematically enriching it with five structured documentation layers—ranging from brief summaries to formal pre/post-conditions. Each of 362 functions is paired with one correct and one incorrect candidate implementation. We then prompt three open LLMs—Qwen-0.5B, Qwen-1.5B, and DeepSeek-1.3B—to act as zero-shot code judges, under multiple prompt configurations.\\
-\\[2pt]
-\textbf{Findings.}  
-The results reveal that different models respond differently to added context: smaller models benefit from concise behavioral descriptions but often degrade when presented with verbose examples or formal constraints. In contrast, larger models leverage detailed descriptions to reduce mistakes and achieve more reliable judgments. Some layers, such as examples, can introduce confusion and accuracy drop depending on the model.\\
-\\[2pt]
-\textbf{Outcome.}  
-The study highlights the importance of model-specific prompt design and shows that more documentation is not always better. These insights can inform future systems that rely on LLMs for code quality assessment.\\
-\\[2pt]
-\textbf{Keywords}: LLMs; Code Review; Code Correctness; Prompt Engineering; Evaluation; Java; Dataset Enrichment
+\textbf{Keywords}: Software Engineering; Large Language Models; Prompt Engineering; Code Understanding Benchmark
 }
 
 \begin{document}
@@ -258,7 +253,7 @@ Table~\ref{tab:invalid-judgments} shows that DeepSeek Coder 1.3B exhibits a shar
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{template-bachelor-project/figures/accuracy_comparison.png}
+  \includegraphics[width=\linewidth]{./figures/accuracy_comparison.png}
   \caption{Accuracy comparison across cumulative prompt settings. Each model is tested from L1 to L5.}
   \label{fig:acc-l1-l5}
 \end{figure}
@@ -324,7 +319,7 @@ DeepSeek Coder 1.3B & - L2 & 56 (15.5\%) \\
 Table~\ref{tab:ablation-invalids} shows invalid output rates under selected layer removals. Qwen 1.5B produces no invalid outputs in any setting. Qwen 0.5B is mostly stable, with minor issues under –L2 (1.4\%) and –L1–L4–L5 (0.3\%). DeepSeek 1.3B shows the most instability: removing just L2 causes 15.5\% invalids, while compound removals still result in 6–7\% failure rates.
 
 \begin{figure}[H]\centering
-  \includegraphics[width=\linewidth]{template-bachelor-project/figures/ablation_accuracy_subfigs.png}
+  \includegraphics[width=\linewidth]{./figures/ablation_accuracy_subfigs.png}
   \caption{Accuracy after removing selected layers from the full prompt.}
   \label{fig:ablation-accuracy}
 \end{figure}
